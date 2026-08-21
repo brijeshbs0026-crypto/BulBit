@@ -1,0 +1,25 @@
+@model ProductViewModel
+@{
+    ViewData["Title"] = "Edit Product";
+}
+<div class="form-page">
+    <div class="panel form-panel">
+        <div class="page-heading compact"><div><div class="eyebrow">DATA UPDATE</div><h1>Edit Product</h1><p>Update the existing database record.</p></div></div>
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input asp-for="Id" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="alert error"></div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="input" />
+            <span asp-validation-for="Name" class="field-error"></span>
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="input" rows="4"></textarea>
+            <span asp-validation-for="Description" class="field-error"></span>
+            <label asp-for="Price"></label>
+            <input asp-for="Price" class="input" type="number" step="0.01" />
+            <span asp-validation-for="Price" class="field-error"></span>
+            <div class="form-actions"><a class="btn" asp-action="Index">Cancel</a><button class="btn primary" type="submit">Update Product</button></div>
+        </form>
+    </div>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

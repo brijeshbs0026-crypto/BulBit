@@ -1,0 +1,108 @@
+﻿@model AuthMvcApp.Models.Employee
+
+@{
+    ViewData["Title"] = "Add Employee";
+}
+
+<div class="form-page">
+
+    <div class="page-heading compact">
+
+        <div>
+            <div class="eyebrow">PEOPLE</div>
+
+            <h1>Add Employee</h1>
+
+            <p>Add a new member to your organization.</p>
+        </div>
+
+    </div>
+
+    <div class="panel form-panel">
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert error">
+            </div>
+
+            <label asp-for="FullName"></label>
+
+            <input asp-for="FullName"
+                   class="input"
+                   placeholder="Employee name" />
+
+            <span asp-validation-for="FullName"
+                  class="field-error">
+            </span>
+
+
+            <label asp-for="Email"></label>
+
+            <input asp-for="Email"
+                   class="input"
+                   placeholder="name@company.com" />
+
+            <span asp-validation-for="Email"
+                  class="field-error">
+            </span>
+
+
+            <label asp-for="Department"></label>
+
+            <select asp-for="Department"
+                    class="input">
+
+                <option value="">Select department</option>
+
+                <option>Engineering</option>
+                <option>Design</option>
+                <option>HR</option>
+                <option>Sales</option>
+                <option>Finance</option>
+
+            </select>
+
+            <span asp-validation-for="Department"
+                  class="field-error">
+            </span>
+
+
+            <label asp-for="Designation"></label>
+
+            <input asp-for="Designation"
+                   class="input"
+                   placeholder="Job title" />
+
+            <span asp-validation-for="Designation"
+                  class="field-error">
+            </span>
+
+
+            <div class="form-actions">
+
+                <a asp-controller="Employee"
+                   asp-action="Index"
+                   class="btn">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn primary">
+                    Add Employee
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

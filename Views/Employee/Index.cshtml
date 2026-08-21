@@ -1,0 +1,204 @@
+@model IEnumerable<AuthMvcApp.Models.Employee>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="employee-page">
+
+    <!-- Header -->
+    <div class="employee-header">
+        <div>
+            <h1>Employees</h1>
+            <div class="eyebrow">WORK MANAGEMENT</div>
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Employee"
+               asp-action="Create"
+               class="add-employee-btn">
+                <span>＋</span> Add Employee
+            </a>
+        }
+    </div>
+
+    <!-- Employee Directory -->
+    <div class="employee-panel">
+
+        <div class="employee-panel-header">
+            <div>
+                <h2>Employee Directory</h2>
+                <p>All employees loaded dynamically from SQL Server.</p>
+            </div>
+
+            <div class="employee-search">
+                <span>⌕</span>
+                <input type="text"
+                       id="employeeSearch"
+                       placeholder="Search employees..." />
+            </div>
+        </div>
+
+        <div class="employee-table-wrapper">
+
+            <table class="employee-table" id="employeeTable">
+
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Department</th>
+                        <th>Designation</th>
+                        <th>Status</th>
+                        <th>Joined</th>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th>Action</th>
+                        }
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var employee in Model)
+                        {
+                            var initial = !string.IsNullOrEmpty(employee.FullName)
+                            ? employee.FullName.Substring(0, 1).ToUpper()
+                            : "U";
+
+                            <tr>
+
+                                <!-- Employee -->
+                                <td>
+                                    <div class="employee-info">
+
+                                        <div class="employee-avatar">
+                                            @initial
+                                        </div>
+
+                                        <div class="employee-details">
+                                            <strong>@employee.FullName</strong>
+                                            <span>@employee.Email</span>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <!-- Department -->
+                                <td>
+                                    @employee.Department
+                                </td>
+
+                                <!-- Designation -->
+                                <td>
+                                    @employee.Designation
+                                </td>
+
+                                <!-- Status -->
+                                <td>
+                                    <span class="status active">Active</span>
+                                </td>
+
+                                <!-- Joined -->
+                                <td>
+                                    @employee.JoinedDate.ToString("dd MMM yyyy")
+                                </td>
+
+                                <!-- Actions -->
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <td>
+                                        <div class="employee-actions">
+
+                                            <a asp-controller="Employee"
+                                               asp-action="Edit"
+                                               asp-route-id="@employee.Id"
+                                               class="edit-btn">
+                                                Edit
+                                            </a>
+
+                                            <form asp-controller="Employee"
+                                                  asp-action="Delete"
+                                                  asp-route-id="@employee.Id"
+                                                  method="post"
+                                                  style="display:inline">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="delete-btn"
+                                                        onclick="return confirm('Are you sure you want to delete this employee?');">
+                                                    Delete
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                }
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="@(User.IsInRole("Admin") ? "6" : "5")">
+                                <div class="employee-empty">
+                                    <div class="empty-icon">♙</div>
+                                    <h3>No employees found</h3>
+                                    <p>@(User.IsInRole("Admin") ? "Add your first employee to get started." : "No employee directory records available.")</p>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-controller="Employee"
+                                           asp-action="Create"
+                                           class="add-employee-btn">
+                                            ＋ Add Employee
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        const searchBox = document.getElementById("employeeSearch");
+
+        searchBox?.addEventListener("keyup", function () {
+
+            const searchValue = this.value.toLowerCase();
+
+            const rows = document.querySelectorAll(
+                "#employeeTable tbody tr"
+            );
+
+            rows.forEach(function (row) {
+
+                const text = row.innerText.toLowerCase();
+
+                row.style.display =
+                    text.includes(searchValue) ? "" : "none";
+
+            });
+
+        });
+
+    </script>
+
+}

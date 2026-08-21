@@ -1,0 +1,336 @@
+@model List<AuthMvcApp.Models.CalendarEvent>
+
+@{
+    ViewData["Title"] = "Calendar";
+
+    var today = DateTime.Today;
+
+    var currentMonth = ViewBag.CurrentMonth != null
+        ? (int)ViewBag.CurrentMonth
+        : today.Month;
+
+    var currentYear = ViewBag.CurrentYear != null
+        ? (int)ViewBag.CurrentYear
+        : today.Year;
+
+    var firstDay = new DateTime(currentYear, currentMonth, 1);
+    var daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
+
+    // Monday = 0
+    var startDay = ((int)firstDay.DayOfWeek + 6) % 7;
+
+    var previousMonth = firstDay.AddMonths(-1);
+    var nextMonth = firstDay.AddMonths(1);
+}
+
+<div class="calendar-page">
+
+    <!-- HEADER -->
+
+    <div class="calendar-header">
+
+        <div>
+            <div class="eyebrow">SCHEDULE</div>
+
+            <h1>Calendar</h1>
+
+            <p>Tasks, meetings and important dates.</p>
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <button type="button"
+                    class="btn primary"
+                    onclick="openEventModal()">
+                + Add Event
+            </button>
+        }
+
+    </div>
+
+
+    <!-- SUCCESS / ERROR MESSAGE -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="calendar-alert success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="calendar-alert error">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+
+    <!-- CALENDAR -->
+
+    <div class="calendar-card">
+
+        <!-- MONTH HEADER -->
+
+        <div class="calendar-month-header">
+
+            <a class="month-nav"
+               asp-controller="Calendar"
+               asp-action="Index"
+               asp-route-month="@previousMonth.Month"
+               asp-route-year="@previousMonth.Year">
+
+                ‹
+
+            </a>
+
+
+            <h2>
+                @firstDay.ToString("MMMM yyyy")
+            </h2>
+
+
+            <a class="month-nav"
+               asp-controller="Calendar"
+               asp-action="Index"
+               asp-route-month="@nextMonth.Month"
+               asp-route-year="@nextMonth.Year">
+
+                ›
+
+            </a>
+
+        </div>
+
+
+        <!-- WEEK DAYS -->
+
+        <div class="calendar-weekdays">
+
+            <div>MON</div>
+            <div>TUE</div>
+            <div>WED</div>
+            <div>THU</div>
+            <div>FRI</div>
+            <div>SAT</div>
+            <div>SUN</div>
+
+        </div>
+
+
+        <!-- DAYS -->
+
+        <div class="calendar-grid">
+
+            @for (int i = 0; i < startDay; i++)
+            {
+                <div class="calendar-day empty-day"></div>
+            }
+
+
+            @for (int day = 1; day <= daysInMonth; day++)
+            {
+                var date = new DateTime(
+                currentYear,
+                currentMonth,
+                day);
+
+                var isToday = date == today;
+
+                var dayEvents = Model
+                .Where(x => x.EventDate.Date == date)
+                .ToList();
+
+
+                <div class="calendar-day @(isToday ? "today" : "")">
+
+                    <div class="calendar-day-number">
+                        @day
+                    </div>
+
+
+                    @foreach (var eventItem in dayEvents)
+                    {
+                        <div class="calendar-event">
+
+                            <strong>
+                                @eventItem.Title
+                            </strong>
+
+                            @if (!string.IsNullOrEmpty(eventItem.EventType))
+                            {
+                                <small>
+                                    @eventItem.EventType
+                                </small>
+                            }
+
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ADD EVENT MODAL ================= -->
+
+@if (User.IsInRole("Admin"))
+{
+    <div id="eventModal"
+         class="calendar-modal">
+
+        <div class="calendar-modal-overlay"
+             onclick="closeEventModal()">
+        </div>
+
+
+        <div class="calendar-modal-content">
+
+            <button type="button"
+                    class="calendar-modal-close"
+                    onclick="closeEventModal()">
+                ×
+            </button>
+
+
+            <h2>Add Event</h2>
+
+            <p>Create a new calendar event.</p>
+
+
+            <form asp-controller="Calendar"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+
+                <!-- TITLE -->
+
+                <div class="calendar-form-group">
+
+                    <label>Event Title</label>
+
+                    <input type="text"
+                           name="Title"
+                           class="calendar-input"
+                           placeholder="e.g. Team Meeting"
+                           required />
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="calendar-form-group">
+
+                    <label>Description</label>
+
+                    <textarea name="Description"
+                              class="calendar-input calendar-textarea"
+                              placeholder="Describe the event..."></textarea>
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="calendar-form-group">
+
+                    <label>Date</label>
+
+                    <input type="date"
+                           name="EventDate"
+                           class="calendar-input"
+                           required />
+
+                </div>
+
+
+                <!-- TYPE -->
+
+                <div class="calendar-form-group">
+
+                    <label>Event Type</label>
+
+                    <select name="EventType"
+                            class="calendar-input">
+
+                        <option value="Meeting">
+                            Meeting
+                        </option>
+
+                        <option value="Task">
+                            Task
+                        </option>
+
+                        <option value="Holiday">
+                            Holiday
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- SAVE -->
+
+                <button type="submit"
+                        class="calendar-save-btn">
+
+                    Save Event
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+}
+
+
+@section Scripts
+{
+    <script>
+
+        function openEventModal() {
+
+            document
+                .getElementById("eventModal")
+                .classList.add("show");
+
+            document.body.style.overflow = "hidden";
+        }
+
+
+        function closeEventModal() {
+
+            document
+                .getElementById("eventModal")
+                .classList.remove("show");
+
+            document.body.style.overflow = "";
+        }
+
+
+        // Close popup using ESC
+
+        document.addEventListener("keydown", function (event) {
+
+            if (event.key === "Escape") {
+                closeEventModal();
+            }
+
+        });
+
+    </script>
+}

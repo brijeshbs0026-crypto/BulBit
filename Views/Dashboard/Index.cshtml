@@ -1,0 +1,270 @@
+@model AuthMvcApp.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var hour = DateTime.Now.Hour;
+
+    var greeting =
+        hour < 12 ? "Good morning" :
+        hour < 17 ? "Good afternoon" :
+        "Good evening";
+}
+
+<div class="dashboard-page">
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="dashboard-header">
+
+        <div>
+            <div class="dashboard-date">
+                @DateTime.Now.ToString("dddd, MMMM dd, yyyy")
+            </div>
+
+            <h1>
+                @greeting, @Model.UserName 👋
+            </h1>
+
+            <p>
+                Here’s what’s happening with your team today.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- ================= STAT CARDS ================= -->
+
+    <div class="dashboard-stats">
+
+        <!-- TOTAL EMPLOYEES -->
+
+        <div class="dashboard-stat-card">
+
+            <div class="dashboard-stat-icon">
+                ♙
+            </div>
+
+            <div class="dashboard-stat-content">
+
+                <span>Total Employees</span>
+
+                <strong>
+                    @Model.TotalEmployees
+                </strong>
+
+               
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVE TASKS -->
+
+        <div class="dashboard-stat-card">
+
+            <div class="dashboard-stat-icon">
+                ✓
+            </div>
+
+            <div class="dashboard-stat-content">
+
+                <span>Active Tasks</span>
+
+                <strong>
+                    @Model.ActiveTasks
+                </strong>
+
+              
+
+            </div>
+
+        </div>
+
+
+        <!-- PRESENT TODAY -->
+
+        <div class="dashboard-stat-card">
+
+            <div class="dashboard-stat-icon">
+                ◉
+            </div>
+
+            <div class="dashboard-stat-content">
+
+                <span>Present Today</span>
+
+                <strong>
+                    @Model.PresentToday
+                </strong>
+
+             
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MY TEAM ================= -->
+
+    <div class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <div>
+                <h2>My Team</h2>
+
+                <p>
+                    Employee overview
+                </p>
+            </div>
+
+            <a asp-controller="Employee"
+               asp-action="Index">
+
+                View all →
+
+            </a>
+
+        </div>
+
+
+        <div class="team-grid">
+
+            @if (Model.Employees != null && Model.Employees.Any())
+            {
+                foreach (var employee in Model.Employees)
+                {
+                    var initial =
+                    !string.IsNullOrWhiteSpace(employee.FullName)
+                    ? employee.FullName.Substring(0, 1).ToUpper()
+                    : "U";
+
+                    <div class="team-member">
+
+                        <!-- Avatar -->
+
+                        <div class="team-avatar">
+                            @initial
+                        </div>
+
+
+                        <!-- Employee Info -->
+
+                        <div class="team-info">
+
+                            <strong>
+                                @employee.FullName
+                            </strong>
+
+                            <span>
+                                @employee.Designation
+                            </span>
+
+                        </div>
+
+
+                        <!-- Status -->
+
+                        <div class="employee-status">
+
+                            <span class="status-active">
+                                Active
+                            </span>
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty">
+                    No employees found.
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TASK OVERVIEW ================= -->
+
+    <div class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <div>
+                <h2>Task Overview</h2>
+
+                <p>
+                    Current team workload
+                </p>
+            </div>
+
+            <a asp-controller="Task"
+               asp-action="Index">
+
+                View tasks →
+
+            </a>
+
+        </div>
+
+
+        <div class="task-overview">
+
+            <!-- TOTAL -->
+
+            <div class="task-overview-item">
+
+                <strong>
+                    @Model.TotalTasks
+                </strong>
+
+                <span>
+                    Total
+                </span>
+
+            </div>
+
+
+            <!-- COMPLETED -->
+
+            <div class="task-overview-item">
+
+                <strong>
+                    @Model.CompletedTasks
+                </strong>
+
+                <span>
+                    Completed
+                </span>
+
+            </div>
+
+
+            <!-- IN PROGRESS -->
+
+            <div class="task-overview-item">
+
+                <strong>
+                    @Model.InProgressTasks
+                </strong>
+
+                <span>
+                    In Progress
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

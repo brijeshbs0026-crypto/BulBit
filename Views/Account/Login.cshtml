@@ -1,0 +1,145 @@
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="auth-v2-page">
+
+    <div class="auth-v2-wrapper">
+
+        <!-- LEFT SIDE -->
+        <div class="auth-v2-left">
+
+            <div class="auth-v2-left-content">
+
+                <div class="auth-v2-left-image">
+                    <img src="~/image/login-image.jpg"
+                         alt="Welcome"
+                         class="auth-side-image" />
+                </div>
+
+               
+
+                <h2>Manage your work with ease</h2>
+
+                <p>
+                    Stay connected with your team, manage tasks,
+                    track attendance and keep everything organized
+                    in one place.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="auth-v2-right">
+
+            <div class="auth-v2-form">
+
+                <div class="auth-v2-form-header">
+
+                    <h1>Welcome back</h1>
+
+                    <p>
+                        Sign in to continue to your dashboard.
+                    </p>
+
+                </div>
+
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="auth-v2-error"
+                         asp-validation-summary="All">
+                    </div>
+                }
+
+
+                <form asp-action="Login" method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="returnUrl"
+                           value="@ViewData["ReturnUrl"]" />
+
+
+                    <div class="auth-v2-form-group">
+
+                        <label asp-for="Email"></label>
+
+                        <input asp-for="Email"
+                               class="auth-v2-input"
+                               placeholder="name@example.com"
+                               autocomplete="email" />
+
+                        <span asp-validation-for="Email"
+                              class="auth-v2-validation">
+                        </span>
+
+                    </div>
+
+
+                    <div class="auth-v2-form-group">
+
+                        <label asp-for="Password"></label>
+
+                        <input asp-for="Password"
+                               class="auth-v2-input"
+                               type="password"
+                               placeholder="Password"
+                               autocomplete="current-password" />
+
+                        <span asp-validation-for="Password"
+                              class="auth-v2-validation">
+                        </span>
+
+                    </div>
+
+
+                    <label class="auth-v2-check">
+
+                        <input asp-for="RememberMe" />
+
+                        <span>Remember me</span>
+
+                    </label>
+
+
+                    <button type="submit"
+                            class="auth-v2-button">
+
+                        Sign In
+
+                    </button>
+
+                </form>
+
+
+                <p class="auth-v2-footer">
+
+                    Don't have an account?
+
+                    <a asp-action="Register">
+                        Create an account
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

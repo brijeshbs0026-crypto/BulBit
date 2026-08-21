@@ -1,0 +1,47 @@
+@model List<Product>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">DATA MODULE</div>
+        <h1>Products</h1>
+        <p>CRUD data managed through Service and Repository layers.</p>
+    </div>
+    <a class="btn primary" asp-action="Create">＋ Add Product</a>
+</div>
+
+<div class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>#</th><th>Name</th><th>Description</th><th>Price</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="6" class="empty">No records found.</td></tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td><strong>@item.Name</strong></td>
+                        <td>@item.Description</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                        <td class="actions">
+                            <a class="btn small" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Delete this product?');">
+                                @Html.AntiForgeryToken()
+                                <button class="btn small danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

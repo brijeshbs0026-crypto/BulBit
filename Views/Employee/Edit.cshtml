@@ -1,0 +1,81 @@
+﻿@model AuthMvcApp.Models.Employee
+
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<div class="form-page">
+
+    <div class="page-heading compact">
+
+        <div>
+            <div class="eyebrow">PEOPLE</div>
+
+            <h1>Edit Employee</h1>
+
+            <p>Update employee information.</p>
+        </div>
+
+    </div>
+
+    <div class="panel form-panel">
+
+        <form asp-action="Edit" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="JoinedDate" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert error">
+            </div>
+
+            <label asp-for="FullName"></label>
+            <input asp-for="FullName" class="input" />
+            <span asp-validation-for="FullName"
+                  class="field-error"></span>
+
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="input" />
+            <span asp-validation-for="Email"
+                  class="field-error"></span>
+
+            <label asp-for="Department"></label>
+            <input asp-for="Department" class="input" />
+
+            <label asp-for="Designation"></label>
+            <input asp-for="Designation" class="input" />
+
+            <label asp-for="Status"></label>
+
+            <select asp-for="Status" class="input">
+                <option>Active</option>
+                <option>On Leave</option>
+                <option>Inactive</option>
+            </select>
+
+            <div class="form-actions">
+
+                <a asp-action="Index"
+                   class="btn">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn primary">
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

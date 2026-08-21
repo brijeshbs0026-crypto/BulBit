@@ -1,0 +1,373 @@
+﻿@model List<AuthMvcApp.Models.Attendance>
+@{
+    var currentEmployee =
+        ViewBag.CurrentEmployee as AuthMvcApp.Models.Employee;
+}
+
+
+@{
+    ViewData["Title"] = "Attendance";
+
+    var today = DateTime.Today;
+
+    var todayRecords = Model
+        .Where(x => x.AttendanceDate.Date == today)
+        .ToList();
+
+    var present = todayRecords.Count(x => x.Status == "Present");
+    var late = todayRecords.Count(x => x.Status == "Late");
+    var absent = todayRecords.Count(x => x.Status == "Absent");
+    var leave = 0;
+
+    // Current logged-in employee attendance
+    // var currentEmployeeAttendance = todayRecords.FirstOrDefault();
+
+
+    var currentEmployeeAttendance = currentEmployee == null
+    ? null
+    : todayRecords.FirstOrDefault(x =>
+        x.EmployeeId == currentEmployee.Id);
+
+    var total = present + late + absent + leave;
+
+    var rate = total == 0
+        ? 0
+        : (present * 100 / total);
+}
+
+<div class="attendance-page">
+
+    <div class="attendance-header">
+        <div>
+            <div class="eyebrow">TIME & ATTENDANCE</div>
+
+            <h1>Attendance</h1>
+
+            <p>Today's attendance overview.</p>
+        </div>
+    </div>
+
+
+    <!-- TOP SECTION -->
+
+    <div class="attendance-top">
+
+        <div class="checkin-card">
+
+            <div class="today-label">
+                TODAY ·
+            </div>
+
+            <strong>
+                @DateTime.Now.ToString("MMMM dd, yyyy")
+            </strong>
+
+            <h2>
+                @if (currentEmployeeAttendance == null)
+                {
+                    @:You haven't checked in yet
+                }
+                else if (currentEmployeeAttendance.CheckOut == null)
+                {
+                    @:You're currently checked in
+                }
+                else
+                {
+                    @:Your attendance is completed
+                }
+            </h2>
+
+            <p>
+                Mark your attendance when you start your workday.
+            </p>
+
+
+            @if (currentEmployeeAttendance == null)
+            {
+                <!-- CHECK IN -->
+
+                <form asp-controller="Attendance"
+                      asp-action="CheckIn"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="checkin-btn">
+
+                        ✓ Check In
+
+                    </button>
+
+                </form>
+            }
+            else if (currentEmployeeAttendance.CheckOut == null)
+            {
+                <!-- CHECK OUT -->
+
+                <form asp-controller="Attendance"
+                      asp-action="CheckOut"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="checkout-btn">
+
+                        ✓ Check Out
+
+                    </button>
+
+                </form>
+            }
+            else
+            {
+                <span class="completed-attendance">
+                    ✓ Day Completed
+                </span>
+            }
+
+        </div>
+
+
+        <!-- PRESENT -->
+
+        <div class="attendance-stat">
+
+            <span>✓</span>
+
+            <small>
+                Present<br />Days
+            </small>
+
+            <strong>
+                @present
+            </strong>
+
+            <em>
+                Today
+            </em>
+
+        </div>
+
+
+        <!-- LATE -->
+
+        <div class="attendance-stat">
+
+            <span>◷</span>
+
+            <small>
+                Late<br />Days
+            </small>
+
+            <strong>
+                @late
+            </strong>
+
+            <em>
+                Today
+            </em>
+
+        </div>
+
+
+        <!-- LEAVE -->
+
+        <div class="attendance-stat">
+
+            <span>▣</span>
+
+            <small>
+                Leave<br />Days
+            </small>
+
+            <strong>
+                @leave
+            </strong>
+
+            <em>
+                Today
+            </em>
+
+        </div>
+
+
+        <!-- RATE -->
+
+        <div class="attendance-stat">
+
+            <span>%</span>
+
+            <small>
+                Attendance<br />Rate
+            </small>
+
+            <strong>
+                @rate%
+            </strong>
+
+            <em>
+                Today
+            </em>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="attendance-summary">
+
+        <div>
+            <span>✓</span>
+
+            <small>
+                Present
+            </small>
+
+            <strong>
+                @present
+            </strong>
+        </div>
+
+
+        <div>
+            <span>◷</span>
+
+            <small>
+                Late
+            </small>
+
+            <strong>
+                @late
+            </strong>
+        </div>
+
+
+        <div>
+            <span>×</span>
+
+            <small>
+                Absent
+            </small>
+
+            <strong>
+                @absent
+            </strong>
+        </div>
+
+
+        <div>
+            <span>▣</span>
+
+            <small>
+                On Leave
+            </small>
+
+            <strong>
+                @leave
+            </strong>
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="attendance-table-card">
+
+        <h2>
+            Today's Attendance
+        </h2>
+
+        <p>
+            @DateTime.Today.ToString("MMMM dd, yyyy")
+        </p>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Employee</th>
+                        <th>Status</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Hours</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @foreach (var item in todayRecords)
+                    {
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    @(item.Employee?.FullName ?? "Unknown")
+                                </strong>
+                            </td>
+
+
+                            <td>
+
+                                <span class="attendance-status">
+                                    @item.Status
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                @(item.CheckIn?.ToString("hh:mm tt") ?? "—")
+                            </td>
+
+
+                            <td>
+                                @(item.CheckOut?.ToString("hh:mm tt") ?? "—")
+                            </td>
+
+
+                            <td>
+
+                                @(item.Hours > 0
+                                                            ? $"{item.Hours:0.##} hrs"
+                                                            : "—")
+
+                        </td>
+
+                        </tr>
+                                        }
+
+
+                    @if (!todayRecords.Any())
+                    {
+                        <tr>
+
+                            <td colspan="5"
+                                class="empty">
+
+                                No attendance records for today.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

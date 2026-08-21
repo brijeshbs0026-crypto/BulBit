@@ -1,0 +1,149 @@
+@model AuthMvcApp.Models.Client
+
+@{
+    ViewData["Title"] = "Add Client";
+}
+
+<div class="client-form-page">
+
+    <div class="client-form-card">
+
+        <div class="client-form-icon">
+            👥
+        </div>
+
+        <h1>Add Client</h1>
+
+        <p>
+            Add client details and monthly content requirements.
+        </p>
+
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="client-validation"></div>
+
+
+            <div class="client-form-group">
+
+                <label asp-for="ClientName">
+                    Client Name
+                </label>
+
+                <input asp-for="ClientName"
+                       class="client-input"
+                       placeholder="Enter client name" />
+
+                <span asp-validation-for="ClientName"
+                      class="client-field-error"></span>
+
+            </div>
+
+
+            <div class="client-form-group">
+
+                <label asp-for="Description">
+                    Description
+                </label>
+
+                <textarea asp-for="Description"
+                          class="client-input client-textarea"
+                          placeholder="Enter client description"></textarea>
+
+                <span asp-validation-for="Description"
+                      class="client-field-error"></span>
+
+            </div>
+
+
+            <div class="client-form-row">
+
+                <div class="client-form-group">
+
+                    <label asp-for="ReelsPerMonth">
+                        Reels / Month
+                    </label>
+
+                    <input asp-for="ReelsPerMonth"
+                           type="number"
+                           min="0"
+                           class="client-input"
+                           placeholder="0" />
+
+                </div>
+
+
+                <div class="client-form-group">
+
+                    <label asp-for="PostsPerMonth">
+                        Posts / Month
+                    </label>
+
+                    <input asp-for="PostsPerMonth"
+                           type="number"
+                           min="0"
+                           class="client-input"
+                           placeholder="0" />
+
+                </div>
+
+            </div>
+
+
+            <div class="client-form-row">
+
+                <div class="client-form-group">
+
+                    <label asp-for="StoriesPerMonth">
+                        Stories / Month
+                    </label>
+
+                    <input asp-for="StoriesPerMonth"
+                           type="number"
+                           min="0"
+                           class="client-input"
+                           placeholder="0" />
+
+                </div>
+
+
+                <div class="client-form-group">
+
+                    <label asp-for="VideosPerMonth">
+                        Videos / Month
+                    </label>
+
+                    <input asp-for="VideosPerMonth"
+                           type="number"
+                           min="0"
+                           class="client-input"
+                           placeholder="0" />
+
+                </div>
+
+            </div>
+
+
+            <button type="submit"
+                    class="client-save-btn">
+                Add Client
+            </button>
+
+
+            <a asp-action="Index"
+               class="client-cancel-btn">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

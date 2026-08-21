@@ -1,0 +1,50 @@
+@model AuthMvcApp.Models.User
+@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<div class="dashboard-card">
+    <div class="dashboard-hero">
+        <div class="user-avatar-lg">
+            @(Model?.FullName?[0].ToString().ToUpper() ?? User.Identity?.Name?[0].ToString().ToUpper() ?? "U")
+        </div>
+        <div class="dashboard-welcome">
+            <h1>Welcome, @(Model?.FullName ?? User.Identity?.Name)!</h1>
+            <div class="status-badge-online">
+                <span class="status-dot"></span>
+                <span>Authenticated via Database</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-stats">
+        <div class="stat-item">
+            <div class="stat-label">User ID (Database)</div>
+            <div class="stat-value">#@(Model?.Id.ToString() ?? "N/A")</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-label">Full Name</div>
+            <div class="stat-value">@(Model?.FullName ?? User.Identity?.Name)</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-label">Email Address</div>
+            <div class="stat-value">@(Model?.Email ?? User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value)</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-label">Account Created</div>
+            <div class="stat-value">@(Model?.CreatedAt.ToString("MMM dd, yyyy HH:mm") ?? "Active")</div>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+        <form asp-controller="Account" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn-logout" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
+                Sign Out of Account
+            </button>
+        </form>
+    </div>
+</div>
