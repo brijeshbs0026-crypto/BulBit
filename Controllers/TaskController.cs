@@ -10,13 +10,16 @@ public class TaskController : Controller
 {
     private readonly ITaskService _taskService;
     private readonly IEmployeeService _employeeService;
+    private readonly INotificationService _notificationService;
 
     public TaskController(
         ITaskService taskService,
-        IEmployeeService employeeService)
+        IEmployeeService employeeService,
+        INotificationService notificationService)
     {
         _taskService = taskService;
         _employeeService = employeeService;
+        _notificationService = notificationService;
     }
 
     // =========================
@@ -64,6 +67,9 @@ public class TaskController : Controller
         model.CreatedAt = DateTime.UtcNow;
 
         await _taskService.AddAsync(model);
+
+        // Create notification for the assigned task
+        await _notificationService.CreateTaskAssignedNotificationAsync(model, employee);
 
         TempData["SuccessMessage"] = "Task assigned successfully.";
 

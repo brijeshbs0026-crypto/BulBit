@@ -6,10 +6,26 @@
 
     <title>@ViewData["Title"] - BulBit</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Zero-flicker theme loader -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('bulbit_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
 <body>
+    <!-- Hidden form for JavaScript Anti-Forgery token extraction -->
+    <form id="csrfForm" style="display:none;">
+        @Html.AntiForgeryToken()
+    </form>
 
     @if (User.Identity?.IsAuthenticated == true)
     {
@@ -17,63 +33,90 @@
         <header class="top-navbar">
 
             <div class="top-left">
-                <div class="mobile-menu">☰</div>
+                <button class="mobile-menu-btn" id="sidebarToggleBtn" aria-label="Toggle navigation">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
 
                 <a asp-controller="Dashboard"
                    asp-action="Index"
                    class="navbar-brand">
-
                     <span class="brand-icon">B</span>
-                    <span>BulBit</span>
-
+                    <span class="brand-text">BulBit</span>
                 </a>
             </div>
 
             <div class="top-center">
-
-                
-
+                <!-- Can host search or breadcrumbs -->
             </div>
 
             <div class="top-right">
 
-                <button class="icon-button">☼</button>
+                <!-- Theme Toggle Button -->
+                <button class="icon-button theme-toggle-btn" id="themeToggleBtn" title="Toggle dark/light theme" aria-label="Toggle dark/light theme">
+                    <span class="theme-icon light-icon" title="Switch to Light mode">☀️</span>
+                    <span class="theme-icon dark-icon" title="Switch to Dark mode">🌙</span>
+                </button>
 
-                <div class="notification">
-                    ♢
-                    <span></span>
+                <!-- Notifications Dropdown -->
+                <div class="notification-container" id="notificationContainer">
+                    <button class="icon-button notification-btn" id="notificationBtn" title="Notifications" aria-label="Notifications" aria-expanded="false">
+                        <svg class="bell-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                    </button>
+
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <div class="notification-header-info">
+                                <h4>Notifications</h4>
+                                <span class="notification-unread-pill" id="dropdownUnreadCount">0 new</span>
+                            </div>
+                            <button type="button" class="mark-all-read-btn" id="markAllReadBtn">Mark all read</button>
+                        </div>
+                        <div class="notification-list" id="notificationList">
+                            <div class="notification-loading">Loading notifications...</div>
+                        </div>
+                        <div class="notification-footer">
+                            <a asp-controller="Task" asp-action="Index" class="notification-footer-link">Tasks</a>
+                            <span class="footer-dot">•</span>
+                            <a asp-controller="Calendar" asp-action="Index" class="notification-footer-link">Calendar</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="top-profile">
-
                     <div class="profile-avatar">
                         @((User.Identity?.Name ?? "U").Substring(0, 1).ToUpper())
                     </div>
 
                     <div class="profile-info">
                         <strong>@User.Identity?.Name</strong>
-                        <small style="color: #6366f1; font-weight: 600;">@(User.IsInRole("Admin") ? "Administrator" : "Employee")</small>
+                        <small class="role-badge">@(User.IsInRole("Admin") ? "Administrator" : "Employee")</small>
                     </div>
-
                 </div>
 
                 <form asp-controller="Account"
                       asp-action="Logout"
                       method="post">
-
                     @Html.AntiForgeryToken()
-
                     <button type="submit"
-                            class="logout-button">
+                            class="logout-button" title="Sign out">
                         Logout
                     </button>
-
                 </form>
 
             </div>
 
         </header>
 
+        <!-- Sidebar overlay for mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <!-- ================= APPLICATION ================= -->
 
@@ -81,116 +124,79 @@
 
             <!-- ================= SIDEBAR ================= -->
 
-            <aside class="sidebar">
+            <aside class="sidebar" id="appSidebar">
 
                 <div class="sidebar-brand">
-
                     <div class="sidebar-logo">
                         BB
                     </div>
 
-                    <div>
+                    <div class="sidebar-brand-text">
                         <strong>BulBit</strong>
-                        <small>Employee Management</small>
+                        <small>Workspace Management</small>
                     </div>
-
                 </div>
-
 
                 <div class="menu-heading">
                     MAIN MENU
                 </div>
 
-
                 <a asp-controller="Dashboard"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" || ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
-
-                    <span>⌂</span>
-                    <span>Dashboard</span>
-
+                    <span class="menu-icon">⌂</span>
+                    <span class="menu-label">Dashboard</span>
                 </a>
-
 
                 <a asp-controller="Employee"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employee" ? "active" : "")">
-
-                    <span>♙</span>
-                    <span>Employees</span>
-
+                    <span class="menu-icon">♙</span>
+                    <span class="menu-label">Employees</span>
                 </a>
 
                 <a asp-controller="Task"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Task" ? "active" : "")">
-
-                    <span>✓</span>
-                    <span>Tasks</span>
-
+                    <span class="menu-icon">✓</span>
+                    <span class="menu-label">Tasks</span>
                 </a>
 
                 <a asp-controller="Attendance"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Attendance" ? "active" : "")">
-
-                    <span>◷</span>
-                    <span>Attendance</span>
+                    <span class="menu-icon">◷</span>
+                    <span class="menu-label">Attendance</span>
                 </a>
-@* 
-                <a href="#" class="menu-item">
-                    <span>▣</span>
-                    <span>Leave Management</span>
-                    <span class="menu-badge">3</span>
-                </a> *@
 
                 <a asp-controller="Calendar"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Calendar" ? "active" : "")">
-                    <span>□</span>
-                    <span>Calendar</span>
+                    <span class="menu-icon">□</span>
+                    <span class="menu-label">Calendar</span>
                 </a>
-
 
                 <a asp-controller="Client"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Client" ? "active" : "")">
-                    <span>👥</span>
-                    <span>Clients</span>
+                    <span class="menu-icon">👥</span>
+                    <span class="menu-label">Clients</span>
                 </a>
-
-
-               @*  <a href="#" class="menu-item">
-                    <span>▥</span>
-                    <span>Reports</span>
-                </a>
-
-                <a href="#" class="menu-item">
-                    <span>⚑</span>
-                    <span>Announcements</span>
-                </a>
- *@
 
                 <div class="sidebar-spacer"></div>
 
-
                 <div class="sidebar-user">
-
                     <div class="sidebar-avatar">
                         @((User.Identity?.Name ?? "U").Substring(0, 1).ToUpper())
                     </div>
 
                     <div class="sidebar-user-info">
                         <strong>@User.Identity?.Name</strong>
-                        <small style="color: #6366f1; font-weight: 600;">@(User.IsInRole("Admin") ? "Administrator" : "Employee")</small>
+                        <small class="role-badge">@(User.IsInRole("Admin") ? "Administrator" : "Employee")</small>
                     </div>
-
-                    <span class="sidebar-more">•••</span>
-
                 </div>
 
             </aside>
-
 
             <!-- ================= PAGE CONTENT ================= -->
 
@@ -219,7 +225,6 @@
     else
     {
         <!-- Login/Register pages -->
-
         <main class="public-content">
 
             @if (TempData["SuccessMessage"] is string success)
@@ -229,11 +234,17 @@
                 </div>
             }
 
+            @if (TempData["ErrorMessage"] is string error)
+            {
+                <div class="alert error">
+                    @error
+                </div>
+            }
+
             @RenderBody()
 
         </main>
     }
-
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 

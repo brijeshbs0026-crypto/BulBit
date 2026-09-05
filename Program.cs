@@ -37,6 +37,9 @@ builder.Services.AddScoped<ICalendarService, CalendarService>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();
 
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -85,6 +88,22 @@ using (var scope = app.Services.CreateScope())
                     ALTER TABLE Users ADD [Role] NVARCHAR(50) NOT NULL CONSTRAINT DF_Users_Role DEFAULT 'Admin';
                 END
             END
+
+            IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Notifications')
+            BEGIN
+                CREATE TABLE [Notifications] (
+                    [Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+                    [Title] NVARCHAR(150) NOT NULL,
+                    [Message] NVARCHAR(500) NOT NULL,
+                    [Type] NVARCHAR(50) NOT NULL DEFAULT 'General',
+                    [TargetUserEmail] NVARCHAR(150) NULL,
+                    [TargetEmployeeId] INT NULL,
+                    [TargetRole] NVARCHAR(50) NULL,
+                    [Url] NVARCHAR(255) NULL,
+                    [IsRead] BIT NOT NULL DEFAULT 0,
+                    [CreatedAt] DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+                );
+            END
         ");
     }
     catch (Exception ex)
@@ -95,7 +114,7 @@ using (var scope = app.Services.CreateScope())
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 

@@ -6,8 +6,8 @@
     var hour = DateTime.Now.Hour;
 
     var greeting =
-        hour < 12 ? "Good morning" :
-        hour < 17 ? "Good afternoon" :
+        hour >= 5 && hour < 12 ? "Good morning" :
+        hour >= 12 && hour < 17 ? "Good afternoon" :
         "Good evening";
 }
 
@@ -18,11 +18,11 @@
     <div class="dashboard-header">
 
         <div>
-            <div class="dashboard-date">
+            <div class="dashboard-date" id="dashboardDate">
                 @DateTime.Now.ToString("dddd, MMMM dd, yyyy")
             </div>
 
-            <h1>
+            <h1 id="dashboardGreeting" data-username="@Model.UserName">
                 @greeting, @Model.UserName 👋
             </h1>
 
