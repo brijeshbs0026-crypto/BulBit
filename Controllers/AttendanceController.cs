@@ -1,4 +1,5 @@
-﻿using AuthMvcApp.Interfaces.Services;
+using AuthMvcApp.Helpers;
+using AuthMvcApp.Interfaces.Services;
 using AuthMvcApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -86,7 +87,7 @@ public class AttendanceController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var today = DateTime.Today;
+        var today = TimeHelper.Today;
 
         // Check if employee already checked in today
         var existing = await _attendanceService.GetByEmployeeAndDateAsync(
@@ -99,8 +100,8 @@ public class AttendanceController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        // Current check-in time
-        var checkInTime = DateTime.Now;
+        // Current check-in time (Indian Standard Time)
+        var checkInTime = TimeHelper.Now;
 
         // 9:15 AM is the grace period
         var lateTime = new TimeSpan(9, 15, 0);
@@ -123,12 +124,12 @@ public class AttendanceController : Controller
         if (status == "Late")
         {
             TempData["SuccessMessage"] =
-                $"Check-in successful. You are marked Late ({checkInTime:hh:mm tt}).";
+                $"Check-in successful. You are marked Late ({checkInTime:hh:mm tt} IST).";
         }
         else
         {
             TempData["SuccessMessage"] =
-                $"Check-in successful ({checkInTime:hh:mm tt}).";
+                $"Check-in successful ({checkInTime:hh:mm tt} IST).";
         }
 
         return RedirectToAction(nameof(Index));
@@ -166,7 +167,8 @@ public class AttendanceController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        attendance.CheckOut = DateTime.Now;
+        var checkOutTime = TimeHelper.Now;
+        attendance.CheckOut = checkOutTime;
 
         if (attendance.CheckIn.HasValue)
         {
@@ -176,7 +178,7 @@ public class AttendanceController : Controller
 
         await _attendanceService.UpdateAsync(attendance);
 
-        TempData["SuccessMessage"] = "Checked out successfully.";
+        TempData["SuccessMessage"] = $"Checked out successfully ({checkOutTime:hh:mm tt} IST).";
 
         return RedirectToAction(nameof(Index));
     }
