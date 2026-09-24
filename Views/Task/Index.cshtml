@@ -33,21 +33,21 @@
     <!-- FILTERS -->
     <div class="task-filters">
 
-        <button type="button" class="task-filter active">
+        <button type="button" class="task-filter active" onclick="filterTaskGrid('All', this)">
             All <span>@Model.Count</span>
         </button>
 
-        <button type="button" class="task-filter">
+        <button type="button" class="task-filter" onclick="filterTaskGrid('Pending', this, true)">
             Pending
             <span>@Model.Count(x => x.Status == "Pending")</span>
         </button>
 
-        <button type="button" class="task-filter">
+        <button type="button" class="task-filter" onclick="filterTaskGrid('In Progress', this, true)">
             In Progress
             <span>@Model.Count(x => x.Status == "In Progress")</span>
         </button>
 
-        <button type="button" class="task-filter">
+        <button type="button" class="task-filter" onclick="filterTaskGrid('Completed', this, true)">
             Completed
             <span>@Model.Count(x => x.Status == "Completed")</span>
         </button>
@@ -56,7 +56,7 @@
 
 
     <!-- TASK CARDS -->
-    <div class="task-grid">
+    <div class="task-grid" id="taskGridContainer">
 
         @foreach (var task in Model)
         {
@@ -74,7 +74,7 @@
             ? "Pending"
             : task.Status;
 
-            <div class="task-card">
+            <div class="task-card" data-status="@status">
 
                 <!-- TOP -->
                 <div class="task-card-top">
@@ -390,41 +390,229 @@
 }
 
 
+<!-- ================================================= -->
+<!-- STATUS FILTER TASKS MODAL -->
+<!-- ================================================= -->
+<div id="statusTasksModal" class="task-modal">
+
+    <!-- BACKDROP -->
+    <div class="task-modal-overlay" onclick="closeStatusTasksModal()"></div>
+
+    <!-- MODAL CONTENT -->
+    <div class="task-modal-content status-modal-dialog">
+
+        <button type="button"
+                class="modal-close"
+                onclick="closeStatusTasksModal()">
+            ×
+        </button>
+
+        <div class="status-modal-header">
+            <div class="eyebrow" id="statusModalEyebrow">FILTERED TASKS</div>
+            <div class="status-modal-title-row">
+                <h2 id="statusModalTitle">Pending Tasks</h2>
+                <span id="statusModalBadge" class="status-count-pill">0 Tasks</span>
+            </div>
+            <p id="statusModalSubtitle">Showing tasks filtered by status.</p>
+        </div>
+
+        <div id="statusModalBody" class="status-modal-body">
+            <!-- Dynamic task items populated by JavaScript -->
+        </div>
+
+        <div class="status-modal-footer">
+            <button type="button"
+                    class="btn secondary"
+                    onclick="closeStatusTasksModal()">
+                Close
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+
 @section Scripts {
 
     <script>
+        // Serialized tasks for instant modal rendering
+        const allTasks = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(t => new {
+            id = t.Id,
+            title = t.Title ?? "",
+            description = string.IsNullOrWhiteSpace(t.Description) ? "No description provided." : t.Description,
+            status = string.IsNullOrWhiteSpace(t.Status) ? "Pending" : t.Status,
+            priority = string.IsNullOrWhiteSpace(t.Priority) ? "Medium" : t.Priority,
+            employeeName = t.Employee?.FullName ?? "Unknown",
+            initial = !string.IsNullOrWhiteSpace(t.Employee?.FullName) ? t.Employee.FullName.Substring(0, 1).ToUpper() : "U",
+            dueDate = t.DueDate.HasValue ? t.DueDate.Value.ToString("MMM dd, yyyy") : "",
+            progress = t.Progress
+        })));
 
-        function openTaskModal() {
+        // Get CSRF Token
+        function getCsrfToken() {
+            const tokenInput = document.querySelector("#csrfForm input[name='__RequestVerificationToken']") ||
+                               document.querySelector("input[name='__RequestVerificationToken']");
+            return tokenInput ? tokenInput.value : "";
+        }
 
-            const modal = document.getElementById("taskModal");
+        // ==========================================
+        // 1. FILTER TASK GRID & OPTIONALLY OPEN MODAL
+        // ==========================================
+        function filterTaskGrid(status, buttonEl, openModal = false) {
+            // Update active filter button
+            document.querySelectorAll(".task-filters .task-filter").forEach(btn => {
+                btn.classList.remove("active");
+            });
+            if (buttonEl) {
+                buttonEl.classList.add("active");
+            }
+
+            // Filter on-page cards
+            const cards = document.querySelectorAll("#taskGridContainer .task-card");
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardStatus = (card.getAttribute("data-status") || "").trim().toLowerCase();
+                const targetStatus = status.trim().toLowerCase();
+
+                if (targetStatus === "all" || cardStatus === targetStatus) {
+                    card.style.display = "";
+                    visibleCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            // If user clicked Pending, Completed or In Progress, also open the modal
+            if (openModal && status !== "All") {
+                openStatusTasksModal(status);
+            }
+        }
+
+        // ==========================================
+        // 2. OPEN STATUS TASKS MODAL
+        // ==========================================
+        function openStatusTasksModal(status) {
+            const modal = document.getElementById("statusTasksModal");
+            const titleEl = document.getElementById("statusModalTitle");
+            const badgeEl = document.getElementById("statusModalBadge");
+            const subtitleEl = document.getElementById("statusModalSubtitle");
+            const bodyEl = document.getElementById("statusModalBody");
+
+            if (!modal || !bodyEl) return;
+
+            const targetStatus = status.trim().toLowerCase();
+            const filteredTasks = allTasks.filter(t => t.status.trim().toLowerCase() === targetStatus);
+
+            titleEl.textContent = `${status} Tasks`;
+            badgeEl.textContent = `${filteredTasks.length} ${filteredTasks.length === 1 ? 'Task' : 'Tasks'}`;
+            subtitleEl.textContent = `Showing all tasks with status "${status}".`;
+
+            if (filteredTasks.length === 0) {
+                bodyEl.innerHTML = `
+                    <div class="empty-status-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No ${status} Tasks</h3>
+                        <p>There are currently no tasks marked as "${status}".</p>
+                    </div>
+                `;
+            } else {
+                let html = '<div class="status-modal-grid">';
+                const csrf = getCsrfToken();
+
+                filteredTasks.forEach(task => {
+                    const priorityClass = (task.priority || 'medium').toLowerCase();
+                    const isCompleted = task.status.toLowerCase() === 'completed';
+
+                    html += `
+                        <div class="status-task-item">
+                            <div class="status-task-top">
+                                <span class="priority ${priorityClass}">${task.priority}</span>
+                                ${task.dueDate ? `<span class="status-due-date">📅 Due ${task.dueDate}</span>` : ''}
+                            </div>
+
+                            <h3 class="status-task-title">${escapeHtml(task.title)}</h3>
+                            <p class="status-task-desc">${escapeHtml(task.description)}</p>
+
+                            <div class="status-task-assignee">
+                                <div class="employee-avatar">${task.initial}</div>
+                                <span>${escapeHtml(task.employeeName)}</span>
+                            </div>
+
+                            <div class="status-progress-wrap">
+                                <div class="status-progress-bar">
+                                    <div class="status-progress-fill" style="width: ${task.progress}%;"></div>
+                                </div>
+                                <span class="status-progress-text">${task.progress}%</span>
+                            </div>
+
+                            <div class="status-task-actions">
+                                ${isCompleted ? `
+                                    <span class="status completed">✓ Completed</span>
+                                ` : `
+                                    <form action="/Task/Complete" method="post" style="margin:0;">
+                                        <input type="hidden" name="__RequestVerificationToken" value="${csrf}" />
+                                        <input type="hidden" name="id" value="${task.id}" />
+                                        <button type="submit" class="status complete-button" onclick="return confirm('Mark this task as completed?');">
+                                            ✓ Mark Completed
+                                        </button>
+                                    </form>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                bodyEl.innerHTML = html;
+            }
 
             modal.classList.add("show");
-
             document.body.style.overflow = "hidden";
         }
 
-
-        function closeTaskModal() {
-
-            const modal = document.getElementById("taskModal");
-
-            modal.classList.remove("show");
-
+        function closeStatusTasksModal() {
+            const modal = document.getElementById("statusTasksModal");
+            if (modal) {
+                modal.classList.remove("show");
+            }
             document.body.style.overflow = "";
         }
 
+        function escapeHtml(text) {
+            if (!text) return "";
+            const div = document.createElement("div");
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
-        // Close modal using ESC
-        document.addEventListener("keydown", function (event) {
-
-            if (event.key === "Escape") {
-
-                closeTaskModal();
-
+        // ==========================================
+        // 3. ASSIGN TASK MODAL (ADMIN)
+        // ==========================================
+        function openTaskModal() {
+            const modal = document.getElementById("taskModal");
+            if (modal) {
+                modal.classList.add("show");
+                document.body.style.overflow = "hidden";
             }
+        }
 
+        function closeTaskModal() {
+            const modal = document.getElementById("taskModal");
+            if (modal) {
+                modal.classList.remove("show");
+                document.body.style.overflow = "";
+            }
+        }
+
+        // Close any open modal using ESC
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeTaskModal();
+                closeStatusTasksModal();
+            }
         });
-
     </script>
 
 }

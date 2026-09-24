@@ -1,4 +1,4 @@
-﻿using AuthMvcApp.Data;
+using AuthMvcApp.Data;
 using AuthMvcApp.Interfaces.Repositories;
 using AuthMvcApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -33,12 +33,22 @@ public class AttendanceRepository : IAttendanceRepository
 
     public async Task<Attendance?> GetTodayAsync(int employeeId)
     {
-        var today = DateTime.Today;
+        var today = AuthMvcApp.Helpers.TimeHelper.Today;
 
-        return await _context.Attendances
+        var record = await _context.Attendances
             .FirstOrDefaultAsync(x =>
                 x.EmployeeId == employeeId &&
                 x.AttendanceDate.Date == today);
+
+        if (record == null)
+        {
+            record = await _context.Attendances
+                .Where(x => x.EmployeeId == employeeId && x.CheckOut == null)
+                .OrderByDescending(x => x.AttendanceDate)
+                .FirstOrDefaultAsync();
+        }
+
+        return record;
     }
 
     public async Task AddAsync(Attendance attendance)
