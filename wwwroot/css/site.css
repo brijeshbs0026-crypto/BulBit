@@ -5344,3 +5344,315 @@ button.primary:active,
     color: #34d399 !important;
     border-color: rgba(52, 211, 153, 0.3) !important;
 }
+
+
+/* ==========================================================================
+   COMPREHENSIVE MOBILE RESPONSIVENESS (PHONES & TABLETS)
+   ========================================================================== */
+
+/* --- Universal Touch & Overflow Fixes --- */
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    min-width: 600px;
+}
+
+/* --- Breakpoint: Tablet & Small Screens (<= 992px) --- */
+@media (max-width: 992px) {
+    .attendance-top {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    
+    .checkin-card {
+        grid-column: span 2 !important;
+    }
+    
+    .attendance-summary {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* --- Breakpoint: Standard Mobile Phones (<= 768px) --- */
+@media (max-width: 768px) {
+    /* Layout & Main Spacing */
+    .main-content {
+        padding: 16px 12px !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .top-navbar {
+        padding: 0 14px !important;
+        height: 62px !important;
+    }
+
+    .mobile-menu-btn {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Attendance Page Mobile */
+    .attendance-page {
+        padding: 0 !important;
+    }
+
+    .attendance-header {
+        margin-bottom: 16px !important;
+    }
+
+    .attendance-header h1 {
+        font-size: 24px !important;
+    }
+
+    .attendance-top {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .checkin-card {
+        grid-column: span 1 !important;
+        padding: 18px 16px !important;
+        min-height: auto !important;
+    }
+
+    .today-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .checkin-date-text {
+        font-size: 15px !important;
+    }
+
+    .checkin-card h2 {
+        font-size: 19px !important;
+        margin: 14px 0 6px !important;
+    }
+
+    .checkin-card p {
+        font-size: 13px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .checkin-btn,
+    .checkout-btn {
+        width: 100% !important;
+        height: 48px !important;
+        padding: 12px 20px !important;
+        font-size: 15px !important;
+        justify-content: center !important;
+    }
+
+    .completed-attendance {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 16px !important;
+    }
+
+    .attendance-stat {
+        min-height: 120px !important;
+        padding: 16px !important;
+    }
+
+    .attendance-summary {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .attendance-summary > div {
+        padding: 14px !important;
+    }
+
+    .attendance-table-card {
+        padding: 16px 12px !important;
+    }
+
+    /* Task Page Mobile */
+    .task-page {
+        padding: 0 !important;
+    }
+
+    .task-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 14px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .task-header button,
+    .task-header .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        height: 44px !important;
+    }
+
+    .task-filters {
+        display: flex !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scroll-snap-type: x mandatory !important;
+        gap: 8px !important;
+        padding-bottom: 8px !important;
+        margin-bottom: 16px !important;
+        scrollbar-width: none;
+    }
+
+    .task-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .task-filters .task-filter {
+        flex-shrink: 0 !important;
+        scroll-snap-align: start !important;
+        padding: 8px 14px !important;
+        font-size: 13px !important;
+    }
+
+    .task-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+
+    .task-card {
+        padding: 18px 16px !important;
+    }
+
+    /* Task Modals on Mobile */
+    .task-modal-content,
+    .status-modal-dialog {
+        width: 94% !important;
+        max-width: 94% !important;
+        padding: 18px 14px !important;
+        max-height: 90vh !important;
+        margin: 10px auto !important;
+        border-radius: 14px !important;
+    }
+
+    .status-modal-title-row {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .status-modal-title-row h2 {
+        font-size: 18px !important;
+    }
+
+    .status-modal-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .status-modal-body {
+        max-height: calc(90vh - 160px) !important;
+    }
+
+    .status-task-item {
+        padding: 14px !important;
+    }
+
+    /* Pagination on Mobile (Stack cleanly) */
+    .grid-pagination,
+    .modal-pagination {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        gap: 12px !important;
+        padding: 12px 10px !important;
+    }
+
+    .pagination-controls {
+        width: 100% !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+
+    .page-btn {
+        height: 34px !important;
+        padding: 0 12px !important;
+        font-size: 12.5px !important;
+    }
+
+    .page-num {
+        min-width: 32px !important;
+        height: 32px !important;
+        font-size: 12px !important;
+    }
+
+    /* Login Page Mobile */
+    .auth-v2-page {
+        padding: 12px !important;
+    }
+
+    .auth-v2-wrapper {
+        grid-template-columns: 1fr !important;
+        max-width: 440px !important;
+        border-radius: 14px !important;
+    }
+
+    .auth-v2-left {
+        display: none !important;
+    }
+
+    .auth-v2-right {
+        padding: 30px 20px !important;
+    }
+
+    .auth-v2-form-header h1 {
+        font-size: 23px !important;
+    }
+}
+
+/* --- Breakpoint: Extra Small Phones (<= 480px) --- */
+@media (max-width: 480px) {
+    .top-navbar {
+        padding: 0 10px !important;
+        height: 58px !important;
+    }
+
+    .brand-icon {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 15px !important;
+        border-radius: 8px !important;
+    }
+
+    .brand-text {
+        font-size: 17px !important;
+    }
+
+    .theme-toggle-btn,
+    .notification-btn {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 8px !important;
+    }
+
+    .notification-dropdown {
+        width: calc(100vw - 20px) !important;
+        right: -10px !important;
+    }
+
+    .attendance-summary {
+        grid-template-columns: 1fr !important;
+    }
+
+    .ist-live-indicator {
+        font-size: 11px !important;
+        padding: 3px 8px !important;
+    }
+}
