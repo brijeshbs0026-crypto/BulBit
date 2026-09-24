@@ -3762,6 +3762,13 @@ a {
     }
 
     .notification-dropdown {
+        width: calc(100vw - 28px);
+        right: -14px;
+    }
+}
+
+/* =====================================================
+   CLIENT FORM
    ===================================================== */
 
 .client-form-page {
@@ -4945,4 +4952,395 @@ a {
 [data-theme="dark"] .task-filters .task-filter.active span {
     background: #6366f1;
     color: #ffffff;
+}
+
+
+/* --- 5. PAGINATION STYLING (MODAL & GRID) --- */
+.modal-pagination,
+.grid-pagination {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-top: 22px !important;
+    padding: 12px 18px !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    background: var(--card-bg) !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+}
+
+.pagination-info {
+    font-size: 13px !important;
+    color: var(--text-muted) !important;
+    font-weight: 550 !important;
+    letter-spacing: 0.01em !important;
+}
+
+.pagination-controls {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.page-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 36px !important;
+    padding: 0 16px !important;
+    border: 1.5px solid var(--border) !important;
+    background: var(--card-bg) !important;
+    color: var(--text) !important;
+    border-radius: 9px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    outline: none !important;
+    user-select: none !important;
+}
+
+.page-btn:hover:not(:disabled) {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    background: var(--hover-bg) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15) !important;
+}
+
+.page-btn:active:not(:disabled) {
+    transform: translateY(0) !important;
+}
+
+.page-btn:disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+    background: var(--hover-bg) !important;
+    border-color: var(--border) !important;
+    color: var(--muted) !important;
+}
+
+.page-numbers {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.page-num {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    padding: 0 8px !important;
+    border-radius: 9px !important;
+    border: 1.5px solid var(--border) !important;
+    background: var(--card-bg) !important;
+    color: var(--text) !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    outline: none !important;
+    user-select: none !important;
+}
+
+.page-num:hover:not(.active) {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    background: var(--hover-bg) !important;
+    transform: translateY(-1px) !important;
+}
+
+.page-num.active {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+    border-color: #4f46e5 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35) !important;
+    cursor: default !important;
+}
+
+[data-theme="dark"] .modal-pagination,
+[data-theme="dark"] .grid-pagination {
+    background: #141c2e !important;
+    border-color: #26334d !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+[data-theme="dark"] .page-btn,
+[data-theme="dark"] .page-num {
+    background: #0f172a !important;
+    border-color: #26334d !important;
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] .page-btn:hover:not(:disabled),
+[data-theme="dark"] .page-num:hover:not(.active) {
+    border-color: #818cf8 !important;
+    color: #818cf8 !important;
+    background: #19243b !important;
+}
+
+[data-theme="dark"] .page-num.active {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%) !important;
+    border-color: #818cf8 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.5) !important;
+}
+
+/* ==========================================================================
+   GLOBAL PREMIUM SAAS UI UPGRADE (SHARP, CLEAN & MODERN)
+   ========================================================================== */
+
+/* --- Custom Sleek Scrollbars --- */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+}
+
+/* --- Sharp Typography & Headings --- */
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.025em;
+    font-weight: 700;
+}
+
+.eyebrow {
+    font-size: 11px !important;
+    font-weight: 750 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase;
+    color: var(--primary) !important;
+    margin-bottom: 4px !important;
+}
+
+/* --- Elevated Cards & Panels --- */
+.card,
+.stat-card,
+.attendance-stat,
+.attendance-table-card,
+.task-card,
+.client-card,
+.product-card {
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.03) !important;
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.22s ease !important;
+}
+
+.task-card:hover,
+.attendance-stat:hover,
+.client-card:hover,
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04) !important;
+    border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+/* --- Modern Data Tables --- */
+table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+table thead th {
+    background: var(--hover-bg) !important;
+    color: var(--text-muted) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    padding: 13px 18px !important;
+    border-bottom: 1.5px solid var(--border) !important;
+    border-top: none !important;
+}
+
+table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+table tbody tr:hover td {
+    background-color: var(--hover-bg) !important;
+}
+
+table tbody td {
+    padding: 14px 18px !important;
+    border-bottom: 1px solid var(--border) !important;
+    font-size: 13.5px !important;
+    color: var(--text) !important;
+    vertical-align: middle;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-bg);
+}
+
+/* --- Sharp Inputs & Form Controls --- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    border: 1.5px solid var(--border) !important;
+    border-radius: 9px !important;
+    padding: 10px 14px !important;
+    font-size: 13.5px !important;
+    transition: all 0.2s ease !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.16) !important;
+    outline: none !important;
+}
+
+/* --- Modern Buttons --- */
+.btn,
+button.primary,
+.btn-primary {
+    border-radius: 9px !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    letter-spacing: 0.01em !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn.primary:hover,
+button.primary:hover,
+.btn-primary:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35) !important;
+}
+
+.btn.primary:active,
+button.primary:active,
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* --- Priority & Status Badges --- */
+.priority {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px !important;
+    border-radius: 9999px !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+}
+
+.priority.high {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #ef4444 !important;
+    border-color: rgba(239, 68, 68, 0.25) !important;
+}
+
+.priority.medium {
+    background: rgba(245, 158, 11, 0.12) !important;
+    color: #d97706 !important;
+    border-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+.priority.low {
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #059669 !important;
+    border-color: rgba(16, 185, 129, 0.25) !important;
+}
+
+.attendance-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* --- Dark Theme Overrides for Refinements --- */
+[data-theme="dark"] .table-wrap {
+    border-color: #26334d;
+    background: #141c2e;
+}
+
+[data-theme="dark"] table thead th {
+    background: #0f172a !important;
+    border-bottom-color: #26334d !important;
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] table tbody td {
+    border-bottom-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] table tbody tr:hover td {
+    background-color: #19243b !important;
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .attendance-stat,
+[data-theme="dark"] .attendance-table-card,
+[data-theme="dark"] .task-card,
+[data-theme="dark"] .client-card,
+[data-theme="dark"] .product-card {
+    background: #141c2e !important;
+    border-color: #26334d !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+}
+
+[data-theme="dark"] .task-card:hover,
+[data-theme="dark"] .attendance-stat:hover,
+[data-theme="dark"] .client-card:hover,
+[data-theme="dark"] .product-card:hover {
+    border-color: #818cf8 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="dark"] .priority.high {
+    background: rgba(248, 113, 113, 0.16) !important;
+    color: #f87171 !important;
+    border-color: rgba(248, 113, 113, 0.3) !important;
+}
+
+[data-theme="dark"] .priority.medium {
+    background: rgba(251, 191, 36, 0.16) !important;
+    color: #fbbf24 !important;
+    border-color: rgba(251, 191, 36, 0.3) !important;
+}
+
+[data-theme="dark"] .priority.low {
+    background: rgba(52, 211, 153, 0.16) !important;
+    color: #34d399 !important;
+    border-color: rgba(52, 211, 153, 0.3) !important;
 }

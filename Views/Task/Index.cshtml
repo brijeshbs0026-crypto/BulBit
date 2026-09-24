@@ -219,6 +219,16 @@
 
     </div>
 
+    <!-- MAIN GRID PAGINATION -->
+    <div class="grid-pagination" id="gridPagination" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 24px; padding: 14px 20px; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); box-shadow: var(--shadow-sm);">
+        <span class="pagination-info" id="gridPaginationInfo" style="font-size: 13px; font-weight: 500; color: var(--text-muted);">Showing 1-6 of @Model.Count tasks</span>
+        <div class="pagination-controls" style="display: inline-flex !important; align-items: center !important; flex-direction: row !important; gap: 8px !important;">
+            <button type="button" class="page-btn" id="gridPrevBtn" onclick="changeGridPage(-1)">‹ Prev</button>
+            <div class="page-numbers" id="gridPageNumbers" style="display: inline-flex !important; align-items: center !important; flex-direction: row !important; gap: 6px !important;"></div>
+            <button type="button" class="page-btn" id="gridNextBtn" onclick="changeGridPage(1)">Next ›</button>
+        </div>
+    </div>
+
 </div>
 
 
@@ -420,6 +430,16 @@
             <!-- Dynamic task items populated by JavaScript -->
         </div>
 
+        <!-- MODAL PAGINATION -->
+        <div class="modal-pagination" id="statusModalPagination" style="display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);">
+            <span class="pagination-info" id="statusPaginationInfo" style="font-size: 13px; font-weight: 500; color: var(--text-muted);">Showing 1-4 of 0 tasks</span>
+            <div class="pagination-controls" style="display: inline-flex !important; align-items: center !important; flex-direction: row !important; gap: 8px !important;">
+                <button type="button" class="page-btn" id="modalPrevBtn" onclick="changeStatusPage(-1)">‹ Prev</button>
+                <div class="page-numbers" id="modalPageNumbers" style="display: inline-flex !important; align-items: center !important; flex-direction: row !important; gap: 6px !important;"></div>
+                <button type="button" class="page-btn" id="modalNextBtn" onclick="changeStatusPage(1)">Next ›</button>
+            </div>
+        </div>
+
         <div class="status-modal-footer">
             <button type="button"
                     class="btn secondary"
@@ -457,9 +477,91 @@
         }
 
         // ==========================================
-        // 1. FILTER TASK GRID & OPTIONALLY OPEN MODAL
+        // 1. MAIN GRID FILTERING & PAGINATION
         // ==========================================
+        let currentGridFilter = "all";
+        let gridCurrentPage = 1;
+        const gridPageSize = 6;
+
+        function getFilteredGridCards() {
+            const cards = Array.from(document.querySelectorAll("#taskGridContainer .task-card"));
+            const targetStatus = currentGridFilter.trim().toLowerCase();
+            return cards.filter(card => {
+                const cardStatus = (card.getAttribute("data-status") || "").trim().toLowerCase();
+                return targetStatus === "all" || cardStatus === targetStatus;
+            });
+        }
+
+        function renderGridPage() {
+            const allCards = Array.from(document.querySelectorAll("#taskGridContainer .task-card"));
+            const filteredCards = getFilteredGridCards();
+            const totalItems = filteredCards.length;
+            const totalPages = Math.ceil(totalItems / gridPageSize) || 1;
+
+            if (gridCurrentPage > totalPages) gridCurrentPage = totalPages;
+            if (gridCurrentPage < 1) gridCurrentPage = 1;
+
+            const startIndex = (gridCurrentPage - 1) * gridPageSize;
+            const endIndex = Math.min(startIndex + gridPageSize, totalItems);
+
+            // Hide all cards first
+            allCards.forEach(c => c.style.display = "none");
+
+            // Show current page cards
+            for (let i = startIndex; i < endIndex; i++) {
+                if (filteredCards[i]) {
+                    filteredCards[i].style.display = "";
+                }
+            }
+
+            // Update Pagination UI
+            const paginationEl = document.getElementById("gridPagination");
+            const infoEl = document.getElementById("gridPaginationInfo");
+            const prevBtn = document.getElementById("gridPrevBtn");
+            const nextBtn = document.getElementById("gridNextBtn");
+            const pageNumbersEl = document.getElementById("gridPageNumbers");
+
+            if (!paginationEl) return;
+
+            if (totalItems <= gridPageSize) {
+                if (totalItems === 0) {
+                    infoEl.textContent = "No tasks found";
+                } else {
+                    infoEl.textContent = `Showing all ${totalItems} tasks`;
+                }
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                pageNumbersEl.innerHTML = totalItems > 0 ? `<button type="button" class="page-num active">1</button>` : "";
+                return;
+            }
+
+            infoEl.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalItems} tasks`;
+            prevBtn.disabled = gridCurrentPage === 1;
+            nextBtn.disabled = gridCurrentPage === totalPages;
+
+            let pagesHtml = "";
+            for (let p = 1; p <= totalPages; p++) {
+                pagesHtml += `<button type="button" class="page-num ${p === gridCurrentPage ? 'active' : ''}" onclick="goToGridPage(${p})">${p}</button>`;
+            }
+            pageNumbersEl.innerHTML = pagesHtml;
+        }
+
+        function changeGridPage(delta) {
+            gridCurrentPage += delta;
+            renderGridPage();
+            document.getElementById("taskGridContainer")?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function goToGridPage(p) {
+            gridCurrentPage = p;
+            renderGridPage();
+            document.getElementById("taskGridContainer")?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
         function filterTaskGrid(status, buttonEl, openModal = false) {
+            currentGridFilter = status;
+            gridCurrentPage = 1;
+
             // Update active filter button
             document.querySelectorAll(".task-filters .task-filter").forEach(btn => {
                 btn.classList.remove("active");
@@ -468,21 +570,7 @@
                 buttonEl.classList.add("active");
             }
 
-            // Filter on-page cards
-            const cards = document.querySelectorAll("#taskGridContainer .task-card");
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const cardStatus = (card.getAttribute("data-status") || "").trim().toLowerCase();
-                const targetStatus = status.trim().toLowerCase();
-
-                if (targetStatus === "all" || cardStatus === targetStatus) {
-                    card.style.display = "";
-                    visibleCount++;
-                } else {
-                    card.style.display = "none";
-                }
-            });
+            renderGridPage();
 
             // If user clicked Pending, Completed or In Progress, also open the modal
             if (openModal && status !== "All") {
@@ -491,85 +579,143 @@
         }
 
         // ==========================================
-        // 2. OPEN STATUS TASKS MODAL
+        // 2. STATUS TASKS MODAL & PAGINATION
         // ==========================================
+        let currentModalTasks = [];
+        let modalCurrentPage = 1;
+        const modalPageSize = 4;
+        let currentModalStatus = "";
+
         function openStatusTasksModal(status) {
+            currentModalStatus = status;
+            modalCurrentPage = 1;
+
+            const targetStatus = status.trim().toLowerCase();
+            currentModalTasks = allTasks.filter(t => t.status.trim().toLowerCase() === targetStatus);
+
             const modal = document.getElementById("statusTasksModal");
             const titleEl = document.getElementById("statusModalTitle");
             const badgeEl = document.getElementById("statusModalBadge");
             const subtitleEl = document.getElementById("statusModalSubtitle");
-            const bodyEl = document.getElementById("statusModalBody");
 
-            if (!modal || !bodyEl) return;
-
-            const targetStatus = status.trim().toLowerCase();
-            const filteredTasks = allTasks.filter(t => t.status.trim().toLowerCase() === targetStatus);
+            if (!modal) return;
 
             titleEl.textContent = `${status} Tasks`;
-            badgeEl.textContent = `${filteredTasks.length} ${filteredTasks.length === 1 ? 'Task' : 'Tasks'}`;
+            badgeEl.textContent = `${currentModalTasks.length} ${currentModalTasks.length === 1 ? 'Task' : 'Tasks'}`;
             subtitleEl.textContent = `Showing all tasks with status "${status}".`;
 
-            if (filteredTasks.length === 0) {
-                bodyEl.innerHTML = `
-                    <div class="empty-status-state">
-                        <div class="empty-state-icon">📋</div>
-                        <h3>No ${status} Tasks</h3>
-                        <p>There are currently no tasks marked as "${status}".</p>
-                    </div>
-                `;
-            } else {
-                let html = '<div class="status-modal-grid">';
-                const csrf = getCsrfToken();
-
-                filteredTasks.forEach(task => {
-                    const priorityClass = (task.priority || 'medium').toLowerCase();
-                    const isCompleted = task.status.toLowerCase() === 'completed';
-
-                    html += `
-                        <div class="status-task-item">
-                            <div class="status-task-top">
-                                <span class="priority ${priorityClass}">${task.priority}</span>
-                                ${task.dueDate ? `<span class="status-due-date">📅 Due ${task.dueDate}</span>` : ''}
-                            </div>
-
-                            <h3 class="status-task-title">${escapeHtml(task.title)}</h3>
-                            <p class="status-task-desc">${escapeHtml(task.description)}</p>
-
-                            <div class="status-task-assignee">
-                                <div class="employee-avatar">${task.initial}</div>
-                                <span>${escapeHtml(task.employeeName)}</span>
-                            </div>
-
-                            <div class="status-progress-wrap">
-                                <div class="status-progress-bar">
-                                    <div class="status-progress-fill" style="width: ${task.progress}%;"></div>
-                                </div>
-                                <span class="status-progress-text">${task.progress}%</span>
-                            </div>
-
-                            <div class="status-task-actions">
-                                ${isCompleted ? `
-                                    <span class="status completed">✓ Completed</span>
-                                ` : `
-                                    <form action="/Task/Complete" method="post" style="margin:0;">
-                                        <input type="hidden" name="__RequestVerificationToken" value="${csrf}" />
-                                        <input type="hidden" name="id" value="${task.id}" />
-                                        <button type="submit" class="status complete-button" onclick="return confirm('Mark this task as completed?');">
-                                            ✓ Mark Completed
-                                        </button>
-                                    </form>
-                                `}
-                            </div>
-                        </div>
-                    `;
-                });
-
-                html += '</div>';
-                bodyEl.innerHTML = html;
-            }
+            renderStatusModalPage();
 
             modal.classList.add("show");
             document.body.style.overflow = "hidden";
+        }
+
+        function renderStatusModalPage() {
+            const bodyEl = document.getElementById("statusModalBody");
+            const paginationEl = document.getElementById("statusModalPagination");
+            const infoEl = document.getElementById("statusPaginationInfo");
+            const prevBtn = document.getElementById("modalPrevBtn");
+            const nextBtn = document.getElementById("modalNextBtn");
+            const pageNumbersEl = document.getElementById("modalPageNumbers");
+
+            if (!bodyEl) return;
+
+            if (currentModalTasks.length === 0) {
+                bodyEl.innerHTML = `
+                    <div class="empty-status-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No ${currentModalStatus} Tasks</h3>
+                        <p>There are currently no tasks marked as "${currentModalStatus}".</p>
+                    </div>
+                `;
+                if (paginationEl) paginationEl.style.display = "none";
+                return;
+            }
+
+            const totalItems = currentModalTasks.length;
+            const totalPages = Math.ceil(totalItems / modalPageSize) || 1;
+
+            if (modalCurrentPage > totalPages) modalCurrentPage = totalPages;
+            if (modalCurrentPage < 1) modalCurrentPage = 1;
+
+            const startIndex = (modalCurrentPage - 1) * modalPageSize;
+            const endIndex = Math.min(startIndex + modalPageSize, totalItems);
+            const pageItems = currentModalTasks.slice(startIndex, endIndex);
+
+            let html = '<div class="status-modal-grid">';
+            const csrf = getCsrfToken();
+
+            pageItems.forEach(task => {
+                const priorityClass = (task.priority || 'medium').toLowerCase();
+                const isCompleted = task.status.toLowerCase() === 'completed';
+
+                html += `
+                    <div class="status-task-item">
+                        <div class="status-task-top">
+                            <span class="priority ${priorityClass}">${escapeHtml(task.priority)}</span>
+                            ${task.dueDate ? `<span class="status-due-date">📅 Due ${escapeHtml(task.dueDate)}</span>` : ''}
+                        </div>
+
+                        <h3 class="status-task-title">${escapeHtml(task.title)}</h3>
+                        <p class="status-task-desc">${escapeHtml(task.description)}</p>
+
+                        <div class="status-task-assignee">
+                            <div class="employee-avatar">${task.initial}</div>
+                            <span>${escapeHtml(task.employeeName)}</span>
+                        </div>
+
+                        <div class="status-progress-wrap">
+                            <div class="status-progress-bar">
+                                <div class="status-progress-fill" style="width: ${task.progress}%;"></div>
+                            </div>
+                            <span class="status-progress-text">${task.progress}%</span>
+                        </div>
+
+                        <div class="status-task-actions">
+                            ${isCompleted ? `
+                                <span class="status completed">✓ Completed</span>
+                            ` : `
+                                <form action="/Task/Complete" method="post" style="margin:0;">
+                                    <input type="hidden" name="__RequestVerificationToken" value="${csrf}" />
+                                    <input type="hidden" name="id" value="${task.id}" />
+                                    <button type="submit" class="status complete-button" onclick="return confirm('Mark this task as completed?');">
+                                        ✓ Mark Completed
+                                    </button>
+                                </form>
+                            `}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            bodyEl.innerHTML = html;
+
+            // Render Pagination
+            if (paginationEl) {
+                paginationEl.style.display = totalItems > 0 ? "flex" : "none";
+                infoEl.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalItems} tasks`;
+                prevBtn.disabled = modalCurrentPage === 1;
+                nextBtn.disabled = modalCurrentPage === totalPages;
+
+                let pagesHtml = "";
+                for (let p = 1; p <= totalPages; p++) {
+                    pagesHtml += `<button type="button" class="page-num ${p === modalCurrentPage ? 'active' : ''}" onclick="goToStatusPage(${p})">${p}</button>`;
+                }
+                pageNumbersEl.innerHTML = pagesHtml;
+            }
+        }
+
+        function changeStatusPage(delta) {
+            modalCurrentPage += delta;
+            renderStatusModalPage();
+            document.getElementById("statusModalBody")?.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToStatusPage(p) {
+            modalCurrentPage = p;
+            renderStatusModalPage();
+            document.getElementById("statusModalBody")?.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function closeStatusTasksModal() {
@@ -612,6 +758,11 @@
                 closeTaskModal();
                 closeStatusTasksModal();
             }
+        });
+
+        // Initialize grid pagination on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            renderGridPage();
         });
     </script>
 
