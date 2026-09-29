@@ -4,67 +4,776 @@
     ViewData["Title"] = "Edit Employee";
 }
 
-<div class="form-page">
+<style>
+    /* =========================================================
+       EDIT EMPLOYEE
+       ========================================================= */
 
-    <div class="page-heading compact">
+    .employee-edit-page {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 28px 35px 45px;
+        box-sizing: border-box;
+    }
 
-        <div>
-            <div class="eyebrow">PEOPLE</div>
 
-            <h1>Edit Employee</h1>
+    /* =========================================================
+       PAGE HEADER
+       ========================================================= */
 
-            <p>Update employee information.</p>
+    .employee-edit-header {
+        margin-bottom: 22px;
+    }
+
+    .employee-edit-eyebrow {
+        margin-bottom: 7px;
+
+        color: #7052ed;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        letter-spacing: 1px;
+    }
+
+    .employee-edit-header h1 {
+        margin: 0 0 6px;
+
+        color: #172139;
+
+        font-family: 'Outfit', sans-serif;
+
+        font-size: 34px;
+        line-height: 1.15;
+
+        font-weight: 800;
+
+        letter-spacing: -1px;
+    }
+
+    .employee-edit-header p {
+        margin: 0;
+
+        color: #8995aa;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       CARD
+       ========================================================= */
+
+    .employee-edit-card {
+        width: 100%;
+
+        padding: 28px 30px 25px;
+
+        box-sizing: border-box;
+
+        background: #ffffff;
+
+        border: 1px solid #e6eaf1;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 12px 35px rgba(31, 42, 70, 0.07);
+    }
+
+
+    /* =========================================================
+       CARD HEADER
+       ========================================================= */
+
+    .employee-edit-card-header {
+        display: flex;
+        align-items: center;
+
+        gap: 13px;
+
+        padding-bottom: 19px;
+        margin-bottom: 22px;
+
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .employee-edit-icon-box {
+        width: 43px;
+        height: 43px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #7656f3,
+                #6045df
+            );
+
+        color: #ffffff;
+
+        box-shadow:
+            0 8px 18px rgba(105, 76, 230, 0.20);
+    }
+
+    .employee-edit-icon-box svg {
+        width: 21px;
+        height: 21px;
+
+        stroke: currentColor;
+    }
+
+    .employee-edit-card-title h2 {
+        margin: 0 0 3px;
+
+        color: #202c43;
+
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .employee-edit-card-title p {
+        margin: 0;
+
+        color: #98a2b4;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       ERROR
+       ========================================================= */
+
+    .employee-edit-error {
+        margin-bottom: 18px;
+
+        padding: 10px 12px;
+
+        border-radius: 9px;
+
+        background: #fff2f4;
+
+        border: 1px solid #ffd5dc;
+
+        color: #c84658;
+
+        font-size: 10px;
+    }
+
+    .employee-edit-error:empty {
+        display: none;
+    }
+
+
+    /* =========================================================
+       FORM GRID
+       ========================================================= */
+
+    .employee-edit-grid {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 17px 20px;
+    }
+
+
+    .employee-edit-field {
+        min-width: 0;
+    }
+
+    .employee-edit-field.full {
+        grid-column: 1 / -1;
+    }
+
+
+    /* =========================================================
+       LABEL
+       ========================================================= */
+
+    .employee-edit-field label {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: #27334a;
+
+        font-size: 11px;
+
+        font-weight: 750;
+    }
+
+
+    /* =========================================================
+       INPUT CONTAINER
+       ========================================================= */
+
+    .employee-edit-control {
+        position: relative;
+
+        width: 100%;
+    }
+
+
+    /* =========================================================
+       INPUT
+       ========================================================= */
+
+    .employee-edit-input {
+        width: 100%;
+        height: 44px;
+
+        display: block;
+
+        box-sizing: border-box;
+
+        padding: 0 14px;
+
+        border: 1px solid #dfe5ee;
+
+        border-radius: 10px;
+
+        outline: none;
+
+        background: #f9fbfd;
+
+        color: #182238;
+
+        font-family: 'Inter', sans-serif;
+
+        font-size: 12px;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .employee-edit-input:hover {
+        border-color: #cfd7e4;
+
+        background: #ffffff;
+    }
+
+    .employee-edit-input:focus {
+        border-color: #7052ed;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 4px rgba(112, 82, 237, 0.08);
+    }
+
+    .employee-edit-input::placeholder {
+        color: #a3adbc;
+    }
+
+
+    /* =========================================================
+       SELECT
+       ========================================================= */
+
+    .employee-edit-select {
+        width: 100%;
+        height: 44px;
+
+        display: block;
+
+        box-sizing: border-box;
+
+        padding: 0 38px 0 14px;
+
+        border: 1px solid #dfe5ee;
+
+        border-radius: 10px;
+
+        outline: none;
+
+        background-color: #f9fbfd;
+
+        color: #182238;
+
+        font-family: 'Inter', sans-serif;
+
+        font-size: 12px;
+
+        cursor: pointer;
+
+        appearance: none;
+        -webkit-appearance: none;
+
+        background-image:
+            linear-gradient(
+                45deg,
+                transparent 50%,
+                #7f8aa0 50%
+            ),
+            linear-gradient(
+                135deg,
+                #7f8aa0 50%,
+                transparent 50%
+            );
+
+        background-position:
+            calc(100% - 17px) 18px,
+            calc(100% - 12px) 18px;
+
+        background-size:
+            5px 5px,
+            5px 5px;
+
+        background-repeat: no-repeat;
+    }
+
+    .employee-edit-select:focus {
+        border-color: #7052ed;
+
+        background-color: #ffffff;
+
+        box-shadow:
+            0 0 0 4px rgba(112, 82, 237, 0.08);
+    }
+
+
+    /* =========================================================
+       VALIDATION
+       ========================================================= */
+
+    .employee-edit-validation {
+        display: block;
+
+        margin-top: 4px;
+
+        color: #d24d5a;
+
+        font-size: 9px;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+
+    .employee-edit-actions {
+        display: flex;
+
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 24px;
+
+        padding-top: 19px;
+
+        border-top: 1px solid #edf0f5;
+    }
+
+
+    .employee-edit-btn {
+        height: 42px;
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        padding: 0 18px;
+
+        box-sizing: border-box;
+
+        border-radius: 9px;
+
+        font-family: 'Inter', sans-serif;
+
+        font-size: 11px;
+
+        font-weight: 750;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .employee-edit-btn svg {
+        width: 15px;
+        height: 15px;
+
+        stroke: currentColor;
+    }
+
+
+    /* Cancel */
+
+    .employee-edit-cancel {
+        color: #66748b;
+
+        background: #ffffff;
+
+        border: 1px solid #dfe5ee;
+    }
+
+    .employee-edit-cancel:hover {
+        background: #f7f8fb;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* Save */
+
+    .employee-edit-save {
+        border: none;
+
+        color: #ffffff;
+
+        background:
+            linear-gradient(
+                135deg,
+                #7053ef,
+                #5d48e7
+            );
+
+        box-shadow:
+            0 8px 18px rgba(101, 73, 232, 0.22);
+    }
+
+    .employee-edit-save:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 12px 25px rgba(101, 73, 232, 0.28);
+    }
+
+
+    /* =========================================================
+       TABLET
+       ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .employee-edit-page {
+            padding: 25px 24px 40px;
+        }
+
+        .employee-edit-card {
+            padding: 25px 24px;
+        }
+
+        .employee-edit-header h1 {
+            font-size: 30px;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @@media (max-width: 680px) {
+
+        .employee-edit-page {
+            padding: 20px 15px 35px;
+        }
+
+        .employee-edit-card {
+            padding: 21px 18px;
+        }
+
+        .employee-edit-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .employee-edit-field.full {
+            grid-column: auto;
+        }
+
+        .employee-edit-header h1 {
+            font-size: 27px;
+        }
+
+        .employee-edit-actions {
+            justify-content: stretch;
+        }
+
+        .employee-edit-btn {
+            flex: 1;
+        }
+    }
+
+
+    /* =========================================================
+       SMALL MOBILE
+       ========================================================= */
+
+    @@media (max-width: 420px) {
+
+        .employee-edit-page {
+            padding: 15px 10px 30px;
+        }
+
+        .employee-edit-card {
+            padding: 18px 14px;
+        }
+
+        .employee-edit-header h1 {
+            font-size: 24px;
+        }
+
+        .employee-edit-actions {
+            flex-direction: column-reverse;
+        }
+
+        .employee-edit-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="employee-edit-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="employee-edit-header">
+
+        <div class="employee-edit-eyebrow">
+            PEOPLE
         </div>
+
+        <h1>Edit Employee</h1>
+
+        <p>
+            Update employee information.
+        </p>
 
     </div>
 
-    <div class="panel form-panel">
+
+    <!-- FORM CARD -->
+
+    <div class="employee-edit-card">
+
+        <div class="employee-edit-card-header">
+
+            <div class="employee-edit-icon-box">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="12"
+                            cy="7"
+                            r="4" />
+
+                    <path d="M4 21a8 8 0 0 1 16 0" />
+
+                </svg>
+
+            </div>
+
+            <div class="employee-edit-card-title">
+
+                <h2>Employee Information</h2>
+
+                <p>
+                    Update the employee details below.
+                </p>
+
+            </div>
+
+        </div>
+
 
         <form asp-action="Edit" method="post">
 
             @Html.AntiForgeryToken()
 
             <input type="hidden" asp-for="Id" />
+
             <input type="hidden" asp-for="JoinedDate" />
 
+
             <div asp-validation-summary="ModelOnly"
-                 class="alert error">
+                 class="employee-edit-error">
             </div>
 
-            <label asp-for="FullName"></label>
-            <input asp-for="FullName" class="input" />
-            <span asp-validation-for="FullName"
-                  class="field-error"></span>
 
-            <label asp-for="Email"></label>
-            <input asp-for="Email" class="input" />
-            <span asp-validation-for="Email"
-                  class="field-error"></span>
+            <div class="employee-edit-grid">
 
-            <label asp-for="Department"></label>
-            <input asp-for="Department" class="input" />
+                <!-- FULL NAME -->
 
-            <label asp-for="Designation"></label>
-            <input asp-for="Designation" class="input" />
+                <div class="employee-edit-field">
 
-            <label asp-for="Status"></label>
+                    <label asp-for="FullName">
+                        Full Name
+                    </label>
 
-            <select asp-for="Status" class="input">
-                <option>Active</option>
-                <option>On Leave</option>
-                <option>Inactive</option>
-            </select>
+                    <div class="employee-edit-control">
 
-            <div class="form-actions">
+                        <input asp-for="FullName"
+                               class="employee-edit-input"
+                               placeholder="Employee name" />
+
+                    </div>
+
+                    <span asp-validation-for="FullName"
+                          class="employee-edit-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="employee-edit-field">
+
+                    <label asp-for="Email">
+                        Email
+                    </label>
+
+                    <div class="employee-edit-control">
+
+                        <input asp-for="Email"
+                               class="employee-edit-input"
+                               placeholder="name@company.com" />
+
+                    </div>
+
+                    <span asp-validation-for="Email"
+                          class="employee-edit-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- DEPARTMENT -->
+
+                <div class="employee-edit-field">
+
+                    <label asp-for="Department">
+                        Department
+                    </label>
+
+                    <div class="employee-edit-control">
+
+                        <input asp-for="Department"
+                               class="employee-edit-input"
+                               placeholder="Department" />
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESIGNATION -->
+
+                <div class="employee-edit-field">
+
+                    <label asp-for="Designation">
+                        Designation
+                    </label>
+
+                    <div class="employee-edit-control">
+
+                        <input asp-for="Designation"
+                               class="employee-edit-input"
+                               placeholder="Job title" />
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="employee-edit-field full">
+
+                    <label asp-for="Status">
+                        Status
+                    </label>
+
+                    <div class="employee-edit-control">
+
+                        <select asp-for="Status"
+                                class="employee-edit-select">
+
+                            <option>Active</option>
+
+                            <option>On Leave</option>
+
+                            <option>Inactive</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="employee-edit-actions">
 
                 <a asp-action="Index"
-                   class="btn">
+                   class="employee-edit-btn employee-edit-cancel">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M19 12H5" />
+
+                        <path d="m12 19-7-7 7-7" />
+
+                    </svg>
+
                     Cancel
+
                 </a>
 
+
                 <button type="submit"
-                        class="btn primary">
+                        class="employee-edit-btn employee-edit-save">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+
+                        <path d="M17 21v-8H7v8" />
+
+                        <path d="M7 3v5h8" />
+
+                    </svg>
+
                     Save Changes
+
                 </button>
 
             </div>
@@ -74,6 +783,7 @@
     </div>
 
 </div>
+
 
 @section Scripts
 {

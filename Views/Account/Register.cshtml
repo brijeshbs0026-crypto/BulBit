@@ -9,6 +9,414 @@ ViewData["Title"] = "Register";
        REGISTER PAGE
        ========================================================= */
 
+
+
+       /* =========================================================
+   REGISTER - FINAL DESKTOP OVERFLOW + ICON FIX
+   ========================================================= */
+
+/* Keep the whole register screen inside the viewport */
+.auth-v2-page {
+    min-height: 100vh !important;
+    height: 100vh !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 12px 30px 18px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Main register card */
+.auth-v2-wrapper {
+    width: 100% !important;
+    max-width: 1080px !important;
+
+    height: calc(100vh - 30px) !important;
+    max-height: calc(100vh - 30px) !important;
+
+    min-height: 0 !important;
+
+    transform: translateY(-5px) !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Keep both sides inside the card */
+.auth-v2-left,
+.auth-v2-right {
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+
+/* Left side slightly more compact */
+.auth-v2-left {
+    padding: 25px 38px !important;
+}
+
+
+/* Smaller image */
+.auth-v2-left-image {
+    width: 175px !important;
+    height: 175px !important;
+
+    margin-bottom: 14px !important;
+}
+
+
+/* Left heading */
+.auth-v2-left-content h2 {
+    font-size: 23px !important;
+    margin-bottom: 6px !important;
+}
+
+
+/* Left paragraph */
+.auth-v2-left-content p {
+    font-size: 10px !important;
+    line-height: 1.5 !important;
+}
+
+
+/* Features */
+.auth-v2-features {
+    margin-top: 12px !important;
+    gap: 6px !important;
+}
+
+
+/* =========================================================
+   REGISTER FORM
+   ========================================================= */
+
+.auth-v2-right {
+    padding: 20px 55px !important;
+
+    overflow: hidden !important;
+}
+
+
+.auth-v2-form {
+    width: 100% !important;
+    max-width: 420px !important;
+}
+
+
+/* Header */
+.auth-v2-form-header {
+    margin-bottom: 12px !important;
+}
+
+
+.auth-v2-form-header h1 {
+    font-size: 27px !important;
+
+    margin-bottom: 4px !important;
+}
+
+
+.auth-v2-form-header p {
+    font-size: 10px !important;
+}
+
+
+/* Error */
+.auth-v2-error {
+    margin-bottom: 8px !important;
+
+    padding: 7px 10px !important;
+
+    font-size: 9px !important;
+}
+
+
+/* Form groups */
+.auth-v2-form-group {
+    margin-bottom: 7px !important;
+}
+
+
+/* Labels */
+.auth-v2-form-group label {
+    margin-bottom: 3px !important;
+
+    font-size: 9px !important;
+}
+
+
+/* Inputs */
+.auth-v2-input {
+    height: 38px !important;
+
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+
+    font-size: 10px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   IMPORTANT: FIX ICON / TEXT OVERLAP
+   ========================================================= */
+
+.auth-v2-input-wrapper {
+    position: relative !important;
+
+    width: 100% !important;
+
+    display: block !important;
+}
+
+
+/* Input text starts safely after icon */
+.auth-v2-input-wrapper .auth-v2-input {
+    padding-left: 45px !important;
+
+    padding-right: 40px !important;
+}
+
+
+/* Icon */
+.auth-v2-input-wrapper .auth-v2-input-icon {
+    position: absolute !important;
+
+    left: 13px !important;
+    top: 50% !important;
+
+    width: 18px !important;
+    height: 18px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    z-index: 5 !important;
+
+    color: #929db0 !important;
+
+    pointer-events: none !important;
+}
+
+
+/* Icon itself */
+.auth-v2-input-wrapper .auth-v2-input-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+
+    display: block !important;
+
+    stroke: currentColor !important;
+
+    pointer-events: none !important;
+}
+
+
+/* Icon changes on focus */
+.auth-v2-input-wrapper:focus-within
+.auth-v2-input-icon {
+    color: #6e50e9 !important;
+}
+
+
+/* =========================================================
+   PASSWORD EYE
+   ========================================================= */
+
+.auth-v2-input-wrapper .auth-v2-password-toggle {
+    position: absolute !important;
+
+    right: 6px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 29px !important;
+    height: 29px !important;
+
+    z-index: 6 !important;
+}
+
+
+/* =========================================================
+   ROLE SELECT
+   ========================================================= */
+
+select.auth-v2-input {
+    padding-left: 45px !important;
+
+    padding-right: 38px !important;
+}
+
+
+/* =========================================================
+   VALIDATION
+   ========================================================= */
+
+.auth-v2-validation {
+    margin-top: 2px !important;
+
+    font-size: 7px !important;
+}
+
+
+/* =========================================================
+   CREATE ACCOUNT BUTTON
+   ========================================================= */
+
+.auth-v2-button {
+    height: 41px !important;
+
+    margin-top: 3px !important;
+
+    font-size: 11px !important;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.auth-v2-footer {
+    margin-top: 8px !important;
+
+    padding-top: 8px !important;
+
+    font-size: 8px !important;
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.auth-v2-security {
+    margin-top: 5px !important;
+
+    font-size: 7px !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@@media (max-width: 900px) {
+
+    .auth-v2-page {
+        height: 100vh !important;
+
+        padding: 10px 18px !important;
+    }
+
+    .auth-v2-wrapper {
+        height: calc(100vh - 20px) !important;
+        max-height: calc(100vh - 20px) !important;
+    }
+
+    .auth-v2-left {
+        padding: 20px 22px !important;
+    }
+
+    .auth-v2-right {
+        padding: 18px 28px !important;
+    }
+
+    .auth-v2-left-image {
+        width: 145px !important;
+        height: 145px !important;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@@media (max-width: 680px) {
+
+    .auth-v2-page {
+        height: auto !important;
+        min-height: 100vh !important;
+
+        padding: 10px !important;
+
+        overflow-y: auto !important;
+    }
+
+    .auth-v2-wrapper {
+        height: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+
+        transform: none !important;
+
+        overflow: hidden !important;
+    }
+
+    .auth-v2-left {
+        padding: 22px 20px 18px !important;
+    }
+
+    .auth-v2-right {
+        padding: 22px 20px 22px !important;
+
+        overflow: visible !important;
+    }
+
+    .auth-v2-left-image {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+    .auth-v2-input {
+        height: 40px !important;
+    }
+
+    .auth-v2-form-group {
+        margin-bottom: 9px !important;
+    }
+
+    .auth-v2-button {
+        height: 42px !important;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@@media (max-width: 400px) {
+
+    .auth-v2-page {
+        padding: 6px !important;
+    }
+
+    .auth-v2-right {
+        padding: 20px 16px !important;
+    }
+
+    .auth-v2-left {
+        padding: 19px 16px !important;
+    }
+
+    .auth-v2-left-image {
+        width: 105px !important;
+        height: 105px !important;
+    }
+}
+
     .auth-v2-page {
         min-height: 100vh;
         width: 100%;
