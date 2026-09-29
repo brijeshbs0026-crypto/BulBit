@@ -1,4 +1,4 @@
-﻿using AuthMvcApp.Interfaces.Repositories;
+using AuthMvcApp.Interfaces.Repositories;
 using AuthMvcApp.Interfaces.Services;
 using AuthMvcApp.Models;
 using AuthMvcApp.Repositories;
@@ -26,7 +26,8 @@ namespace AuthMvcApp.Services
 
         public async Task AddAsync(Employee employee)
         {
-            employee.Status = "Active";
+            if (string.IsNullOrWhiteSpace(employee.Status))
+                employee.Status = "Active";
 
             if (employee.JoinedDate == default)
                 employee.JoinedDate = DateTime.UtcNow;

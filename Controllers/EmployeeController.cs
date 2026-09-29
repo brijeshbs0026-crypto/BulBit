@@ -28,7 +28,7 @@ namespace AuthMvcApp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            return View();
+            return View(new Employee());
         }
 
         // Add Employee - POST
@@ -37,8 +37,18 @@ namespace AuthMvcApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Employee employee)
         {
+            ModelState.Remove(nameof(employee.Id));
+            ModelState.Remove(nameof(employee.JoinedDate));
+
             if (!ModelState.IsValid)
             {
+                return View(employee);
+            }
+
+            var existing = await _employeeService.GetByEmailAsync(employee.Email);
+            if (existing != null)
+            {
+                ModelState.AddModelError(nameof(employee.Email), "An employee with this email already exists.");
                 return View(employee);
             }
 
@@ -71,6 +81,13 @@ namespace AuthMvcApp.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(employee);
+            }
+
+            var existing = await _employeeService.GetByEmailAsync(employee.Email);
+            if (existing != null && existing.Id != employee.Id)
+            {
+                ModelState.AddModelError(nameof(employee.Email), "An employee with this email already exists.");
                 return View(employee);
             }
 

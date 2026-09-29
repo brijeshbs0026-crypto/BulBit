@@ -11,6 +11,166 @@ ViewData["Title"] = "Login";
        AUTH PAGE
        ========================================================= */
 
+
+
+
+       /* =========================================================
+   LOGIN - FINAL INPUT ICON / TEXT OVERLAP FIX
+   ========================================================= */
+
+/* Input wrapper */
+.auth-v2-input-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+
+/* Normal inputs */
+.auth-v2-input-wrapper .auth-v2-input {
+    position: relative !important;
+    z-index: 1 !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    /* IMPORTANT: leave enough room for the icon */
+    padding-left: 48px !important;
+
+    /* room for password eye */
+    padding-right: 44px !important;
+}
+
+
+/* =========================================================
+   LEFT INPUT ICON
+   ========================================================= */
+
+.auth-v2-input-wrapper .auth-v2-input-icon {
+    position: absolute !important;
+
+    left: 15px !important;
+    top: 50% !important;
+
+    width: 18px !important;
+    height: 18px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    z-index: 5 !important;
+
+    color: #929db0 !important;
+
+    pointer-events: none !important;
+}
+
+
+/* SVG inside icon */
+.auth-v2-input-wrapper .auth-v2-input-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+
+    display: block !important;
+
+    stroke: currentColor !important;
+
+    pointer-events: none !important;
+}
+
+
+/* Purple icon when input is focused */
+.auth-v2-input-wrapper:focus-within
+.auth-v2-input-icon {
+    color: #6e50e9 !important;
+}
+
+
+/* =========================================================
+   PASSWORD EYE BUTTON
+   ========================================================= */
+
+.auth-v2-input-wrapper .auth-v2-password-toggle {
+    position: absolute !important;
+
+    right: 6px !important;
+    top: 50% !important;
+
+    width: 30px !important;
+    height: 30px !important;
+
+    transform: translateY(-50%) !important;
+
+    z-index: 6 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+
+    border-radius: 7px !important;
+
+    background: transparent !important;
+
+    color: #8994a8 !important;
+
+    cursor: pointer !important;
+}
+
+
+/* Eye icon */
+.auth-v2-input-wrapper .auth-v2-password-toggle svg {
+    width: 15px !important;
+    height: 15px !important;
+
+    display: block !important;
+}
+
+
+/* =========================================================
+   LOGIN EMAIL / PASSWORD PLACEHOLDER
+   ========================================================= */
+
+.auth-v2-input-wrapper .auth-v2-input::placeholder {
+    padding-left: 0 !important;
+
+    color: #a4adbb !important;
+}
+
+
+/* =========================================================
+   REMEMBER ME - NO CHANGE TO FUNCTIONALITY
+   ========================================================= */
+
+.auth-v2-check {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@@media (max-width: 680px) {
+
+    .auth-v2-input-wrapper .auth-v2-input {
+        padding-left: 46px !important;
+
+        padding-right: 42px !important;
+    }
+
+    .auth-v2-input-wrapper .auth-v2-input-icon {
+        left: 14px !important;
+    }
+}
+
+
     .auth-v2-page {
         width: 100%;
 

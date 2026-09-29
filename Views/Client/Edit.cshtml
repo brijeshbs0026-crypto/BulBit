@@ -4,12 +4,672 @@
     ViewData["Title"] = "Edit Client";
 }
 
-<div class="client-form-page">
+<style>
+    /* =========================================================
+       EDIT CLIENT PAGE
+       ========================================================= */
 
-    <div class="client-form-card">
+    .client-edit-page {
+        width: 100%;
+        max-width: 1100px;
 
-        <div class="client-form-icon">
-            👥
+        margin: 0 auto;
+
+        padding: 28px 35px 45px;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================================
+       PAGE HEADER
+       ========================================================= */
+
+    .client-edit-header {
+        margin-bottom: 22px;
+    }
+
+    .client-edit-eyebrow {
+        margin-bottom: 7px;
+
+        color: #7052ed;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        letter-spacing: 1px;
+
+        text-transform: uppercase;
+    }
+
+    .client-edit-header h1 {
+        margin: 0 0 6px;
+
+        color: #172139;
+
+        font-family:
+            'Outfit',
+            sans-serif;
+
+        font-size: 34px;
+
+        line-height: 1.15;
+
+        font-weight: 800;
+
+        letter-spacing: -1px;
+    }
+
+    .client-edit-header p {
+        margin: 0;
+
+        color: #8995aa;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
+
+    .client-edit-card {
+        width: 100%;
+
+        padding: 28px 30px 25px;
+
+        box-sizing: border-box;
+
+        background: #ffffff;
+
+        border: 1px solid #e6eaf1;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 12px 35px rgba(31, 42, 70, 0.07);
+    }
+
+
+    /* =========================================================
+       CARD HEADER
+       ========================================================= */
+
+    .client-edit-card-header {
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+
+        padding-bottom: 19px;
+
+        margin-bottom: 22px;
+
+        border-bottom: 1px solid #edf0f5;
+    }
+
+
+    .client-edit-icon-box {
+        width: 43px;
+        height: 43px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #7656f3,
+                #6045df
+            );
+
+        color: #ffffff;
+
+        box-shadow:
+            0 8px 18px rgba(105, 76, 230, 0.20);
+    }
+
+
+    .client-edit-icon-box svg {
+        width: 21px;
+        height: 21px;
+
+        stroke: currentColor;
+    }
+
+
+    .client-edit-card-title h2 {
+        margin: 0 0 3px;
+
+        color: #202c43;
+
+        font-size: 15px;
+
+        font-weight: 800;
+    }
+
+
+    .client-edit-card-title p {
+        margin: 0;
+
+        color: #98a2b4;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       VALIDATION
+       ========================================================= */
+
+    .client-edit-error {
+        margin-bottom: 18px;
+
+        padding: 10px 12px;
+
+        border-radius: 9px;
+
+        background: #fff2f4;
+
+        border: 1px solid #ffd5dc;
+
+        color: #c84658;
+
+        font-size: 10px;
+
+        line-height: 1.5;
+    }
+
+
+    .client-edit-error:empty {
+        display: none;
+    }
+
+
+    /* =========================================================
+       FORM
+       ========================================================= */
+
+    .client-edit-form {
+        width: 100%;
+    }
+
+
+    /* =========================================================
+       FIELD
+       ========================================================= */
+
+    .client-edit-field {
+        width: 100%;
+
+        margin-bottom: 17px;
+    }
+
+
+    .client-edit-field label {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: #27334a;
+
+        font-size: 11px;
+
+        font-weight: 750;
+    }
+
+
+    /* =========================================================
+       INPUT
+       ========================================================= */
+
+    .client-edit-input {
+        width: 100%;
+
+        height: 44px;
+
+        display: block;
+
+        box-sizing: border-box;
+
+        padding: 0 14px;
+
+        border: 1px solid #dfe5ee;
+
+        border-radius: 10px;
+
+        outline: none;
+
+        background: #f9fbfd;
+
+        color: #182238;
+
+        font-family:
+            'Inter',
+            sans-serif;
+
+        font-size: 12px;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .client-edit-input:hover {
+        border-color: #cfd7e4;
+
+        background: #ffffff;
+    }
+
+
+    .client-edit-input:focus {
+        border-color: #7052ed;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 4px
+            rgba(112, 82, 237, 0.08);
+    }
+
+
+    .client-edit-input::placeholder {
+        color: #a3adbc;
+    }
+
+
+    /* =========================================================
+       DESCRIPTION
+       ========================================================= */
+
+    .client-edit-textarea {
+        width: 100%;
+
+        min-height: 105px;
+
+        resize: vertical;
+
+        padding: 12px 14px;
+
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       MONTHLY CONTENT GRID
+       ========================================================= */
+
+    .client-edit-content-title {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin: 4px 0 14px;
+
+        padding-top: 4px;
+
+        color: #202c43;
+
+        font-size: 12px;
+
+        font-weight: 800;
+    }
+
+
+    .client-edit-content-title::before {
+        content: "";
+
+        width: 4px;
+        height: 16px;
+
+        border-radius: 4px;
+
+        background: #7052ed;
+    }
+
+
+    .client-edit-content-grid {
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 15px;
+    }
+
+
+    .client-edit-number-field {
+        min-width: 0;
+    }
+
+
+    .client-edit-number-field label {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: #27334a;
+
+        font-size: 10px;
+
+        font-weight: 750;
+    }
+
+
+    .client-edit-number-input {
+        width: 100%;
+
+        height: 43px;
+
+        box-sizing: border-box;
+
+        padding: 0 12px;
+
+        border: 1px solid #dfe5ee;
+
+        border-radius: 9px;
+
+        outline: none;
+
+        background: #f9fbfd;
+
+        color: #182238;
+
+        font-family:
+            'Inter',
+            sans-serif;
+
+        font-size: 12px;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .client-edit-number-input:hover {
+        border-color: #cfd7e4;
+
+        background: #ffffff;
+    }
+
+
+    .client-edit-number-input:focus {
+        border-color: #7052ed;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 4px
+            rgba(112, 82, 237, 0.08);
+    }
+
+
+    /* Remove number spinner */
+
+    .client-edit-number-input::-webkit-inner-spin-button,
+    .client-edit-number-input::-webkit-outer-spin-button {
+        opacity: 0.5;
+    }
+
+
+    /* =========================================================
+       FIELD VALIDATION
+       ========================================================= */
+
+    .client-edit-validation {
+        display: block;
+
+        margin-top: 4px;
+
+        color: #d24d5a;
+
+        font-size: 9px;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+
+    .client-edit-actions {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        margin-top: 24px;
+
+        padding-top: 19px;
+
+        border-top: 1px solid #edf0f5;
+    }
+
+
+    .client-edit-btn {
+        height: 42px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 7px;
+
+        padding: 0 18px;
+
+        box-sizing: border-box;
+
+        border-radius: 9px;
+
+        font-family:
+            'Inter',
+            sans-serif;
+
+        font-size: 11px;
+
+        font-weight: 750;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .client-edit-btn svg {
+        width: 15px;
+        height: 15px;
+
+        stroke: currentColor;
+    }
+
+
+    /* Cancel */
+
+    .client-edit-cancel {
+        color: #66748b;
+
+        background: #ffffff;
+
+        border: 1px solid #dfe5ee;
+    }
+
+
+    .client-edit-cancel:hover {
+        background: #f7f8fb;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* Save */
+
+    .client-edit-save {
+        border: none;
+
+        color: #ffffff;
+
+        background:
+            linear-gradient(
+                135deg,
+                #7053ef,
+                #5d48e7
+            );
+
+        box-shadow:
+            0 8px 18px
+            rgba(101, 73, 232, 0.22);
+    }
+
+
+    .client-edit-save:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 12px 25px
+            rgba(101, 73, 232, 0.28);
+    }
+
+
+    /* =========================================================
+       TABLET
+       ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .client-edit-page {
+            padding: 25px 24px 40px;
+        }
+
+
+        .client-edit-card {
+            padding: 25px 24px;
+        }
+
+
+        .client-edit-header h1 {
+            font-size: 30px;
+        }
+
+
+        .client-edit-content-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @@media (max-width: 680px) {
+
+        .client-edit-page {
+            padding: 20px 15px 35px;
+        }
+
+
+        .client-edit-card {
+            padding: 21px 18px;
+        }
+
+
+        .client-edit-header {
+            margin-bottom: 18px;
+        }
+
+
+        .client-edit-header h1 {
+            font-size: 27px;
+        }
+
+
+        .client-edit-content-grid {
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px;
+        }
+
+
+        .client-edit-actions {
+            justify-content: stretch;
+        }
+
+
+        .client-edit-btn {
+            flex: 1;
+        }
+    }
+
+
+    /* =========================================================
+       SMALL MOBILE
+       ========================================================= */
+
+    @@media (max-width: 420px) {
+
+        .client-edit-page {
+            padding: 15px 10px 30px;
+        }
+
+
+        .client-edit-card {
+            padding: 18px 14px;
+        }
+
+
+        .client-edit-header h1 {
+            font-size: 24px;
+        }
+
+
+        .client-edit-content-grid {
+            grid-template-columns: 1fr;
+        }
+
+
+        .client-edit-actions {
+            flex-direction: column-reverse;
+        }
+
+
+        .client-edit-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="client-edit-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="client-edit-header">
+
+        <div class="client-edit-eyebrow">
+            CLIENTS
         </div>
 
         <h1>Edit Client</h1>
@@ -18,49 +678,126 @@
             Update client details and monthly content requirements.
         </p>
 
-        <form asp-action="Edit" method="post">
+    </div>
+
+
+    <!-- MAIN CARD -->
+
+    <div class="client-edit-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="client-edit-card-header">
+
+            <div class="client-edit-icon-box">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+
+                    <circle cx="9"
+                            cy="7"
+                            r="4" />
+
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+
+                </svg>
+
+            </div>
+
+
+            <div class="client-edit-card-title">
+
+                <h2>Client Information</h2>
+
+                <p>
+                    Update the client details and monthly requirements below.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form asp-action="Edit"
+              method="post"
+              class="client-edit-form">
 
             @Html.AntiForgeryToken()
 
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="CreatedAt" />
+
+            <input type="hidden"
+                   asp-for="Id" />
+
+            <input type="hidden"
+                   asp-for="CreatedAt" />
+
+
+            <!-- VALIDATION -->
 
             <div asp-validation-summary="ModelOnly"
-                 class="client-validation"></div>
+                 class="client-edit-error">
+            </div>
 
-            <div class="client-form-group">
+
+            <!-- CLIENT NAME -->
+
+            <div class="client-edit-field">
 
                 <label asp-for="ClientName">
                     Client Name
                 </label>
 
                 <input asp-for="ClientName"
-                       class="client-input"
+                       class="client-edit-input"
                        placeholder="Enter client name" />
 
                 <span asp-validation-for="ClientName"
-                      class="client-field-error"></span>
+                      class="client-edit-validation">
+                </span>
 
             </div>
 
-            <div class="client-form-group">
+
+            <!-- DESCRIPTION -->
+
+            <div class="client-edit-field">
 
                 <label asp-for="Description">
                     Description
                 </label>
 
                 <textarea asp-for="Description"
-                          class="client-input client-textarea"
+                          class="client-edit-input client-edit-textarea"
                           placeholder="Enter client description"></textarea>
 
                 <span asp-validation-for="Description"
-                      class="client-field-error"></span>
+                      class="client-edit-validation">
+                </span>
 
             </div>
 
-            <div class="client-form-row">
 
-                <div class="client-form-group">
+            <!-- MONTHLY REQUIREMENTS -->
+
+            <div class="client-edit-content-title">
+                Monthly Content Requirements
+            </div>
+
+
+            <div class="client-edit-content-grid">
+
+
+                <!-- REELS -->
+
+                <div class="client-edit-number-field">
 
                     <label asp-for="ReelsPerMonth">
                         Reels / Month
@@ -69,12 +806,15 @@
                     <input asp-for="ReelsPerMonth"
                            type="number"
                            min="0"
-                           class="client-input"
+                           class="client-edit-number-input"
                            placeholder="0" />
 
                 </div>
 
-                <div class="client-form-group">
+
+                <!-- POSTS -->
+
+                <div class="client-edit-number-field">
 
                     <label asp-for="PostsPerMonth">
                         Posts / Month
@@ -83,16 +823,15 @@
                     <input asp-for="PostsPerMonth"
                            type="number"
                            min="0"
-                           class="client-input"
+                           class="client-edit-number-input"
                            placeholder="0" />
 
                 </div>
 
-            </div>
 
-            <div class="client-form-row">
+                <!-- STORIES -->
 
-                <div class="client-form-group">
+                <div class="client-edit-number-field">
 
                     <label asp-for="StoriesPerMonth">
                         Stories / Month
@@ -101,12 +840,15 @@
                     <input asp-for="StoriesPerMonth"
                            type="number"
                            min="0"
-                           class="client-input"
+                           class="client-edit-number-input"
                            placeholder="0" />
 
                 </div>
 
-                <div class="client-form-group">
+
+                <!-- VIDEOS -->
+
+                <div class="client-edit-number-field">
 
                     <label asp-for="VideosPerMonth">
                         Videos / Month
@@ -115,28 +857,67 @@
                     <input asp-for="VideosPerMonth"
                            type="number"
                            min="0"
-                           class="client-input"
+                           class="client-edit-number-input"
                            placeholder="0" />
 
                 </div>
 
             </div>
 
-            <button type="submit"
-                    class="client-save-btn">
-                Save Changes
-            </button>
 
-            <a asp-action="Index"
-               class="client-cancel-btn">
-                Cancel
-            </a>
+            <!-- ACTIONS -->
+
+            <div class="client-edit-actions">
+
+                <a asp-action="Index"
+                   class="client-edit-btn client-edit-cancel">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M19 12H5" />
+
+                        <path d="m12 19-7-7 7-7" />
+
+                    </svg>
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="client-edit-btn client-edit-save">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+
+                        <path d="M17 21v-8H7v8" />
+
+                        <path d="M7 3v5h8" />
+
+                    </svg>
+
+                    Save Changes
+
+                </button>
+
+            </div>
 
         </form>
 
     </div>
 
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
