@@ -1160,7 +1160,7 @@ a {
     display: none;
 }
 
-@media(max-width:1100px) {
+@@media(max-width:1100px) {
 
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1175,7 +1175,7 @@ a {
     }
 }
 
-@media(max-width:800px) {
+@@media(max-width:800px) {
 
     .sidebar {
         width: 200px;
@@ -1190,7 +1190,7 @@ a {
     }
 }
 
-@media(max-width:600px) {
+@@media(max-width:600px) {
 
     .sidebar {
         display: none;
@@ -1642,7 +1642,7 @@ a {
 
 /* Responsive */
 
-@media (max-width: 900px) {
+@@media (max-width: 900px) {
 
     .employee-header {
         align-items: flex-start;
@@ -1938,7 +1938,7 @@ a {
     color: #8995a8;
 }
 
-@media(max-width:800px) {
+@@media(max-width:800px) {
 
     .task-grid {
         grid-template-columns: 1fr;
@@ -2238,7 +2238,7 @@ a {
 
 /* RESPONSIVE */
 
-@media (max-width: 1100px) {
+@@media (max-width: 1100px) {
 
     .attendance-top {
         grid-template-columns: repeat(2, 1fr);
@@ -2253,7 +2253,7 @@ a {
     }
 }
 
-@media (max-width: 700px) {
+@@media (max-width: 700px) {
 
     .attendance-page {
         padding: 20px;
@@ -2920,7 +2920,7 @@ a {
 
 /* ================= RESPONSIVE ================= */
 
-@media (max-width: 900px) {
+@@media (max-width: 900px) {
 
     .dashboard-stats {
         grid-template-columns: 1fr;
@@ -2935,7 +2935,7 @@ a {
     }
 }
 
-@media (max-width: 600px) {
+@@media (max-width: 600px) {
 
     .dashboard-page {
         padding: 18px;
@@ -3222,7 +3222,7 @@ a {
 
 /* ================= RESPONSIVE ================= */
 
-@media (max-width: 900px) {
+@@media (max-width: 900px) {
 
     .auth-v2-page {
         padding: 25px;
@@ -3248,7 +3248,7 @@ a {
 }
 
 
-@media (max-width: 600px) {
+@@media (max-width: 600px) {
 
     .auth-v2-page {
         padding: 15px;
@@ -3693,7 +3693,7 @@ a {
 
 /* RESPONSIVE */
 
-@media (max-width: 900px) {
+@@media (max-width: 900px) {
 
     .client-header {
         align-items: flex-start;
@@ -3706,7 +3706,7 @@ a {
     }
 }
 
-@media (max-width: 600px) {
+@@media (max-width: 600px) {
 
     .client-form-row {
         grid-template-columns: 1fr;
@@ -3722,7 +3722,7 @@ a {
    GLOBAL RESPONSIVE & MOBILE DRAWER
    ===================================================== */
 
-@media (max-width: 900px) {
+@@media (max-width: 900px) {
     .mobile-menu-btn {
         display: grid !important;
     }
@@ -3751,7 +3751,7 @@ a {
     }
 }
 
-@media (max-width: 600px) {
+@@media (max-width: 600px) {
     .top-navbar {
         padding: 0 14px;
     }
@@ -3895,7 +3895,7 @@ a {
 
 /* RESPONSIVE */
 
-@media (max-width: 900px) {
+@@media (max-width: 900px) {
 
     .client-header {
         align-items: flex-start;
@@ -3908,7 +3908,7 @@ a {
     }
 }
 
-@media (max-width: 600px) {
+@@media (max-width: 600px) {
 
     .client-form-row {
         grid-template-columns: 1fr;
@@ -3924,7 +3924,7 @@ a {
    GLOBAL RESPONSIVE & MOBILE DRAWER
    ===================================================== */
 
-@media (max-width: 900px) {
+@@media (max-width: 900px) {
     .mobile-menu-btn {
         display: grid !important;
     }
@@ -3953,7 +3953,7 @@ a {
     }
 }
 
-@media (max-width: 600px) {
+@@media (max-width: 600px) {
     .top-navbar {
         padding: 0 14px;
     }
@@ -5367,7 +5367,7 @@ table {
 }
 
 /* --- Breakpoint: Tablet & Small Screens (<= 992px) --- */
-@media (max-width: 992px) {
+@@media (max-width: 992px) {
     .attendance-top {
         grid-template-columns: 1fr 1fr !important;
     }
@@ -5382,7 +5382,7 @@ table {
 }
 
 /* --- Breakpoint: Standard Mobile Phones (<= 768px) --- */
-@media (max-width: 768px) {
+@@media (max-width: 768px) {
     /* Layout & Main Spacing */
     .main-content {
         padding: 16px 12px !important;
@@ -5618,7 +5618,7 @@ table {
 }
 
 /* --- Breakpoint: Extra Small Phones (<= 480px) --- */
-@media (max-width: 480px) {
+@@media (max-width: 480px) {
     .top-navbar {
         padding: 0 10px !important;
         height: 58px !important;

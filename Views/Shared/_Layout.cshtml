@@ -1,254 +1,2591 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>@ViewData["Title"] - BulBit</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <title>
+        @ViewData["Title"] - BulBit
+    </title>
 
-    <!-- Zero-flicker theme loader -->
+
+    <!-- =====================================================
+         FONTS
+         ===================================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =====================================================
+         ZERO FLICKER THEME
+         ===================================================== -->
+
     <script>
-        (function() {
-            const savedTheme = localStorage.getItem('bulbit_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            document.documentElement.setAttribute('data-theme', savedTheme);
+
+        (function () {
+
+            const savedTheme =
+                localStorage.getItem('bulbit_theme') ||
+                (
+                    window.matchMedia(
+                        '(prefers-color-scheme: dark)'
+                    ).matches
+                        ? 'dark'
+                        : 'light'
+                );
+
+            document.documentElement
+                .setAttribute(
+                    'data-theme',
+                    savedTheme
+                );
+
         })();
+
     </script>
 
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+
+    <!-- =====================================================
+         LAYOUT UI OVERRIDES
+         ===================================================== -->
+
+    <style>
+
+        /* =====================================================
+           ROOT
+           ===================================================== */
+
+        :root {
+
+            --bulbit-purple: #6d50ef;
+
+            --bulbit-purple-dark: #5940d5;
+
+            --bulbit-purple-light: #f0edff;
+
+            --bulbit-text: #182238;
+
+            --bulbit-muted: #8b96aa;
+
+            --bulbit-border: #e5e9f0;
+
+            --bulbit-bg: #f7f9fc;
+
+            --topbar-height: 72px;
+
+            --sidebar-width: 225px;
+
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+        }
+
+
+        body {
+
+            font-family:
+                'Inter',
+                sans-serif;
+
+            background: var(--bulbit-bg);
+
+            color: var(--bulbit-text);
+        }
+
+
+        /* =====================================================
+           TOP NAVBAR
+           ===================================================== */
+
+        .top-navbar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            z-index: 5000;
+
+            height: var(--topbar-height);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 28px;
+
+            background:
+                rgba(255, 255, 255, 0.96);
+
+            border-bottom:
+                1px solid rgba(226, 231, 239, 0.95);
+
+            box-shadow:
+                0 4px 18px rgba(20, 31, 55, 0.045);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+
+        /* =====================================================
+           TOP LEFT
+           ===================================================== */
+
+        .top-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            min-width: 225px;
+        }
+
+
+        /* =====================================================
+           BRAND
+           ===================================================== */
+
+        .navbar-brand {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            text-decoration: none;
+
+            color: var(--bulbit-text);
+
+            transition:
+                transform 0.2s ease;
+        }
+
+
+        .navbar-brand:hover {
+
+            color: var(--bulbit-text);
+
+            text-decoration: none;
+
+            transform: translateY(-1px);
+        }
+
+
+        .brand-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #805fff,
+                    #6847e8
+                );
+
+            color: #ffffff;
+
+            font-family:
+                'Outfit',
+                sans-serif;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 7px 18px
+                rgba(104, 71, 232, 0.23);
+        }
+
+
+        .brand-text {
+
+            font-family:
+                'Outfit',
+                sans-serif;
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.4px;
+        }
+
+
+        /* =====================================================
+           MOBILE MENU
+           ===================================================== */
+
+        .mobile-menu-btn {
+
+            width: 38px;
+            height: 38px;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #e3e7ee;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #59657b;
+
+            cursor: pointer;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .mobile-menu-btn:hover {
+
+            background: var(--bulbit-purple-light);
+
+            border-color: #dcd5ff;
+
+            color: var(--bulbit-purple);
+        }
+
+
+        /* =====================================================
+           TOP CENTER
+           ===================================================== */
+
+        .top-center {
+
+            flex: 1;
+
+            display: flex;
+
+            justify-content: center;
+
+            min-width: 0;
+        }
+
+
+        /* =====================================================
+           TOP RIGHT
+           ===================================================== */
+
+        .top-right {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 9px;
+
+            min-width: 320px;
+        }
+
+
+        /* =====================================================
+           ICON BUTTONS
+           ===================================================== */
+
+        .icon-button {
+
+            width: 42px;
+            height: 42px;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            border: 1px solid #e2e7ef;
+
+            border-radius: 11px;
+
+            background: #ffffff;
+
+            color: #68758b;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .icon-button:hover {
+
+            background: #f7f5ff;
+
+            border-color: #dcd6ff;
+
+            color: var(--bulbit-purple);
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 13px
+                rgba(50, 60, 90, 0.07);
+        }
+
+
+        .theme-icon {
+
+            display: none;
+
+            font-size: 17px;
+        }
+
+
+        html[data-theme="light"]
+        .light-icon {
+
+            display: inline;
+        }
+
+
+        html[data-theme="dark"]
+        .dark-icon {
+
+            display: inline;
+        }
+
+
+        /* =====================================================
+           NOTIFICATION
+           ===================================================== */
+
+        .notification-container {
+
+            position: relative;
+        }
+
+
+        .notification-badge {
+
+            position: absolute;
+
+            top: -4px;
+            right: -4px;
+
+            min-width: 18px;
+            height: 18px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 4px;
+
+            border: 2px solid #ffffff;
+
+            border-radius: 20px;
+
+            background: #f04455;
+
+            color: #ffffff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           NOTIFICATION DROPDOWN
+           ===================================================== */
+
+        .notification-dropdown {
+
+            position: absolute;
+
+            top: calc(100% + 12px);
+
+            right: 0;
+
+            width: 350px;
+
+            max-height: 470px;
+
+            display: none;
+
+            overflow: hidden;
+
+            background: #ffffff;
+
+            border: 1px solid #e4e8ef;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 20px 55px
+                rgba(20, 30, 55, 0.16);
+
+            z-index: 6000;
+        }
+
+
+        .notification-dropdown.show {
+
+            display: block;
+
+            animation:
+                dropdownIn 0.18s ease;
+        }
+
+
+        @@keyframes dropdownIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(-6px)
+                    scale(0.98);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        .notification-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 15px 16px;
+
+            border-bottom:
+                1px solid #edf0f4;
+        }
+
+
+        .notification-header-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .notification-header h4 {
+
+            margin: 0;
+
+            color: #1a253b;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .notification-unread-pill {
+
+            padding: 4px 7px;
+
+            border-radius: 8px;
+
+            background: #f0edff;
+
+            color: var(--bulbit-purple);
+
+            font-size: 9px;
+
+            font-weight: 750;
+        }
+
+
+        .mark-all-read-btn {
+
+            border: none;
+
+            background: transparent;
+
+            color: var(--bulbit-purple);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .notification-list {
+
+            max-height: 350px;
+
+            overflow-y: auto;
+        }
+
+
+        .notification-loading {
+
+            padding: 30px 15px;
+
+            text-align: center;
+
+            color: #96a0b1;
+
+            font-size: 11px;
+        }
+
+
+        .notification-footer {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 11px;
+
+            border-top:
+                1px solid #edf0f4;
+        }
+
+
+        .notification-footer-link {
+
+            color: var(--bulbit-purple);
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 750;
+        }
+
+
+        .notification-footer-link:hover {
+
+            text-decoration: underline;
+        }
+
+
+        .footer-dot {
+
+            color: #c1c7d2;
+        }
+
+
+        /* =====================================================
+           TOP PROFILE
+           ===================================================== */
+
+        .top-profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding-left: 5px;
+        }
+
+
+        .profile-avatar {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8061ff,
+                    #6545e7
+                );
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 6px 16px
+                rgba(103, 69, 230, 0.18);
+        }
+
+
+        .profile-info {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 80px;
+        }
+
+
+        .profile-info strong {
+
+            overflow: hidden;
+
+            max-width: 110px;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            color: #182238;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+
+        .role-badge {
+
+            color: #6f5be8;
+
+            font-size: 9px;
+
+            font-weight: 650;
+        }
+
+
+        /* =====================================================
+           LOGOUT
+           ===================================================== */
+
+        .logout-button {
+
+            min-height: 38px;
+
+            padding: 0 13px;
+
+            border: 1px solid #e1e6ed;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #59657b;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .logout-button:hover {
+
+            background: #fff2f3;
+
+            border-color: #ffd4d9;
+
+            color: #d24d5a;
+        }
+
+
+        /* =====================================================
+           APPLICATION
+           ===================================================== */
+
+        .application {
+
+            width: 100%;
+
+            height: calc(100vh - var(--topbar-height));
+
+            margin-top: var(--topbar-height);
+
+            overflow: hidden;
+
+            position: relative;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+           ===================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: var(--topbar-height);
+
+            left: 0;
+
+            bottom: 0;
+
+            z-index: 4000;
+
+            width: var(--sidebar-width);
+
+            display: flex;
+
+            flex-direction: column;
+
+            padding: 21px 13px 18px;
+
+            background:
+                rgba(255, 255, 255, 0.98);
+
+            border-right:
+                1px solid #e3e8ef;
+
+            box-shadow:
+                4px 0 18px
+                rgba(20, 31, 55, 0.025);
+
+            overflow-y: auto;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           SIDEBAR BRAND
+           ===================================================== */
+
+        .sidebar-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 3px 8px 22px;
+        }
+
+
+        .sidebar-logo {
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7b5bf4,
+                    #6848e8
+                );
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 6px 15px
+                rgba(103, 73, 231, 0.18);
+        }
+
+
+        .sidebar-brand-text {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+
+        .sidebar-brand-text strong {
+
+            color: #1b263b;
+
+            font-family:
+                'Outfit',
+                sans-serif;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .sidebar-brand-text small {
+
+            margin-top: 2px;
+
+            color: #99a2b2;
+
+            font-size: 9px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           MENU HEADING
+           ===================================================== */
+
+        .menu-heading {
+
+            padding: 0 10px 9px;
+
+            color: #9ca5b5;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.1px;
+        }
+
+
+        /* =====================================================
+           MENU ITEM
+           ===================================================== */
+
+        .menu-item {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            min-height: 44px;
+
+            margin: 2px 0;
+
+            padding: 0 11px;
+
+            border-radius: 11px;
+
+            color: #68758b;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .menu-item:hover {
+
+            background: #f7f5ff;
+
+            color: var(--bulbit-purple);
+
+            text-decoration: none;
+
+            transform: translateX(2px);
+        }
+
+
+        .menu-item.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #f0edff,
+                    #f6f4ff
+                );
+
+            color: var(--bulbit-purple);
+
+            font-weight: 750;
+
+            box-shadow:
+                inset 0 0 0 1px
+                rgba(110, 80, 239, 0.035);
+        }
+
+
+        .menu-item.active::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 8px;
+
+            bottom: 8px;
+
+            width: 3px;
+
+            border-radius: 0 4px 4px 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #8060fa,
+                    #6545e8
+                );
+        }
+
+
+        /* =====================================================
+           MENU ICON
+           ===================================================== */
+
+        .menu-icon {
+
+            width: 28px;
+            height: 28px;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 8px;
+
+            color: #7f8a9e;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .menu-icon svg {
+
+            width: 16px;
+            height: 16px;
+
+            stroke: currentColor;
+        }
+
+
+        .menu-item:hover .menu-icon {
+
+            background: #ece9ff;
+
+            color: var(--bulbit-purple);
+        }
+
+
+        .menu-item.active .menu-icon {
+
+            background: #e3ddff;
+
+            color: var(--bulbit-purple);
+        }
+
+
+        .menu-label {
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           SIDEBAR SPACER
+           ===================================================== */
+
+        .sidebar-spacer {
+
+            flex: 1;
+
+            min-height: 25px;
+        }
+
+
+        /* =====================================================
+           SIDEBAR USER
+           ===================================================== */
+
+        .sidebar-user {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin: 9px 3px 0;
+
+            padding: 12px 8px 3px;
+
+            border-top:
+                1px solid #e6eaf0;
+        }
+
+
+        .sidebar-avatar {
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8060f8,
+                    #6545e5
+                );
+
+            color: #ffffff;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        .sidebar-user-info {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+        }
+
+
+        .sidebar-user-info strong {
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            color: #1b263b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        .sidebar-user-info small {
+
+            margin-top: 2px;
+
+            color: #8e98aa;
+
+            font-size: 8px;
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+           ===================================================== */
+
+        .main-content {
+
+            position: relative;
+
+            width: calc(100% - var(--sidebar-width));
+
+            height: 100%;
+
+            margin-left: var(--sidebar-width);
+
+            padding: 0;
+
+            overflow-y: auto;
+
+            overflow-x: hidden;
+
+            scroll-behavior: smooth;
+
+            scrollbar-width: thin;
+
+            scrollbar-color:
+                #cfd5df
+                transparent;
+        }
+
+
+        /* =====================================================
+           SCROLLBAR
+           ===================================================== */
+
+        .main-content::-webkit-scrollbar {
+
+            width: 8px;
+        }
+
+
+        .main-content::-webkit-scrollbar-track {
+
+            background: transparent;
+        }
+
+
+        .main-content::-webkit-scrollbar-thumb {
+
+            background: #cfd5df;
+
+            border-radius: 20px;
+
+            border: 2px solid transparent;
+
+            background-clip: padding-box;
+        }
+
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+
+            background: #b8c0cd;
+
+            border: 2px solid transparent;
+
+            background-clip: padding-box;
+        }
+
+
+        /* =====================================================
+           ALERT
+           ===================================================== */
+
+        .main-content > .alert {
+
+            margin: 20px 30px 0;
+        }
+
+
+        .alert.success {
+
+            border-radius: 10px;
+        }
+
+
+        .alert.error {
+
+            border-radius: 10px;
+        }
+
+
+        /* =====================================================
+           MOBILE SIDEBAR OVERLAY
+           ===================================================== */
+
+        .sidebar-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 3500;
+
+            display: none;
+
+            background:
+                rgba(15, 23, 42, 0.40);
+
+            backdrop-filter: blur(2px);
+
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+
+        .sidebar-overlay.show {
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           DARK THEME
+           ===================================================== */
+
+        html[data-theme="dark"] body {
+
+            background: #101522;
+
+            color: #e8ecf5;
+        }
+
+
+        html[data-theme="dark"] .top-navbar {
+
+            background:
+                rgba(17, 23, 36, 0.96);
+
+            border-color: #252d3d;
+        }
+
+
+        html[data-theme="dark"] .brand-text {
+
+            color: #f1f4fb;
+        }
+
+
+        html[data-theme="dark"] .icon-button,
+        html[data-theme="dark"] .logout-button {
+
+            background: #171e2d;
+
+            border-color: #2a3344;
+
+            color: #aeb8ca;
+        }
+
+
+        html[data-theme="dark"] .sidebar {
+
+            background: #131a28;
+
+            border-color: #252d3d;
+        }
+
+
+        html[data-theme="dark"] .sidebar-brand-text strong,
+        html[data-theme="dark"] .sidebar-user-info strong {
+
+            color: #eef2f9;
+        }
+
+
+        html[data-theme="dark"] .menu-item {
+
+            color: #a4aec0;
+        }
+
+
+        html[data-theme="dark"] .menu-item:hover {
+
+            background: #1d2535;
+
+            color: #a995ff;
+        }
+
+
+        html[data-theme="dark"] .menu-item.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #25203e,
+                    #211d36
+                );
+
+            color: #ad9cff;
+        }
+
+
+        html[data-theme="dark"] .menu-item.active .menu-icon {
+
+            background: #30285a;
+
+            color: #a895ff;
+        }
+
+
+        html[data-theme="dark"] .main-content {
+
+            scrollbar-color:
+                #414b5e
+                transparent;
+        }
+
+
+        html[data-theme="dark"] .notification-dropdown {
+
+            background: #171e2d;
+
+            border-color: #2a3344;
+        }
+
+
+        html[data-theme="dark"] .notification-header,
+        html[data-theme="dark"] .notification-footer {
+
+            border-color: #2a3344;
+        }
+
+
+        html[data-theme="dark"] .notification-header h4 {
+
+            color: #edf1f8;
+        }
+
+
+        /* =====================================================
+           TABLET
+           ===================================================== */
+
+        @@media (max-width: 1000px) {
+
+            :root {
+
+                --sidebar-width: 205px;
+
+            }
+
+            .top-left {
+
+                min-width: 205px;
+            }
+
+            .top-right {
+
+                min-width: auto;
+            }
+
+            .profile-info {
+
+                display: none;
+            }
+
+            .main-content > .alert {
+
+                margin-left: 22px;
+
+                margin-right: 22px;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @@media (max-width: 760px) {
+
+            :root {
+
+                --topbar-height: 64px;
+
+            }
+
+
+            .top-navbar {
+
+                padding: 0 13px;
+            }
+
+
+            .top-left {
+
+                min-width: auto;
+
+                gap: 8px;
+            }
+
+
+            .mobile-menu-btn {
+
+                display: inline-flex;
+            }
+
+
+            .brand-icon {
+
+                width: 37px;
+                height: 37px;
+
+                border-radius: 10px;
+
+                font-size: 19px;
+            }
+
+
+            .brand-text {
+
+                font-size: 17px;
+            }
+
+
+            .top-center {
+
+                display: none;
+            }
+
+
+            .top-right {
+
+                gap: 6px;
+
+                min-width: auto;
+            }
+
+
+            .icon-button {
+
+                width: 37px;
+                height: 37px;
+            }
+
+
+            .top-profile {
+
+                display: none;
+            }
+
+
+            .logout-button {
+
+                min-height: 35px;
+
+                padding: 0 9px;
+
+                font-size: 10px;
+            }
+
+
+            .sidebar {
+
+                top: var(--topbar-height);
+
+                width: 245px;
+
+                transform:
+                    translateX(-105%);
+
+                transition:
+                    transform 0.25s ease;
+
+                box-shadow:
+                    12px 0 35px
+                    rgba(20, 30, 55, 0.16);
+            }
+
+
+            .sidebar.mobile-open {
+
+                transform:
+                    translateX(0);
+            }
+
+
+            .main-content {
+
+                width: 100%;
+
+                margin-left: 0;
+            }
+
+
+            .main-content > .alert {
+
+                margin-left: 14px;
+
+                margin-right: 14px;
+            }
+
+
+            .notification-dropdown {
+
+                position: fixed;
+
+                top: calc(
+                    var(--topbar-height) + 8px
+                );
+
+                right: 10px;
+
+                left: 10px;
+
+                width: auto;
+            }
+
+        }
+
+
+        /* =====================================================
+           VERY SMALL MOBILE
+           ===================================================== */
+
+        @@media (max-width: 420px) {
+
+            .brand-text {
+
+                display: none;
+            }
+
+
+            .top-right .theme-toggle-btn {
+
+                display: none;
+            }
+
+
+            .logout-button {
+
+                padding: 0 8px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
-    <!-- Hidden form for JavaScript Anti-Forgery token extraction -->
-    <form id="csrfForm" style="display:none;">
+
+
+    <!-- =====================================================
+         CSRF
+         ===================================================== -->
+
+    <form id="csrfForm"
+          style="display:none;">
+
         @Html.AntiForgeryToken()
+
     </form>
+
 
     @if (User.Identity?.IsAuthenticated == true)
     {
-        <!-- ================= TOP NAVBAR ================= -->
+
+
+        <!-- =================================================
+             TOP NAVBAR
+             ================================================= -->
+
         <header class="top-navbar">
 
+
+            <!-- LEFT -->
+
             <div class="top-left">
-                <button class="mobile-menu-btn" id="sidebarToggleBtn" aria-label="Toggle navigation">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
+
+
+                <button class="mobile-menu-btn"
+                        id="sidebarToggleBtn"
+                        aria-label="Toggle navigation"
+                        type="button">
+
+
+                    <svg width="20"
+                         height="20"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <line x1="3"
+                              y1="12"
+                              x2="21"
+                              y2="12">
+                        </line>
+
+                        <line x1="3"
+                              y1="6"
+                              x2="21"
+                              y2="6">
+                        </line>
+
+                        <line x1="3"
+                              y1="18"
+                              x2="21"
+                              y2="18">
+                        </line>
+
                     </svg>
+
+
                 </button>
+
 
                 <a asp-controller="Dashboard"
                    asp-action="Index"
                    class="navbar-brand">
-                    <span class="brand-icon">B</span>
-                    <span class="brand-text">BulBit</span>
+
+
+                    <span class="brand-icon">
+                        B
+                    </span>
+
+
+                    <span class="brand-text">
+                        BulBit
+                    </span>
+
+
                 </a>
+
+
             </div>
 
+
+            <!-- CENTER -->
+
             <div class="top-center">
-                <!-- Can host search or breadcrumbs -->
             </div>
+
+
+            <!-- RIGHT -->
 
             <div class="top-right">
 
-                <!-- Theme Toggle Button -->
-                <button class="icon-button theme-toggle-btn" id="themeToggleBtn" title="Toggle dark/light theme" aria-label="Toggle dark/light theme">
-                    <span class="theme-icon light-icon" title="Switch to Light mode">☀️</span>
-                    <span class="theme-icon dark-icon" title="Switch to Dark mode">🌙</span>
+
+                <!-- THEME -->
+
+                <button class="icon-button theme-toggle-btn"
+                        id="themeToggleBtn"
+                        title="Toggle dark/light theme"
+                        aria-label="Toggle dark/light theme"
+                        type="button">
+
+
+                    <span class="theme-icon light-icon">
+                        ☀️
+                    </span>
+
+
+                    <span class="theme-icon dark-icon">
+                        🌙
+                    </span>
+
+
                 </button>
 
-                <!-- Notifications Dropdown -->
-                <div class="notification-container" id="notificationContainer">
-                    <button class="icon-button notification-btn" id="notificationBtn" title="Notifications" aria-label="Notifications" aria-expanded="false">
-                        <svg class="bell-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+
+                <!-- =================================================
+                     NOTIFICATIONS
+                     ================================================= -->
+
+                <div class="notification-container"
+                     id="notificationContainer">
+
+
+                    <button class="icon-button notification-btn"
+                            id="notificationBtn"
+                            title="Notifications"
+                            aria-label="Notifications"
+                            aria-expanded="false"
+                            type="button">
+
+
+                        <svg class="bell-icon"
+                             viewBox="0 0 24 24"
+                             width="19"
+                             height="19"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             fill="none"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9">
+                            </path>
+
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0">
+                            </path>
+
                         </svg>
-                        <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+
+
+                        <span class="notification-badge"
+                              id="notificationBadge"
+                              style="display:none;">
+
+                            0
+
+                        </span>
+
+
                     </button>
 
-                    <div class="notification-dropdown" id="notificationDropdown">
+
+                    <div class="notification-dropdown"
+                         id="notificationDropdown">
+
+
                         <div class="notification-header">
+
+
                             <div class="notification-header-info">
-                                <h4>Notifications</h4>
-                                <span class="notification-unread-pill" id="dropdownUnreadCount">0 new</span>
+
+                                <h4>
+                                    Notifications
+                                </h4>
+
+                                <span class="notification-unread-pill"
+                                      id="dropdownUnreadCount">
+
+                                    0 new
+
+                                </span>
+
                             </div>
-                            <button type="button" class="mark-all-read-btn" id="markAllReadBtn">Mark all read</button>
+
+
+                            <button type="button"
+                                    class="mark-all-read-btn"
+                                    id="markAllReadBtn">
+
+                                Mark all read
+
+                            </button>
+
+
                         </div>
-                        <div class="notification-list" id="notificationList">
-                            <div class="notification-loading">Loading notifications...</div>
+
+
+                        <div class="notification-list"
+                             id="notificationList">
+
+
+                            <div class="notification-loading">
+
+                                Loading notifications...
+
+                            </div>
+
+
                         </div>
+
+
                         <div class="notification-footer">
-                            <a asp-controller="Task" asp-action="Index" class="notification-footer-link">Tasks</a>
-                            <span class="footer-dot">•</span>
-                            <a asp-controller="Calendar" asp-action="Index" class="notification-footer-link">Calendar</a>
+
+
+                            <a asp-controller="Task"
+                               asp-action="Index"
+                               class="notification-footer-link">
+
+                                Tasks
+
+                            </a>
+
+
+                            <span class="footer-dot">
+                                •
+                            </span>
+
+
+                            <a asp-controller="Calendar"
+                               asp-action="Index"
+                               class="notification-footer-link">
+
+                                Calendar
+
+                            </a>
+
+
                         </div>
+
+
                     </div>
+
+
                 </div>
+
+
+                <!-- =================================================
+                     PROFILE
+                     ================================================= -->
 
                 <div class="top-profile">
+
+
                     <div class="profile-avatar">
-                        @((User.Identity?.Name ?? "U").Substring(0, 1).ToUpper())
+
+                        @((User.Identity?.Name ?? "U")
+                            .Substring(0, 1)
+                            .ToUpper())
+
                     </div>
 
+
                     <div class="profile-info">
-                        <strong>@User.Identity?.Name</strong>
-                        <small class="role-badge">@(User.IsInRole("Admin") ? "Administrator" : "Employee")</small>
+
+
+                        <strong>
+                            @User.Identity?.Name
+                        </strong>
+
+
+                        <small class="role-badge">
+
+                            @(User.IsInRole("Admin")
+                                ? "Administrator"
+                                : "Employee")
+
+                        </small>
+
+
                     </div>
+
+
                 </div>
+
+
+                <!-- =================================================
+                     LOGOUT
+                     ================================================= -->
 
                 <form asp-controller="Account"
                       asp-action="Logout"
                       method="post">
+
+
                     @Html.AntiForgeryToken()
+
+
                     <button type="submit"
-                            class="logout-button" title="Sign out">
+                            class="logout-button"
+                            title="Sign out">
+
                         Logout
+
                     </button>
+
+
                 </form>
+
 
             </div>
 
+
         </header>
 
-        <!-- Sidebar overlay for mobile -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <!-- ================= APPLICATION ================= -->
+        <!-- =====================================================
+             MOBILE OVERLAY
+             ===================================================== -->
+
+        <div class="sidebar-overlay"
+             id="sidebarOverlay">
+        </div>
+
+
+        <!-- =====================================================
+             APPLICATION
+             ===================================================== -->
 
         <div class="application">
 
-            <!-- ================= SIDEBAR ================= -->
 
-            <aside class="sidebar" id="appSidebar">
+            <!-- =================================================
+                 SIDEBAR
+                 ================================================= -->
+
+            <aside class="sidebar"
+                   id="appSidebar">
+
+
+                <!-- BRAND -->
 
                 <div class="sidebar-brand">
+
+
                     <div class="sidebar-logo">
                         BB
                     </div>
 
+
                     <div class="sidebar-brand-text">
-                        <strong>BulBit</strong>
-                        <small>Workspace Management</small>
+
+
+                        <strong>
+                            BulBit
+                        </strong>
+
+
+                        <small>
+                            Workspace Management
+                        </small>
+
+
                     </div>
+
+
                 </div>
+
+
+                <!-- MENU TITLE -->
 
                 <div class="menu-heading">
                     MAIN MENU
                 </div>
 
+
+                <!-- =================================================
+                     DASHBOARD
+                     ================================================= -->
+
                 <a asp-controller="Dashboard"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" || ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
-                    <span class="menu-icon">⌂</span>
-                    <span class="menu-label">Dashboard</span>
+
+
+                    <span class="menu-icon">
+
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="3"
+                                  width="7"
+                                  height="7"
+                                  rx="1">
+                            </rect>
+
+                            <rect x="14"
+                                  y="3"
+                                  width="7"
+                                  height="7"
+                                  rx="1">
+                            </rect>
+
+                            <rect x="3"
+                                  y="14"
+                                  width="7"
+                                  height="7"
+                                  rx="1">
+                            </rect>
+
+                            <rect x="14"
+                                  y="14"
+                                  width="7"
+                                  height="7"
+                                  rx="1">
+                            </rect>
+
+                        </svg>
+
+
+                    </span>
+
+
+                    <span class="menu-label">
+                        Dashboard
+                    </span>
+
+
                 </a>
+
+
+                <!-- =================================================
+                     EMPLOYEES
+                     ================================================= -->
 
                 <a asp-controller="Employee"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employee" ? "active" : "")">
-                    <span class="menu-icon">♙</span>
-                    <span class="menu-label">Employees</span>
+
+
+                    <span class="menu-icon">
+
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="9"
+                                    cy="8"
+                                    r="3">
+                            </circle>
+
+                            <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6">
+                            </path>
+
+                            <path d="M16 4.5a3 3 0 0 1 0 5.8">
+                            </path>
+
+                            <path d="M18 14c1.8.9 3 2.8 3 5">
+                            </path>
+
+                        </svg>
+
+
+                    </span>
+
+
+                    <span class="menu-label">
+                        Employees
+                    </span>
+
+
                 </a>
+
+
+                <!-- =================================================
+                     TASKS
+                     ================================================= -->
 
                 <a asp-controller="Task"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Task" ? "active" : "")">
-                    <span class="menu-icon">✓</span>
-                    <span class="menu-label">Tasks</span>
+
+
+                    <span class="menu-icon">
+
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="4"
+                                  y="4"
+                                  width="16"
+                                  height="16"
+                                  rx="3">
+                            </rect>
+
+                            <path d="m8 12 2.5 2.5L16 9">
+                            </path>
+
+                        </svg>
+
+
+                    </span>
+
+
+                    <span class="menu-label">
+                        Tasks
+                    </span>
+
+
                 </a>
+
+
+                <!-- =================================================
+                     ATTENDANCE
+                     ================================================= -->
 
                 <a asp-controller="Attendance"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Attendance" ? "active" : "")">
-                    <span class="menu-icon">◷</span>
-                    <span class="menu-label">Attendance</span>
+
+
+                    <span class="menu-icon">
+
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="12"
+                                    cy="12"
+                                    r="9">
+                            </circle>
+
+                            <path d="M12 7v5l3 2">
+                            </path>
+
+                        </svg>
+
+
+                    </span>
+
+
+                    <span class="menu-label">
+                        Attendance
+                    </span>
+
+
                 </a>
+
+
+                <!-- =================================================
+                     CALENDAR
+                     ================================================= -->
 
                 <a asp-controller="Calendar"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Calendar" ? "active" : "")">
-                    <span class="menu-icon">□</span>
-                    <span class="menu-label">Calendar</span>
+
+
+                    <span class="menu-icon">
+
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="4"
+                                  width="18"
+                                  height="17"
+                                  rx="2">
+                            </rect>
+
+                            <line x1="16"
+                                  y1="2"
+                                  x2="16"
+                                  y2="6">
+                            </line>
+
+                            <line x1="8"
+                                  y1="2"
+                                  x2="8"
+                                  y2="6">
+                            </line>
+
+                            <line x1="3"
+                                  y1="9"
+                                  x2="21"
+                                  y2="9">
+                            </line>
+
+                        </svg>
+
+
+                    </span>
+
+
+                    <span class="menu-label">
+                        Calendar
+                    </span>
+
+
                 </a>
+
+
+                <!-- =================================================
+                     CLIENTS
+                     ================================================= -->
 
                 <a asp-controller="Client"
                    asp-action="Index"
                    class="menu-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Client" ? "active" : "")">
-                    <span class="menu-icon">👥</span>
-                    <span class="menu-label">Clients</span>
+
+
+                    <span class="menu-icon">
+
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="9"
+                                    cy="8"
+                                    r="3">
+                            </circle>
+
+                            <circle cx="17"
+                                    cy="9"
+                                    r="2.5">
+                            </circle>
+
+                            <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6">
+                            </path>
+
+                            <path d="M15 15c3 0 5 2 5 5">
+                            </path>
+
+                        </svg>
+
+
+                    </span>
+
+
+                    <span class="menu-label">
+                        Clients
+                    </span>
+
+
                 </a>
 
-                <div class="sidebar-spacer"></div>
+
+                <!-- SPACER -->
+
+                <div class="sidebar-spacer">
+                </div>
+
+
+                <!-- =================================================
+                     SIDEBAR USER
+                     ================================================= -->
 
                 <div class="sidebar-user">
+
+
                     <div class="sidebar-avatar">
-                        @((User.Identity?.Name ?? "U").Substring(0, 1).ToUpper())
+
+                        @((User.Identity?.Name ?? "U")
+                            .Substring(0, 1)
+                            .ToUpper())
+
                     </div>
 
+
                     <div class="sidebar-user-info">
-                        <strong>@User.Identity?.Name</strong>
-                        <small class="role-badge">@(User.IsInRole("Admin") ? "Administrator" : "Employee")</small>
+
+
+                        <strong>
+                            @User.Identity?.Name
+                        </strong>
+
+
+                        <small class="role-badge">
+
+                            @(User.IsInRole("Admin")
+                                ? "Administrator"
+                                : "Employee")
+
+                        </small>
+
+
                     </div>
+
+
                 </div>
+
 
             </aside>
 
-            <!-- ================= PAGE CONTENT ================= -->
+
+            <!-- =================================================
+                 MAIN CONTENT
+                 ================================================= -->
 
             <main class="main-content">
 
+
                 @if (TempData["SuccessMessage"] is string success)
                 {
+
                     <div class="alert success">
                         @success
                     </div>
+
                 }
+
 
                 @if (TempData["ErrorMessage"] is string error)
                 {
+
                     <div class="alert error">
                         @error
                     </div>
+
                 }
+
 
                 @RenderBody()
 
+
             </main>
 
+
         </div>
+
+
     }
     else
     {
-        <!-- Login/Register pages -->
+
+
+        <!-- =====================================================
+             PUBLIC / LOGIN CONTENT
+             ===================================================== -->
+
         <main class="public-content">
+
 
             @if (TempData["SuccessMessage"] is string success)
             {
+
                 <div class="alert success">
                     @success
                 </div>
+
             }
+
 
             @if (TempData["ErrorMessage"] is string error)
             {
+
                 <div class="alert error">
                     @error
                 </div>
+
             }
+
 
             @RenderBody()
 
+
         </main>
+
+
     }
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- =====================================================
+         SITE JS
+         ===================================================== -->
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
+
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false
+    )
+
+
+    <!-- =====================================================
+         SIDEBAR MOBILE SCRIPT
+         ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                const sidebar =
+                    document.getElementById(
+                        "appSidebar"
+                    );
+
+
+                const toggle =
+                    document.getElementById(
+                        "sidebarToggleBtn"
+                    );
+
+
+                const overlay =
+                    document.getElementById(
+                        "sidebarOverlay"
+                    );
+
+
+                if (!sidebar ||
+                    !toggle) {
+
+                    return;
+
+                }
+
+
+                function openSidebar() {
+
+                    sidebar.classList.add(
+                        "mobile-open"
+                    );
+
+                    overlay?.classList.add(
+                        "show"
+                    );
+
+                }
+
+
+                function closeSidebar() {
+
+                    sidebar.classList.remove(
+                        "mobile-open"
+                    );
+
+                    overlay?.classList.remove(
+                        "show"
+                    );
+
+                }
+
+
+                toggle.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            sidebar.classList.contains(
+                                "mobile-open"
+                            )
+                        ) {
+
+                            closeSidebar();
+
+                        }
+                        else {
+
+                            openSidebar();
+
+                        }
+
+                    }
+                );
+
+
+                overlay?.addEventListener(
+                    "click",
+                    closeSidebar
+                );
+
+
+                document.querySelectorAll(
+                    ".menu-item"
+                ).forEach(
+                    function (item) {
+
+                        item.addEventListener(
+                            "click",
+                            function () {
+
+                                if (
+                                    window.innerWidth <= 760
+                                ) {
+
+                                    closeSidebar();
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                window.addEventListener(
+                    "resize",
+                    function () {
+
+                        if (
+                            window.innerWidth > 760
+                        ) {
+
+                            closeSidebar();
+
+                        }
+
+                    }
+                );
+
+
+            }
+        );
+
+    </script>
+
 
 </body>
+
 </html>
