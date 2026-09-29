@@ -1,10 +1,10 @@
 @using AuthMvcApp.Helpers
 @model List<AuthMvcApp.Models.Attendance>
+
 @{
     var currentEmployee =
         ViewBag.CurrentEmployee as AuthMvcApp.Models.Employee;
 }
-
 
 @{
     ViewData["Title"] = "Attendance";
@@ -21,9 +21,9 @@
     var leave = 0;
 
     var currentEmployeeAttendance = currentEmployee == null
-    ? null
-    : todayRecords.FirstOrDefault(x =>
-        x.EmployeeId == currentEmployee.Id);
+        ? null
+        : todayRecords.FirstOrDefault(x =>
+            x.EmployeeId == currentEmployee.Id);
 
     var total = present + late + absent + leave;
 
@@ -32,40 +32,465 @@
         : (present * 100 / total);
 }
 
+
+<style>
+/* =========================================================
+   SMALL SQUARE ATTENDANCE STAT CARDS
+   ========================================================= */
+
+.attendance-top {
+    display: grid;
+
+    grid-template-columns:
+        minmax(360px, 2.2fr)
+        repeat(4, 145px);
+
+    gap: 14px;
+
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   SQUARE CARD
+   ========================================================= */
+
+.attendance-top .attendance-stat {
+
+    width: 145px;
+    height: 145px;
+
+    box-sizing: border-box;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 15px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e9f1;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 18px rgba(35, 45, 75, 0.06);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+.attendance-top .attendance-stat:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 13px 28px rgba(35, 45, 75, 0.11);
+}
+
+
+/* =========================================================
+   COLORED TOP BORDER
+   ========================================================= */
+
+.attendance-stat.present-card {
+    border-top: 3px solid #20b486;
+}
+
+.attendance-stat.late-card {
+    border-top: 3px solid #efa33d;
+}
+
+.attendance-stat.leave-card {
+    border-top: 3px solid #4c8df5;
+}
+
+.attendance-stat.rate-card {
+    border-top: 3px solid #7054ed;
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.attendance-stat .stat-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 8px;
+
+    border-radius: 12px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.attendance-stat .stat-icon svg {
+
+    width: 19px;
+    height: 19px;
+
+    stroke-width: 2.5;
+}
+
+
+/* =========================================================
+   PRESENT ICON
+   ========================================================= */
+
+.attendance-stat.present-card .stat-icon {
+
+    background: #e8faf4;
+
+    color: #16a879;
+}
+
+
+/* =========================================================
+   LATE ICON
+   ========================================================= */
+
+.attendance-stat.late-card .stat-icon {
+
+    background: #fff4e3;
+
+    color: #df8a20;
+}
+
+
+/* =========================================================
+   LEAVE ICON
+   ========================================================= */
+
+.attendance-stat.leave-card .stat-icon {
+
+    background: #edf4ff;
+
+    color: #397be5;
+}
+
+
+/* =========================================================
+   RATE ICON
+   ========================================================= */
+
+.attendance-stat.rate-card .stat-icon {
+
+    background: #f0edff;
+
+    color: #684be8;
+}
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.attendance-stat .stat-label {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin: 0;
+
+    color: #7c879b;
+
+    font-size: 11px;
+
+    font-weight: 650;
+
+    line-height: 1.25;
+}
+
+
+/* =========================================================
+   NUMBER
+   ========================================================= */
+
+.attendance-stat .stat-number {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: #172036;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+
+/* =========================================================
+   TODAY
+   ========================================================= */
+
+.attendance-stat .stat-today {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    margin-top: 6px;
+
+    color: #9aa3b2;
+
+    font-size: 9px;
+
+    font-style: normal;
+
+    font-weight: 600;
+}
+
+
+.attendance-stat .stat-today::before {
+
+    content: "";
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: #a3acbb;
+}
+
+
+.attendance-stat.present-card .stat-today::before {
+    background: #20b486;
+}
+
+.attendance-stat.late-card .stat-today::before {
+    background: #efa33d;
+}
+
+.attendance-stat.leave-card .stat-today::before {
+    background: #4c8df5;
+}
+
+.attendance-stat.rate-card .stat-today::before {
+    background: #7054ed;
+}
+
+
+/* =========================================================
+   SOFT BACKGROUND CIRCLE
+   ========================================================= */
+
+.attendance-stat::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 70px;
+    height: 70px;
+
+    right: -32px;
+    bottom: -32px;
+
+    border-radius: 50%;
+
+    opacity: 0.55;
+
+    pointer-events: none;
+}
+
+
+.attendance-stat.present-card::after {
+    background: #e8faf4;
+}
+
+.attendance-stat.late-card::after {
+    background: #fff1d9;
+}
+
+.attendance-stat.leave-card::after {
+    background: #eaf2ff;
+}
+
+.attendance-stat.rate-card::after {
+    background: #eeeaff;
+}
+
+
+/* =========================================================
+   CHECK-IN CARD
+   ========================================================= */
+
+.attendance-top .checkin-card {
+
+    min-height: 145px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@@media (max-width: 1200px) {
+
+    .attendance-top {
+
+        grid-template-columns:
+            minmax(330px, 2fr)
+            repeat(2, 145px);
+
+    }
+
+}
+
+
+@@media (max-width: 800px) {
+
+    .attendance-top {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+    .attendance-top .attendance-stat {
+
+        width: 100%;
+        height: 145px;
+
+    }
+
+}
+
+
+@@media (max-width: 500px) {
+
+    .attendance-top {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .attendance-top .attendance-stat {
+
+        width: 145px;
+
+        margin: 0 auto;
+
+    }
+
+}
+
+</style>
+
+
 <div class="attendance-page">
 
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
     <div class="attendance-header">
+
         <div>
-            <div class="eyebrow">TIME & ATTENDANCE</div>
 
-            <h1>Attendance</h1>
+            <div class="eyebrow">
+                TIME & ATTENDANCE
+            </div>
 
-            <p>Today's attendance overview (Indian Standard Time · IST).</p>
+            <h1>
+                Attendance
+            </h1>
+
+            <p>
+                Today's attendance overview (Indian Standard Time · IST).
+            </p>
+
         </div>
+
     </div>
 
 
-    <!-- TOP SECTION -->
+    <!-- =====================================================
+         TOP SECTION
+         ===================================================== -->
 
     <div class="attendance-top">
 
+
+        <!-- =================================================
+             CHECK-IN / CHECK-OUT CARD
+             ================================================= -->
+
         <div class="checkin-card">
 
+
             <div class="today-row">
+
                 <div class="today-label">
                     TODAY
                 </div>
-                <div class="ist-live-indicator" title="Indian Standard Time">
+
+
+                <div class="ist-live-indicator"
+                     title="Indian Standard Time">
+
                     <span class="live-pulse"></span>
-                    <span id="liveIstClock">@TimeHelper.Now.ToString("hh:mm:ss tt")</span> IST
+
+                    <span id="liveIstClock">
+                        @TimeHelper.Now.ToString("hh:mm:ss tt")
+                    </span>
+
+                    IST
+
                 </div>
+
             </div>
 
+
             <strong class="checkin-date-text">
+
                 @TimeHelper.Now.ToString("dddd, MMMM dd, yyyy")
+
             </strong>
 
+
             <h2>
+
                 @if (currentEmployeeAttendance == null)
                 {
                     @:You haven't checked in yet
@@ -78,9 +503,12 @@
                 {
                     @:Your attendance is completed
                 }
+
             </h2>
 
+
             <p>
+
                 @if (currentEmployeeAttendance == null)
                 {
                     @:Mark your attendance when you start your workday.
@@ -93,11 +521,13 @@
                 {
                     @:Checked in at @(currentEmployeeAttendance.CheckIn?.ToString("hh:mm tt") ?? "—") · Checked out at @(currentEmployeeAttendance.CheckOut?.ToString("hh:mm tt") ?? "—") (@currentEmployeeAttendance.Hours hrs)
                 }
+
             </p>
 
 
             @if (currentEmployeeAttendance == null)
             {
+
                 <!-- CHECK IN -->
 
                 <form asp-controller="Attendance"
@@ -108,18 +538,40 @@
 
                     <button type="submit"
                             class="checkin-btn">
-                        <svg class="btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+
+                        <svg class="btn-svg"
+                             viewBox="0 0 24 24"
+                             width="18"
+                             height="18"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2.5"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
                             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+
                             <polyline points="10 17 15 12 10 7"></polyline>
-                            <line x1="15" y1="12" x2="3" y2="12"></line>
+
+                            <line x1="15"
+                                  y1="12"
+                                  x2="3"
+                                  y2="12"></line>
+
                         </svg>
-                        <span>Check In</span>
+
+                        <span>
+                            Check In
+                        </span>
+
                     </button>
 
                 </form>
+
             }
             else if (currentEmployeeAttendance.CheckOut == null)
             {
+
                 <!-- CHECK OUT -->
 
                 <form asp-controller="Attendance"
@@ -130,107 +582,248 @@
 
                     <button type="submit"
                             class="checkout-btn">
-                        <svg class="btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+
+                        <svg class="btn-svg"
+                             viewBox="0 0 24 24"
+                             width="18"
+                             height="18"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2.5"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+
                             <polyline points="16 17 21 12 16 7"></polyline>
-                            <line x1="21" y1="12" x2="9" y2="12"></line>
+
+                            <line x1="21"
+                                  y1="12"
+                                  x2="9"
+                                  y2="12"></line>
+
                         </svg>
-                        <span>Check Out</span>
+
+                        <span>
+                            Check Out
+                        </span>
+
                     </button>
 
                 </form>
+
             }
             else
             {
+
                 <span class="completed-attendance">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+
+                    <svg viewBox="0 0 24 24"
+                         width="18"
+                         height="18"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2.5"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
                         <polyline points="20 6 9 17 4 12"></polyline>
+
                     </svg>
-                    <span>Day Completed</span>
+
+                    <span>
+                        Day Completed
+                    </span>
+
                 </span>
+
             }
 
         </div>
 
 
-        <!-- PRESENT -->
+        <!-- =================================================
+             PRESENT
+             ================================================= -->
 
-        <div class="attendance-stat">
+        <div class="attendance-stat present-card">
 
-            <span>✓</span>
+            <div class="stat-icon">
 
-            <small>
-                Present<br />Days
-            </small>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
 
-            <strong>
+                    <path d="M20 6L9 17l-5-5"></path>
+
+                </svg>
+
+            </div>
+
+
+            <span class="stat-label">
+                Present Days
+            </span>
+
+
+            <strong class="stat-number">
                 @present
             </strong>
 
-            <em>
+
+            <em class="stat-today">
                 Today
             </em>
 
         </div>
 
 
-        <!-- LATE -->
+        <!-- =================================================
+             LATE
+             ================================================= -->
 
-        <div class="attendance-stat">
+        <div class="attendance-stat late-card">
 
-            <span>◷</span>
+            <div class="stat-icon">
 
-            <small>
-                Late<br />Days
-            </small>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
 
-            <strong>
+                    <circle cx="12"
+                            cy="12"
+                            r="9"></circle>
+
+                    <polyline points="12 7 12 12 15 14"></polyline>
+
+                </svg>
+
+            </div>
+
+
+            <span class="stat-label">
+                Late Days
+            </span>
+
+
+            <strong class="stat-number">
                 @late
             </strong>
 
-            <em>
+
+            <em class="stat-today">
                 Today
             </em>
 
         </div>
 
 
-        <!-- LEAVE -->
+        <!-- =================================================
+             LEAVE
+             ================================================= -->
 
-        <div class="attendance-stat">
+        <div class="attendance-stat leave-card">
 
-            <span>▣</span>
+            <div class="stat-icon">
 
-            <small>
-                Leave<br />Days
-            </small>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
 
-            <strong>
+                    <rect x="3"
+                          y="4"
+                          width="18"
+                          height="17"
+                          rx="2"></rect>
+
+                    <line x1="16"
+                          y1="2"
+                          x2="16"
+                          y2="6"></line>
+
+                    <line x1="8"
+                          y1="2"
+                          x2="8"
+                          y2="6"></line>
+
+                    <line x1="3"
+                          y1="9"
+                          x2="21"
+                          y2="9"></line>
+
+                    <path d="M8 13h8"></path>
+
+                </svg>
+
+            </div>
+
+
+            <span class="stat-label">
+                Leave Days
+            </span>
+
+
+            <strong class="stat-number">
                 @leave
             </strong>
 
-            <em>
+
+            <em class="stat-today">
                 Today
             </em>
 
         </div>
 
 
-        <!-- RATE -->
+        <!-- =================================================
+             ATTENDANCE RATE
+             ================================================= -->
 
-        <div class="attendance-stat">
+        <div class="attendance-stat rate-card">
 
-            <span>%</span>
+            <div class="stat-icon">
 
-            <small>
-                Attendance<br />Rate
-            </small>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
 
-            <strong>
+                    <circle cx="7"
+                            cy="7"
+                            r="2"></circle>
+
+                    <circle cx="17"
+                            cy="17"
+                            r="2"></circle>
+
+                    <line x1="5"
+                          y1="19"
+                          x2="19"
+                          y2="5"></line>
+
+                </svg>
+
+            </div>
+
+
+            <span class="stat-label">
+                Attendance Rate
+            </span>
+
+
+            <strong class="stat-number">
                 @rate%
             </strong>
 
-            <em>
+
+            <em class="stat-today">
                 Today
             </em>
 
@@ -239,12 +832,20 @@
     </div>
 
 
-    <!-- SUMMARY -->
+    <!-- =====================================================
+         SUMMARY
+         ===================================================== -->
 
     <div class="attendance-summary">
 
+
+        <!-- PRESENT -->
+
         <div>
-            <span>✓</span>
+
+            <span>
+                ✓
+            </span>
 
             <small>
                 Present
@@ -253,11 +854,17 @@
             <strong>
                 @present
             </strong>
+
         </div>
 
 
+        <!-- LATE -->
+
         <div>
-            <span>◷</span>
+
+            <span>
+                ◷
+            </span>
 
             <small>
                 Late
@@ -266,11 +873,17 @@
             <strong>
                 @late
             </strong>
+
         </div>
 
 
+        <!-- ABSENT -->
+
         <div>
-            <span>×</span>
+
+            <span>
+                ×
+            </span>
 
             <small>
                 Absent
@@ -279,11 +892,17 @@
             <strong>
                 @absent
             </strong>
+
         </div>
 
 
+        <!-- ON LEAVE -->
+
         <div>
-            <span>▣</span>
+
+            <span>
+                ▣
+            </span>
 
             <small>
                 On Leave
@@ -292,12 +911,15 @@
             <strong>
                 @leave
             </strong>
+
         </div>
 
     </div>
 
 
-    <!-- TABLE -->
+    <!-- =====================================================
+         TODAY'S ATTENDANCE TABLE
+         ===================================================== -->
 
     <div class="attendance-table-card">
 
@@ -317,11 +939,27 @@
                 <thead>
 
                     <tr>
-                        <th>Employee</th>
-                        <th>Status</th>
-                        <th>Check In (IST)</th>
-                        <th>Check Out (IST)</th>
-                        <th>Hours</th>
+
+                        <th>
+                            Employee
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Check In (IST)
+                        </th>
+
+                        <th>
+                            Check Out (IST)
+                        </th>
+
+                        <th>
+                            Hours
+                        </th>
+
                     </tr>
 
                 </thead>
@@ -331,14 +969,21 @@
 
                     @foreach (var item in todayRecords)
                     {
+
                         <tr>
 
+                            <!-- EMPLOYEE -->
+
                             <td>
+
                                 <strong>
                                     @(item.Employee?.FullName ?? "Unknown")
                                 </strong>
+
                             </td>
 
+
+                            <!-- STATUS -->
 
                             <td>
 
@@ -349,15 +994,25 @@
                             </td>
 
 
+                            <!-- CHECK IN -->
+
                             <td>
+
                                 @(item.CheckIn?.ToString("hh:mm tt") ?? "—")
+
                             </td>
 
+
+                            <!-- CHECK OUT -->
 
                             <td>
+
                                 @(item.CheckOut?.ToString("hh:mm tt") ?? "—")
+
                             </td>
 
+
+                            <!-- HOURS -->
 
                             <td>
 
@@ -368,11 +1023,13 @@
                             </td>
 
                         </tr>
+
                     }
 
 
                     @if (!todayRecords.Any())
                     {
+
                         <tr>
 
                             <td colspan="5"
@@ -383,6 +1040,7 @@
                             </td>
 
                         </tr>
+
                     }
 
                 </tbody>
@@ -395,25 +1053,95 @@
 
 </div>
 
+
 @section Scripts {
+
     <script>
-        // Live Indian Standard Time (IST) Clock
+
+        // =====================================================
+        // LIVE INDIAN STANDARD TIME CLOCK
+        // =====================================================
+
         function updateLiveIstClock() {
-            const clockEl = document.getElementById('liveIstClock');
-            if (!clockEl) return;
+
+            const clockEl =
+                document.getElementById('liveIstClock');
+
+            if (!clockEl)
+                return;
+
+
             // IST is UTC+5:30
-            const now = new Date();
-            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const istTime = new Date(utcTime + (3600000 * 5.5));
-            let hours = istTime.getHours();
-            const minutes = String(istTime.getMinutes()).padStart(2, '0');
-            const seconds = String(istTime.getSeconds()).padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12; // 0 becomes 12
-            const strHours = String(hours).padStart(2, '0');
-            clockEl.textContent = `${strHours}:${minutes}:${seconds} ${ampm}`;
+
+            const now =
+                new Date();
+
+
+            const utcTime =
+                now.getTime() +
+                (now.getTimezoneOffset() * 60000);
+
+
+            const istTime =
+                new Date(
+                    utcTime +
+                    (3600000 * 5.5)
+                );
+
+
+            let hours =
+                istTime.getHours();
+
+
+            const minutes =
+                String(
+                    istTime.getMinutes()
+                ).padStart(2, '0');
+
+
+            const seconds =
+                String(
+                    istTime.getSeconds()
+                ).padStart(2, '0');
+
+
+            const ampm =
+                hours >= 12
+                    ? 'PM'
+                    : 'AM';
+
+
+            hours =
+                hours % 12;
+
+
+            hours =
+                hours
+                    ? hours
+                    : 12;
+
+
+            const strHours =
+                String(hours)
+                    .padStart(2, '0');
+
+
+            clockEl.textContent =
+                `${strHours}:${minutes}:${seconds} ${ampm}`;
+
         }
-        setInterval(updateLiveIstClock, 1000);
+
+
+        setInterval(
+            updateLiveIstClock,
+            1000
+        );
+
+
+        // Run immediately as well
+
+        updateLiveIstClock();
+
     </script>
+
 }

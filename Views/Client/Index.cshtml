@@ -1,197 +1,1368 @@
-
 @model IEnumerable<AuthMvcApp.Models.Client>
 
 @{
     ViewData["Title"] = "Clients";
 }
 
+
+<style>
+
+  <style>
+
+    /* =========================================================
+       CLIENT PAGE
+       ========================================================= */
+
+    .client-page {
+        width: 100%;
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 30px 34px 50px;
+        box-sizing: border-box;
+        color: #172036;
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .client-header {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 20px;
+
+        margin-bottom: 24px;
+    }
+
+
+    .client-eyebrow {
+        margin-bottom: 5px;
+
+        color: #6850eb;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 1.4px;
+    }
+
+
+    .client-header h1 {
+        margin: 0 0 6px;
+
+        color: #152039;
+
+        font-size: 36px;
+        line-height: 1.1;
+
+        font-weight: 800;
+
+        letter-spacing: -1px;
+    }
+
+
+    .client-header p {
+        margin: 0;
+
+        color: #8994a8;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       ADD CLIENT BUTTON
+       ========================================================= */
+
+    .client-add-btn {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        min-height: 43px;
+
+        padding: 0 17px;
+
+        box-sizing: border-box;
+
+        border: none;
+        border-radius: 11px;
+
+        background: linear-gradient(
+            135deg,
+            #7659f5,
+            #6544e8
+        );
+
+        color: #ffffff;
+
+        text-decoration: none;
+
+        font-size: 12px;
+        font-weight: 750;
+
+        white-space: nowrap;
+
+        box-shadow:
+            0 8px 20px rgba(103, 75, 235, 0.22);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+
+    .client-add-btn:hover {
+        color: #ffffff;
+        text-decoration: none;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 12px 26px rgba(103, 75, 235, 0.29);
+    }
+
+
+    .client-add-btn span {
+        width: 20px;
+        height: 20px;
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 6px;
+
+        background: rgba(255, 255, 255, 0.18);
+
+        font-size: 16px;
+        line-height: 1;
+    }
+
+
+    /* =========================================================
+       SUCCESS ALERT
+       ========================================================= */
+
+    .client-alert {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-bottom: 18px;
+
+        padding: 11px 14px;
+
+        box-sizing: border-box;
+
+        border-radius: 10px;
+
+        font-size: 12px;
+
+        font-weight: 650;
+    }
+
+
+    .client-alert.success {
+        background: #eafaf4;
+
+        border: 1px solid #c9efdf;
+
+        color: #168566;
+    }
+
+
+    /* =========================================================
+       MAIN CLIENT CARD
+       ========================================================= */
+
+    .client-card {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        background: #ffffff;
+
+        border: 1px solid #e4e9f0;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 8px 28px rgba(25, 37, 65, 0.055);
+
+        overflow: hidden;
+    }
+
+
+    /* =========================================================
+       CARD HEADER
+       ========================================================= */
+
+    .client-card-header {
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        padding: 22px 28px 19px;
+
+        box-sizing: border-box;
+    }
+
+
+    .client-card-header h2 {
+        margin: 0 0 5px;
+
+        color: #182238;
+
+        font-size: 21px;
+
+        font-weight: 800;
+
+        letter-spacing: -0.3px;
+    }
+
+
+    .client-card-header p {
+        margin: 0;
+
+        color: #929caf;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       CLIENT COUNT
+       ========================================================= */
+
+    .client-count {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-height: 33px;
+
+        padding: 0 13px;
+
+        border-radius: 18px;
+
+        background: #f0edff;
+
+        color: #6548df;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+       TABLE WRAPPER
+       ========================================================= */
+
+    .client-table-wrapper {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 0 28px 25px;
+
+        overflow-x: hidden;
+    }
+
+
+    /* =========================================================
+       TABLE
+       ========================================================= */
+
+    .client-table {
+        width: 100%;
+
+        min-width: 0;
+
+        table-layout: fixed;
+
+        border-collapse: separate;
+
+        border-spacing: 0;
+    }
+
+
+    /* =========================================================
+       COLUMN WIDTHS
+       ========================================================= */
+
+    .client-table th:nth-child(1),
+    .client-table td:nth-child(1) {
+        width: 16%;
+    }
+
+
+    .client-table th:nth-child(2),
+    .client-table td:nth-child(2) {
+        width: 25%;
+    }
+
+
+    .client-table th:nth-child(3),
+    .client-table td:nth-child(3) {
+        width: 11%;
+    }
+
+
+    .client-table th:nth-child(4),
+    .client-table td:nth-child(4) {
+        width: 11%;
+    }
+
+
+    .client-table th:nth-child(5),
+    .client-table td:nth-child(5) {
+        width: 12%;
+    }
+
+
+    .client-table th:nth-child(6),
+    .client-table td:nth-child(6) {
+        width: 12%;
+    }
+
+
+    .client-table th:nth-child(7),
+    .client-table td:nth-child(7) {
+        width: 13%;
+    }
+
+
+    /* =========================================================
+       TABLE HEADER
+       ========================================================= */
+
+    .client-table thead th {
+        box-sizing: border-box;
+
+        padding: 13px 9px;
+
+        background: #f3f6fa;
+
+        border-top: 1px solid #e2e7ef;
+
+        border-bottom: 1px solid #dfe5ed;
+
+        color: #68758b;
+
+        font-size: 9px;
+
+        font-weight: 800;
+
+        letter-spacing: 0.45px;
+
+        line-height: 1.25;
+
+        text-align: left;
+
+        white-space: normal;
+
+        word-break: normal;
+    }
+
+
+    .client-table thead th:first-child {
+        padding-left: 12px;
+
+        border-left: 1px solid #e2e7ef;
+
+        border-top-left-radius: 11px;
+    }
+
+
+    .client-table thead th:last-child {
+        border-right: 1px solid #e2e7ef;
+
+        border-top-right-radius: 11px;
+    }
+
+
+    /* =========================================================
+       TABLE BODY
+       ========================================================= */
+
+    .client-table tbody tr {
+        transition:
+            background 0.18s ease;
+    }
+
+
+    .client-table tbody tr:hover {
+        background: #fafbff;
+    }
+
+
+    .client-table tbody td {
+        box-sizing: border-box;
+
+        padding: 13px 9px;
+
+        border-bottom: 1px solid #e7ebf1;
+
+        color: #29344a;
+
+        font-size: 11px;
+
+        vertical-align: middle;
+
+        overflow: hidden;
+    }
+
+
+    .client-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    /* =========================================================
+       CLIENT COLUMN
+       ========================================================= */
+
+    .client-info {
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        min-width: 0;
+    }
+
+
+    /* =========================================================
+       CLIENT AVATAR
+       ========================================================= */
+
+    .client-avatar {
+        width: 38px;
+        height: 38px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f0edff,
+                #e6e1ff
+            );
+
+        border: 1px solid #ddd7ff;
+
+        color: #674be5;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        box-shadow:
+            0 4px 10px rgba(103, 75, 229, 0.08);
+    }
+
+
+    .client-info strong {
+        min-width: 0;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+        color: #1b263b;
+
+        font-size: 12px;
+
+        font-weight: 750;
+    }
+
+
+    /* =========================================================
+       DESCRIPTION
+       ========================================================= */
+
+    .client-description {
+        display: block;
+
+        width: 100%;
+
+        max-width: 100%;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+
+        color: #8994a8;
+
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       MONTHLY NUMBER CELLS
+       ========================================================= */
+
+    .client-table td:nth-child(3),
+    .client-table td:nth-child(4),
+    .client-table td:nth-child(5),
+    .client-table td:nth-child(6) {
+        text-align: center;
+    }
+
+
+    .client-number {
+        min-width: 34px;
+
+        height: 32px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        box-sizing: border-box;
+
+        padding: 0 7px;
+
+        border-radius: 9px;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease;
+    }
+
+
+    .client-number:hover {
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 4px 10px rgba(35, 45, 75, 0.08);
+    }
+
+
+    /* REELS - PURPLE */
+
+    .client-table tbody td:nth-child(3) .client-number {
+        background: #f0edff;
+
+        border: 1px solid #ddd7ff;
+
+        color: #6548df;
+    }
+
+
+    /* POSTS - BLUE */
+
+    .client-table tbody td:nth-child(4) .client-number {
+        background: #edf6ff;
+
+        border: 1px solid #d6e9ff;
+
+        color: #397bd7;
+    }
+
+
+    /* STORIES - GREEN */
+
+    .client-table tbody td:nth-child(5) .client-number {
+        background: #eafaf4;
+
+        border: 1px solid #ccefe1;
+
+        color: #178765;
+    }
+
+
+    /* VIDEOS - ORANGE */
+
+    .client-table tbody td:nth-child(6) .client-number {
+        background: #fff4e6;
+
+        border: 1px solid #ffe0b7;
+
+        color: #c77b1e;
+    }
+
+
+    /* =========================================================
+       ACTION COLUMN
+       ========================================================= */
+
+    .client-table tbody td:nth-child(7) {
+        white-space: nowrap;
+    }
+
+
+    .client-actions {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-start;
+
+        gap: 4px;
+
+        white-space: nowrap;
+    }
+
+
+    .client-actions form {
+        margin: 0;
+    }
+
+
+    /* =========================================================
+       EDIT BUTTON
+       ========================================================= */
+
+    .client-edit-btn {
+        min-height: 30px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 4px;
+
+        padding: 0 7px;
+
+        box-sizing: border-box;
+
+        border-radius: 7px;
+
+        color: #6548df;
+
+        text-decoration: none;
+
+        font-size: 10px;
+
+        font-weight: 750;
+
+        transition:
+            background 0.18s ease,
+            color 0.18s ease;
+    }
+
+
+    .client-edit-btn::before {
+        content: "✎";
+
+        font-size: 12px;
+    }
+
+
+    .client-edit-btn:hover {
+        background: #f0edff;
+
+        color: #563bd1;
+
+        text-decoration: none;
+    }
+
+
+    /* =========================================================
+       DELETE BUTTON
+       ========================================================= */
+
+    .client-delete-btn {
+        min-height: 30px;
+
+        padding: 0 8px;
+
+        box-sizing: border-box;
+
+        border: 1px solid #e3e7ed;
+
+        border-radius: 7px;
+
+        background: #f5f6f8;
+
+        color: #536076;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        cursor: pointer;
+
+        transition:
+            background 0.18s ease,
+            border-color 0.18s ease,
+            color 0.18s ease;
+    }
+
+
+    .client-delete-btn::before {
+        content: "⌫";
+
+        margin-right: 3px;
+
+        font-size: 10px;
+    }
+
+
+    .client-delete-btn:hover {
+        background: #fff0f2;
+
+        border-color: #ffd2d8;
+
+        color: #d34d5b;
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+       ========================================================= */
+
+    .client-empty {
+        min-height: 300px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 40px 20px;
+
+        text-align: center;
+    }
+
+
+    .client-empty-icon {
+        width: 64px;
+        height: 64px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 15px;
+
+        border-radius: 17px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f0edff,
+                #e5e0ff
+            );
+
+        color: #674be5;
+
+        box-shadow:
+            0 8px 20px rgba(103, 75, 229, 0.10);
+    }
+
+
+    .client-empty h3 {
+        margin: 0 0 6px;
+
+        color: #1a253b;
+
+        font-size: 18px;
+
+        font-weight: 800;
+    }
+
+
+    .client-empty p {
+        max-width: 390px;
+
+        margin: 0 0 20px;
+
+        color: #909aac;
+
+        font-size: 12px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       DESKTOP WIDTH ADJUSTMENT
+       ========================================================= */
+
+    @@media (min-width: 1400px) {
+
+        .client-page {
+            padding-left: 38px;
+            padding-right: 38px;
+        }
+
+        .client-table thead th {
+            font-size: 10px;
+        }
+
+        .client-table tbody td {
+            font-size: 12px;
+        }
+
+        .client-info strong {
+            font-size: 13px;
+        }
+
+        .client-description {
+            font-size: 12px;
+        }
+
+    }
+
+
+    /* =========================================================
+       TABLET
+       ========================================================= */
+
+    @@media (max-width: 1100px) {
+
+        .client-page {
+            padding: 28px 22px 45px;
+        }
+
+        .client-card-header {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .client-table-wrapper {
+            padding-left: 18px;
+            padding-right: 18px;
+
+            overflow-x: auto;
+        }
+
+        .client-table {
+            min-width: 850px;
+
+            table-layout: auto;
+        }
+
+    }
+
+
+    /* =========================================================
+       SMALL TABLET
+       ========================================================= */
+
+    @@media (max-width: 800px) {
+
+        .client-header {
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+        .client-add-btn {
+            align-self: flex-start;
+        }
+
+        .client-table-wrapper {
+            overflow-x: auto;
+        }
+
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @@media (max-width: 650px) {
+
+        .client-page {
+            padding: 22px 14px 40px;
+        }
+
+        .client-header {
+            align-items: stretch;
+
+            flex-direction: column;
+        }
+
+        .client-header h1 {
+            font-size: 30px;
+        }
+
+        .client-add-btn {
+            width: 100%;
+        }
+
+        .client-card-header {
+            align-items: flex-start;
+
+            flex-direction: column;
+
+            padding: 20px;
+        }
+
+        .client-count {
+            align-self: flex-start;
+        }
+
+        .client-table-wrapper {
+            padding: 0 14px 20px;
+
+            overflow-x: auto;
+        }
+
+    }
+
+</style>
+
+</style>
+
+
 <div class="client-page">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
     <div class="client-header">
 
-        <div>
-            <div class="client-eyebrow">CLIENT MANAGEMENT</div>
 
-            <h1>Clients</h1>
+        <div>
+
+            <div class="client-eyebrow">
+                CLIENT MANAGEMENT
+            </div>
+
+
+            <h1>
+                Clients
+            </h1>
+
 
             <p>
                 Manage client details and monthly content requirements.
             </p>
+
         </div>
+
 
         @if (User.IsInRole("Admin"))
         {
-            <a asp-action="Create" class="client-add-btn">
-                <span>+</span>
+
+            <a asp-action="Create"
+               class="client-add-btn">
+
+                <span>
+                    +
+                </span>
+
                 Add Client
+
             </a>
+
         }
 
     </div>
 
 
+    <!-- =====================================================
+         SUCCESS MESSAGE
+         ===================================================== -->
+
     @if (TempData["SuccessMessage"] != null)
     {
+
         <div class="client-alert success">
+
+            <span>
+                ✓
+            </span>
+
             @TempData["SuccessMessage"]
+
         </div>
+
     }
 
 
+    <!-- =====================================================
+         MAIN CLIENT CARD
+         ===================================================== -->
+
     <div class="client-card">
+
+
+        <!-- CARD HEADER -->
 
         <div class="client-card-header">
 
+
             <div>
-                <h2>Client List</h2>
+
+                <h2>
+                    Client List
+                </h2>
+
 
                 <p>
                     View and manage your clients.
                 </p>
+
             </div>
 
+
             <div class="client-count">
-                @Model.Count() Clients
+
+                <span>
+                    @Model.Count()
+                </span>
+
+                &nbsp;
+
+                @(Model.Count() == 1 ? "Client" : "Clients")
+
             </div>
 
         </div>
 
 
+        <!-- =================================================
+             EMPTY STATE
+             ================================================= -->
+
         @if (!Model.Any())
         {
+
             <div class="client-empty">
 
+
                 <div class="client-empty-icon">
-                    👥
+
+                    <svg viewBox="0 0 24 24"
+                         width="30"
+                         height="30"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.9"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+                        </path>
+
+                        <circle cx="9"
+                                cy="7"
+                                r="4">
+                        </circle>
+
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87">
+                        </path>
+
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75">
+                        </path>
+
+                    </svg>
+
                 </div>
 
-                <h3>No clients yet</h3>
+
+                <h3>
+                    No clients yet
+                </h3>
+
 
                 <p>
-                    @(User.IsInRole("Admin") ? "Start by adding your first client." : "No clients have been added yet.")
+
+                    @(User.IsInRole("Admin")
+                        ? "Start by adding your first client."
+                        : "No clients have been added yet.")
+
                 </p>
+
 
                 @if (User.IsInRole("Admin"))
                 {
-                    <a asp-action="Create" class="client-add-btn">
-                        + Add Client
+
+                    <a asp-action="Create"
+                       class="client-add-btn">
+
+                        <span>
+                            +
+                        </span>
+
+                        Add Client
+
                     </a>
+
                 }
 
             </div>
+
         }
         else
         {
+
+            <!-- =================================================
+                 CLIENT TABLE
+                 ================================================= -->
+
             <div class="client-table-wrapper">
+
 
                 <table class="client-table">
 
+
                     <thead>
+
                         <tr>
-                            <th>CLIENT</th>
-                            <th>DESCRIPTION</th>
-                            <th>REELS / MONTH</th>
-                            <th>POSTS / MONTH</th>
-                            <th>STORIES / MONTH</th>
-                            <th>VIDEOS / MONTH</th>
+
+                            <th>
+                                CLIENT
+                            </th>
+
+                            <th>
+                                DESCRIPTION
+                            </th>
+
+                            <th>
+                                REELS / MONTH
+                            </th>
+
+                            <th>
+                                POSTS / MONTH
+                            </th>
+
+                            <th>
+                                STORIES / MONTH
+                            </th>
+
+                            <th>
+                                VIDEOS / MONTH
+                            </th>
+
+
                             @if (User.IsInRole("Admin"))
                             {
-                                <th>ACTIONS</th>
+
+                                <th>
+                                    ACTIONS
+                                </th>
+
                             }
+
                         </tr>
+
                     </thead>
+
 
                     <tbody>
 
+
                         @foreach (var client in Model)
                         {
+
                             <tr>
 
+
+                                <!-- CLIENT -->
+
                                 <td>
+
                                     <div class="client-info">
 
+
                                         <div class="client-avatar">
-                                            @client.ClientName.Substring(0, 1).ToUpper()
+
+                                            @(string.IsNullOrWhiteSpace(client.ClientName)
+                                                ? "?"
+                                                : client.ClientName.Substring(0, 1).ToUpper())
+
                                         </div>
+
 
                                         <strong>
                                             @client.ClientName
                                         </strong>
 
+
                                     </div>
+
                                 </td>
 
+
+                                <!-- DESCRIPTION -->
+
                                 <td>
+
                                     <span class="client-description">
+
                                         @(string.IsNullOrWhiteSpace(client.Description)
-                                                                        ? "—"
-                                                                        : client.Description)
-                            </span>
-                        </td>
+                                            ? "No description"
+                                            : client.Description)
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- REELS -->
 
                                 <td>
+
                                     <span class="client-number">
+
                                         @client.ReelsPerMonth
+
                                     </span>
+
                                 </td>
 
+
+                                <!-- POSTS -->
+
                                 <td>
+
                                     <span class="client-number">
+
                                         @client.PostsPerMonth
+
                                     </span>
+
                                 </td>
 
+
+                                <!-- STORIES -->
+
                                 <td>
+
                                     <span class="client-number">
+
                                         @client.StoriesPerMonth
+
                                     </span>
+
                                 </td>
 
+
+                                <!-- VIDEOS -->
+
                                 <td>
+
                                     <span class="client-number">
+
                                         @client.VideosPerMonth
+
                                     </span>
+
                                 </td>
+
+
+                                <!-- ACTIONS -->
 
                                 @if (User.IsInRole("Admin"))
                                 {
+
                                     <td>
 
+
                                         <div class="client-actions">
+
+
+                                            <!-- EDIT -->
 
                                             <a asp-action="Edit"
                                                asp-route-id="@client.Id"
                                                class="client-edit-btn">
+
                                                 Edit
+
                                             </a>
+
+
+                                            <!-- DELETE -->
 
                                             <form asp-action="Delete"
                                                   asp-route-id="@client.Id"
                                                   method="post">
 
+
                                                 @Html.AntiForgeryToken()
+
 
                                                 <button type="submit"
                                                         class="client-delete-btn"
                                                         onclick="return confirm('Are you sure you want to delete this client?');">
+
                                                     Delete
+
                                                 </button>
+
 
                                             </form>
 
+
                                         </div>
 
+
                                     </td>
+
                                 }
 
                             </tr>
+
                         }
+
 
                     </tbody>
 
                 </table>
 
             </div>
+
         }
 
     </div>

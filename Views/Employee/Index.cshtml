@@ -4,120 +4,937 @@
     ViewData["Title"] = "Employees";
 }
 
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+<style>
+
+    /* =========================================================
+           EMPLOYEE PAGE
+           ========================================================= */
+
+    .employee-page {
+        padding: 34px 40px 50px;
+        max-width: 1500px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+           HEADER
+           ========================================================= */
+
+    .employee-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+        gap: 20px;
+    }
+
+    .employee-title-section {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .page-title-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #7357f5, #6343e9);
+        color: white;
+        font-size: 25px;
+        box-shadow: 0 10px 25px rgba(103, 75, 235, 0.25);
+    }
+
+    .employee-header h1 {
+        margin: 0;
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: -1.2px;
+        color: #10182b;
+    }
+
+    .eyebrow {
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+        color: #6952ef;
+    }
+
+
+    /* =========================================================
+           ADD EMPLOYEE BUTTON
+           ========================================================= */
+
+    .add-employee-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 14px 22px;
+        border-radius: 13px;
+        background: linear-gradient(135deg, #7659f5, #6544e8);
+        color: white !important;
+        text-decoration: none !important;
+        font-size: 14px;
+        font-weight: 700;
+        border: none;
+        box-shadow: 0 10px 22px rgba(103, 75, 235, 0.22);
+        transition: all 0.25s ease;
+    }
+
+        .add-employee-btn i {
+            font-size: 16px;
+        }
+
+        .add-employee-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(103, 75, 235, 0.30);
+        }
+
+
+    /* =========================================================
+           MAIN PANEL
+           ========================================================= */
+
+    .employee-panel {
+        background: #ffffff;
+        border: 1px solid #e8ebf3;
+        border-radius: 22px;
+        box-shadow: 0 12px 40px rgba(25, 35, 65, 0.07);
+        overflow: hidden;
+    }
+
+
+    /* =========================================================
+           PANEL HEADER
+           ========================================================= */
+
+    .employee-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        padding: 28px 30px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .directory-title {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .directory-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: #f0edff;
+        color: #6d50ec;
+        font-size: 20px;
+    }
+
+    .directory-title h2 {
+        margin: 0;
+        color: #111a2e;
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.4px;
+    }
+
+    .directory-title p {
+        margin: 5px 0 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #8390a7;
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+           SEARCH
+           ========================================================= */
+
+    .employee-search {
+        width: 330px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        border: 1px solid #dfe4ee;
+        border-radius: 13px;
+        background: #fafbfe;
+        transition: all 0.2s ease;
+    }
+
+        .employee-search > i {
+            margin-left: 16px;
+            color: #8b96aa;
+            font-size: 16px;
+        }
+
+        .employee-search input {
+            flex: 1;
+            height: 100%;
+            border: none;
+            outline: none;
+            padding: 0 10px;
+            background: transparent;
+            color: #182238;
+            font-size: 14px;
+        }
+
+            .employee-search input::placeholder {
+                color: #9ba5b6;
+            }
+
+        .employee-search:focus-within {
+            border-color: #7659f5;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(118, 89, 245, 0.09);
+        }
+
+    .search-shortcut {
+        margin-right: 10px;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #dfe4ed;
+        border-radius: 6px;
+        color: #8b95a7;
+        font-size: 12px;
+        font-weight: 600;
+        background: white;
+    }
+
+
+    /* =========================================================
+           TABLE
+           ========================================================= */
+
+    .employee-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .employee-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+
+        /* =========================================================
+           TABLE HEADER
+           ========================================================= */
+
+        .employee-table thead th {
+            padding: 16px 20px;
+            background: #f7f8fb;
+            color: #718096;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            border-bottom: 1px solid #e8ebf1;
+        }
+
+            .employee-table thead th i {
+                margin-right: 6px;
+                color: #8b7bea;
+                font-size: 13px;
+            }
+
+
+        /* =========================================================
+           TABLE CELLS
+           ========================================================= */
+
+        .employee-table tbody td {
+            padding: 19px 20px;
+            color: #263148;
+            font-size: 14px;
+            border-bottom: 1px solid #edf0f5;
+            vertical-align: middle;
+        }
+
+        .employee-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+            .employee-table tbody tr:hover {
+                background: #fafaff;
+            }
+
+            .employee-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+
+    /* =========================================================
+           EMPLOYEE INFO
+           ========================================================= */
+
+    .employee-info {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .employee-avatar {
+        width: 46px;
+        height: 46px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 14px;
+        background: linear-gradient( 135deg, #e9e3ff, #d8d0ff );
+        color: #684be8;
+        font-size: 16px;
+        font-weight: 800;
+        box-shadow: inset 0 0 0 1px rgba(104, 75, 232, 0.08);
+    }
+
+    .online-dot {
+        position: absolute;
+        right: -2px;
+        bottom: -2px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #20c997;
+        border: 2px solid white;
+    }
+
+    .employee-details {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+        .employee-details strong {
+            color: #172036;
+            font-size: 14px;
+            font-weight: 750;
+        }
+
+        .employee-details span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #8994a8;
+            font-size: 12px;
+        }
+
+            .employee-details span i {
+                font-size: 11px;
+            }
+
+
+    /* =========================================================
+           DEPARTMENT
+           ========================================================= */
+
+    .info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 11px;
+        border-radius: 9px;
+        background: #f5f3ff;
+        color: #5944c7;
+        font-size: 13px;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .badge-icon {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        background: #e9e4ff;
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+           DESIGNATION
+           ========================================================= */
+
+    .designation-info {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .designation-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #f1f7ff;
+        color: #4f7fce;
+        font-size: 14px;
+    }
+
+    .designation-info span {
+        font-weight: 600;
+        color: #34405a;
+    }
+
+
+    /* =========================================================
+           STATUS
+           ========================================================= */
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+        .status.active {
+            background: #e9faf4;
+            color: #14966c;
+            border: 1px solid #c9f1e3;
+        }
+
+            .status.active i {
+                font-size: 12px;
+            }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #20c997;
+    }
+
+
+    /* =========================================================
+           JOINED DATE
+           ========================================================= */
+
+    .joined-date {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #536078;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .date-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        background: #fff5e8;
+        color: #d99032;
+        font-size: 14px;
+    }
+
+
+    /* =========================================================
+           ACTION BUTTONS
+           ========================================================= */
+
+    .employee-actions {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        height: 35px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 0 11px;
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .edit-btn {
+        color: #6548df;
+        background: #f2efff;
+        border: 1px solid #e7e1ff;
+        text-decoration: none;
+    }
+
+        .edit-btn:hover {
+            background: #e8e2ff;
+            transform: translateY(-1px);
+        }
+
+    .delete-btn {
+        color: #dc4d5a;
+        background: #fff1f2;
+        border: 1px solid #ffe0e3;
+    }
+
+        .delete-btn:hover {
+            background: #ffe4e6;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+    .employee-empty {
+        padding: 70px 20px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 75px;
+        height: 75px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: #f1efff;
+        color: #7357ee;
+        font-size: 30px;
+    }
+
+    .employee-empty h3 {
+        margin: 0 0 8px;
+        color: #182238;
+        font-size: 20px;
+    }
+
+    .employee-empty p {
+        margin: 0 auto 22px;
+        max-width: 430px;
+        color: #8994a8;
+        font-size: 14px;
+    }
+
+
+    /* =========================================================
+           RESPONSIVE - TABLET
+           ========================================================= */
+
+    @@media (max-width: 1000px) {
+
+        .employee-page {
+            padding: 25px 20px;
+        }
+
+        .employee-panel-header {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .employee-search {
+            width: 100%;
+        }
+    }
+
+
+    /* =========================================================
+           RESPONSIVE - MOBILE
+           ========================================================= */
+
+    @@media (max-width: 700px) {
+
+        .employee-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+            .employee-header h1 {
+                font-size: 30px;
+            }
+
+        .employee-title-section {
+            width: 100%;
+        }
+
+        .add-employee-btn {
+            width: 100%;
+        }
+
+        .employee-panel {
+            border-radius: 16px;
+        }
+
+        .employee-panel-header {
+            padding: 22px 18px;
+        }
+
+        .employee-table {
+            min-width: 900px;
+        }
+    }
+
+</style>
+
+
 <div class="employee-page">
 
-    <!-- Header -->
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <div class="employee-header">
-        <div>
-            <h1>Employees</h1>
-            <div class="eyebrow">WORK MANAGEMENT</div>
+
+        <div class="employee-title-section">
+
+            <div class="page-title-icon">
+                <i class="bi bi-people-fill"></i>
+            </div>
+
+            <div>
+
+                <h1>Employees</h1>
+
+                <div class="eyebrow">
+                    <i class="bi bi-briefcase-fill"></i>
+                    WORK MANAGEMENT
+                </div>
+
+            </div>
+
         </div>
+
 
         @if (User.IsInRole("Admin"))
         {
             <a asp-controller="Employee"
                asp-action="Create"
                class="add-employee-btn">
-                <span>＋</span> Add Employee
+
+                <i class="bi bi-person-plus-fill"></i>
+
+                <span>Add Employee</span>
+
             </a>
         }
+
     </div>
 
-    <!-- Employee Directory -->
+
+    <!-- =====================================================
+         EMPLOYEE DIRECTORY
+         ===================================================== -->
+
     <div class="employee-panel">
 
+
+        <!-- Panel Header -->
+
         <div class="employee-panel-header">
-            <div>
-                <h2>Employee Directory</h2>
-                <p>BulbBit Employee.</p>
+
+
+            <div class="directory-title">
+
+                <div class="directory-icon">
+                    <i class="bi bi-person-vcard-fill"></i>
+                </div>
+
+                <div>
+
+                    <h2>Employee Directory</h2>
+
+                    <p>
+                        <i class="bi bi-building"></i>
+                        BulbBit Employee
+                    </p>
+
+                </div>
+
             </div>
 
+
+            <!-- Search -->
+
             <div class="employee-search">
-                <span>⌕</span>
+
+                <i class="bi bi-search"></i>
+
                 <input type="text"
                        id="employeeSearch"
                        placeholder="Search employees..." />
+
+                <span class="search-shortcut">
+                    /
+                </span>
+
             </div>
+
         </div>
+
+
+        <!-- =================================================
+             TABLE
+             ================================================= -->
 
         <div class="employee-table-wrapper">
 
             <table class="employee-table" id="employeeTable">
 
+
+                <!-- TABLE HEADER -->
+
                 <thead>
+
                     <tr>
-                        <th>Employee</th>
-                        <th>Department</th>
-                        <th>Designation</th>
-                        <th>Status</th>
-                        <th>Joined</th>
+
+                        <th>
+                            <i class="bi bi-person"></i>
+                            Employee
+                        </th>
+
+                        <th>
+                            <i class="bi bi-diagram-3"></i>
+                            Department
+                        </th>
+
+                        <th>
+                            <i class="bi bi-award"></i>
+                            Designation
+                        </th>
+
+                        <th>
+                            <i class="bi bi-activity"></i>
+                            Status
+                        </th>
+
+                        <th>
+                            <i class="bi bi-calendar3"></i>
+                            Joined
+                        </th>
+
+
                         @if (User.IsInRole("Admin"))
                         {
-                            <th>Action</th>
+                            <th>
+                                <i class="bi bi-three-dots"></i>
+                                Action
+                            </th>
                         }
+
                     </tr>
+
                 </thead>
+
+
+                <!-- TABLE BODY -->
 
                 <tbody>
 
+
                     @if (Model != null && Model.Any())
                     {
+
                         foreach (var employee in Model)
                         {
+
                             var initial = !string.IsNullOrEmpty(employee.FullName)
-                            ? employee.FullName.Substring(0, 1).ToUpper()
-                            : "U";
+                                ? employee.FullName.Substring(0, 1).ToUpper()
+                                : "U";
+
 
                             <tr>
 
-                                <!-- Employee -->
+
+                                <!-- =================================
+                                     EMPLOYEE
+                                     ================================= -->
+
                                 <td>
+
                                     <div class="employee-info">
 
+
                                         <div class="employee-avatar">
-                                            @initial
+
+                                            <span>
+                                                @initial
+                                            </span>
+
+                                            <div class="online-dot"></div>
+
                                         </div>
+
 
                                         <div class="employee-details">
-                                            <strong>@employee.FullName</strong>
-                                            <span>@employee.Email</span>
+
+                                            <strong>
+                                                @employee.FullName
+                                            </strong>
+
+                                            <span>
+
+                                                <i class="bi bi-envelope"></i>
+
+                                                @employee.Email
+
+                                            </span>
+
                                         </div>
 
+
                                     </div>
+
                                 </td>
 
-                                <!-- Department -->
+
+                                <!-- =================================
+                                     DEPARTMENT
+                                     ================================= -->
+
                                 <td>
-                                    @employee.Department
+
+                                    <div class="info-badge department-badge">
+
+                                        <span class="badge-icon">
+
+                                            <i class="bi bi-building"></i>
+
+                                        </span>
+
+                                        <span>
+                                            @employee.Department
+                                        </span>
+
+                                    </div>
+
                                 </td>
 
-                                <!-- Designation -->
+
+                                <!-- =================================
+                                     DESIGNATION
+                                     ================================= -->
+
                                 <td>
-                                    @employee.Designation
+
+                                    <div class="designation-info">
+
+                                        <div class="designation-icon">
+
+                                            <i class="bi bi-person-workspace"></i>
+
+                                        </div>
+
+                                        <span>
+                                            @employee.Designation
+                                        </span>
+
+                                    </div>
+
                                 </td>
 
-                                <!-- Status -->
+
+                                <!-- =================================
+                                     STATUS
+                                     ================================= -->
+
                                 <td>
-                                    <span class="status active">Active</span>
+
+                                    <span class="status active">
+
+                                        <span class="status-dot"></span>
+
+                                        <i class="bi bi-check-circle-fill"></i>
+
+                                        Active
+
+                                    </span>
+
                                 </td>
 
-                                <!-- Joined -->
+
+                                <!-- =================================
+                                     JOINED DATE
+                                     ================================= -->
+
                                 <td>
-                                    @employee.JoinedDate.ToString("dd MMM yyyy")
+
+                                    <div class="joined-date">
+
+                                        <div class="date-icon">
+
+                                            <i class="bi bi-calendar-check"></i>
+
+                                        </div>
+
+                                        <span>
+                                            @employee.JoinedDate.ToString("dd MMM yyyy")
+                                        </span>
+
+                                    </div>
+
                                 </td>
 
-                                <!-- Actions -->
+
+                                <!-- =================================
+                                     ACTIONS
+                                     ================================= -->
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <td>
+
                                         <div class="employee-actions">
+
+
+                                            <!-- EDIT -->
 
                                             <a asp-controller="Employee"
                                                asp-action="Edit"
                                                asp-route-id="@employee.Id"
-                                               class="edit-btn">
-                                                Edit
+                                               class="edit-btn"
+                                               title="Edit employee">
+
+                                                <i class="bi bi-pencil-square"></i>
+
+                                                <span>
+                                                    Edit
+                                                </span>
+
                                             </a>
+
+
+                                            <!-- DELETE -->
 
                                             <form asp-controller="Employee"
                                                   asp-action="Delete"
@@ -129,40 +946,90 @@
 
                                                 <button type="submit"
                                                         class="delete-btn"
+                                                        title="Delete employee"
                                                         onclick="return confirm('Are you sure you want to delete this employee?');">
-                                                    Delete
+
+                                                    <i class="bi bi-trash3"></i>
+
+                                                    <span>
+                                                        Delete
+                                                    </span>
+
                                                 </button>
 
                                             </form>
 
+
                                         </div>
+
                                     </td>
                                 }
 
+
                             </tr>
+
                         }
+
                     }
                     else
                     {
+
+                        <!-- =================================
+                             EMPTY STATE
+                             ================================= -->
+
                         <tr>
+
                             <td colspan="@(User.IsInRole("Admin") ? "6" : "5")">
+
                                 <div class="employee-empty">
-                                    <div class="empty-icon">♙</div>
-                                    <h3>No employees found</h3>
-                                    <p>@(User.IsInRole("Admin") ? "Add your first employee to get started." : "No employee directory records available.")</p>
+
+
+                                    <div class="empty-icon">
+
+                                        <i class="bi bi-people"></i>
+
+                                    </div>
+
+
+                                    <h3>
+                                        No employees found
+                                    </h3>
+
+
+                                    <p>
+
+                                        @(User.IsInRole("Admin")
+                                            ? "Add your first employee to get started."
+                                            : "No employee directory records available.")
+
+                                    </p>
+
 
                                     @if (User.IsInRole("Admin"))
                                     {
+
                                         <a asp-controller="Employee"
                                            asp-action="Create"
                                            class="add-employee-btn">
-                                            ＋ Add Employee
+
+                                            <i class="bi bi-person-plus-fill"></i>
+
+                                            Add Employee
+
                                         </a>
+
                                     }
+
+
                                 </div>
+
                             </td>
+
                         </tr>
+
                     }
+
 
                 </tbody>
 
@@ -174,28 +1041,64 @@
 
 </div>
 
+
 @section Scripts {
 
     <script>
 
-        const searchBox = document.getElementById("employeeSearch");
+        /* =====================================================
+           EMPLOYEE SEARCH
+           ===================================================== */
+
+        const searchBox =
+            document.getElementById("employeeSearch");
+
 
         searchBox?.addEventListener("keyup", function () {
 
-            const searchValue = this.value.toLowerCase();
+            const searchValue =
+                this.value.toLowerCase().trim();
 
-            const rows = document.querySelectorAll(
-                "#employeeTable tbody tr"
-            );
+
+            const rows =
+                document.querySelectorAll(
+                    "#employeeTable tbody tr"
+                );
+
 
             rows.forEach(function (row) {
 
-                const text = row.innerText.toLowerCase();
+                const text =
+                    row.innerText.toLowerCase();
+
 
                 row.style.display =
-                    text.includes(searchValue) ? "" : "none";
+                    text.includes(searchValue)
+                        ? ""
+                        : "none";
 
             });
+
+        });
+
+
+        /* =====================================================
+           "/" KEYBOARD SHORTCUT
+           ===================================================== */
+
+        document.addEventListener("keydown", function (event) {
+
+            if (
+                event.key === "/" &&
+                document.activeElement.tagName !== "INPUT" &&
+                document.activeElement.tagName !== "TEXTAREA"
+            ) {
+
+                event.preventDefault();
+
+                searchBox?.focus();
+
+            }
 
         });
 
